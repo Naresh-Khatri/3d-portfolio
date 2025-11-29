@@ -59,6 +59,7 @@ function GitHubStarsButton({
   const [isCompleted, setIsCompleted] = useState(false);
   const [displayParticles, setDisplayParticles] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [repoExists, setRepoExists] = useState(true);
 
   const repoUrl = useMemo(
     () => `https://github.com/${username}/${repo}`,
@@ -67,13 +68,25 @@ function GitHubStarsButton({
 
   useEffect(() => {
     fetch(`https://api.github.com/repos/${username}/${repo}`)
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          // If repo doesn't exist (404) or other error, don't show the button
+          setRepoExists(false);
+          setIsLoading(false);
+          return null;
+        }
+        return response.json();
+      })
       .then((data) => {
         if (data && typeof data.stargazers_count === 'number') {
           setStars(data.stargazers_count);
         }
       })
-      .catch(console.error)
+      .catch(() => {
+        // Silently handle errors (network issues, etc.)
+        setRepoExists(false);
+        setIsLoading(false);
+      })
       .finally(() => setIsLoading(false));
   }, [username, repo]);
 
@@ -138,7 +151,8 @@ function GitHubStarsButton({
     [handleDisplayParticles, repoUrl],
   );
 
-  if (isLoading) return null;
+  // Don't show button if loading or if repo doesn't exist
+  if (isLoading || !repoExists) return null;
 
   return (
     <motion.a

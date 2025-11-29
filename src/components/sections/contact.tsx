@@ -30,9 +30,10 @@ const ContactSection = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 z-[9999]">
         <Card className="min-w-7xl bg-white/70 dark:bg-black/70 backdrop-blur-sm rounded-xl mt-10 md:mt-20">
           <CardHeader>
-            <CardTitle className="text-4xl">Contact Form</CardTitle>
-            <CardDescription>
-              Please contact me directly at{" "}
+            <CardTitle className="text-4xl">Get In Touch</CardTitle>
+            <CardDescription className="text-base">
+              I&apos;m always open to discussing AI research, collaborations, MS program advice, or potential opportunities. 
+              Feel free to reach out directly at{" "}
               <a
                 target="_blank"
                 href={`mailto:${config.email}`}
@@ -40,7 +41,7 @@ const ContactSection = () => {
               >
                 {config.email.replace(/@/g, "(at)")}
               </a>{" "}
-              or drop your info here.
+              or use the form below.
             </CardDescription>
           </CardHeader>
           <CardContent>

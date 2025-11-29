@@ -53,18 +53,37 @@ const SocketContextProvider = ({ children }: { children: ReactNode }) => {
 
   // SETUP SOCKET.IO
   useEffect(() => {
-    const username =  localStorage.getItem("username") || generateRandomCursor().name
-    const socket = io(process.env.NEXT_PUBLIC_WS_URL!, {
+    // Only connect if WS_URL is provided
+    if (!process.env.NEXT_PUBLIC_WS_URL) {
+      return;
+    }
+    
+    const username = localStorage.getItem("username") || generateRandomCursor().name;
+    const socket = io(process.env.NEXT_PUBLIC_WS_URL, {
       query: { username },
+      reconnection: false, // Disable auto-reconnection to prevent console spam
+      timeout: 5000,
     });
+    
     setSocket(socket);
-    socket.on("connect", () => {});
+    
+    socket.on("connect", () => {
+      console.log("Socket connected");
+    });
+    
+    socket.on("connect_error", (error) => {
+      // Silently handle connection errors
+      console.debug("Socket connection error:", error.message);
+    });
+    
     socket.on("msgs-receive-init", (msgs) => {
       setMsgs(msgs);
     });
+    
     socket.on("msg-receive", (msgs) => {
       setMsgs((p) => [...p, msgs]);
     });
+    
     return () => {
       socket.disconnect();
     };

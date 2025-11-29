@@ -43,26 +43,26 @@ import { TbTerminal2 } from "react-icons/tb";
 const CONTACT_LINKS = [
   {
     name: "Email",
-    content: "naresh.khatri2345@gmail",
-    href: "mailto:naresh.khatri2345@gmail.com",
+    content: "gurusarank@icloud.com",
+    href: "mailto:gurusarank@icloud.com",
     icon: <FaEnvelope height={"50px"} />,
   },
   {
     name: "Phone",
-    content: "1234567890",
-    href: "tel:1234567890",
+    content: "+91 733-9595660",
+    href: "tel:+917339595660",
     icon: <FaPhone height={"50px"} />,
   },
   {
     name: "LinkedIn",
-    href: "https://www.linkedin.com/in/naresh-khatri/",
-    content: "/naresh-khatri",
+    href: "https://www.linkedin.com/in/gurusarank",
+    content: "/gurusarank",
     icon: <FaLinkedin height={"50px"} />,
   },
   {
     name: "GitHub",
-    href: "https://github.com/Naresh-Khatri",
-    content: "/naresh-khatri",
+    href: "https://github.com/gurusarank",
+    content: "/gurusarank",
     icon: <FaGithub height={"50px"} />,
   },
 ];
@@ -251,9 +251,9 @@ function Page() {
                 />
               </div>
               <div className="flex flex-col gap-3 lg:items-center ml-10 md:ml-20 lg:ml-0">
-                <p className="text-center text-xl">Naresh Khatri</p>
+                <p className="text-center text-xl">Guru Saran Kannan</p>
                 <div className="text-xs bg-zinc-700 w-fit px-3 py-1 rounded-full">
-                  Web Developer
+                  AI Researcher & Software Engineer
                 </div>
               </div>
             </div>
@@ -287,17 +287,54 @@ function Page() {
           >
             <h1 className="text-3xl mb-10 lg:md-20">About me</h1>
             <p className="mb-10 text-roboto">
-              Hey there! I&apos;m Naresh, a Fullstack developer passionate about
-              creating meaningful digital experiences. With great in Web
-              development, I thrive on turning ideas into reality through coding
-              and design. My journey began with a fascination for technology and
-              a drive to make a positive impact.
+              As a final-year B.Tech in Artificial Intelligence from SRM Institute of Science and Technology, I&apos;ve honed my skills through hands-on RL simulations, LLM-powered tools, and remote software engineering. My work has reduced scheduling times by 35%, boosted traffic throughput by 30%, and automated edtech support for 500+ queries. Eager to advance in Ivy League MS programs, I&apos;m driven by AI&apos;s potential in smart cities and adaptive learning.
             </p>
-            <p className="mb-10">
-              When I&apos;m not coding, you can find me [Your
-              Interests/Hobbies], exploring new technologies, or sipping coffee
-              while brainstorming my next project.
-            </p>
+            
+            <h2 className="text-2xl mb-6 mt-12">Education</h2>
+            <div className="mb-8 p-4 border-[.5px] border-zinc-600 rounded-lg bg-zinc-800/50">
+              <h3 className="text-xl font-semibold mb-2">B.Tech Artificial Intelligence</h3>
+              <p className="text-zinc-400 mb-1">SRM Institute of Science and Technology, Kattankulathur, India</p>
+              <p className="text-sm text-zinc-500">Jun 2021 – May 2025 | GPA: 3.34/4</p>
+            </div>
+
+            <h2 className="text-2xl mb-6 mt-12">Test Scores</h2>
+            <div className="mb-4 p-4 border-[.5px] border-zinc-600 rounded-lg bg-zinc-800/50">
+              <h3 className="text-xl font-semibold mb-2">GRE General Test</h3>
+              <p className="text-zinc-400 mb-1">ETS | Apr 2025</p>
+              <p className="text-sm text-zinc-500">327/340 (Verbal: 157, Quant: 170, AWA: 5)</p>
+            </div>
+            <div className="mb-8 p-4 border-[.5px] border-zinc-600 rounded-lg bg-zinc-800/50">
+              <h3 className="text-xl font-semibold mb-2">TOEFL iBT</h3>
+              <p className="text-zinc-400 mb-1">ETS | Jul 2025</p>
+              <p className="text-sm text-zinc-500">106/120 (Reading: 27, Listening: 30, Speaking: 21, Writing: 28)</p>
+            </div>
+
+            <h2 className="text-2xl mb-6 mt-12">Publications</h2>
+            <div className="mb-8 p-4 border-[.5px] border-zinc-600 rounded-lg bg-zinc-800/50">
+              <h3 className="text-xl font-semibold mb-2">Virtual Traffic Dynamics (VTD): A Reinforcement Learning AI Traffic Simulation</h3>
+              <p className="text-zinc-400 mb-1">Accepted, <em>Proceedings of IconDeepCom 2025</em> (Springer)</p>
+              <p className="text-sm text-zinc-500">Presented Mar 2025 | Forthcoming 2026</p>
+            </div>
+
+            <h2 className="text-2xl mb-6 mt-12">Experience</h2>
+            <div className="mb-4 p-4 border-[.5px] border-zinc-600 rounded-lg bg-zinc-800/50">
+              <h3 className="text-xl font-semibold mb-2">Software Engineer, Developer</h3>
+              <p className="text-zinc-400 mb-1">Wasabi Scripts LLC (US Remote)</p>
+              <p className="text-sm text-zinc-500 mb-3">Aug 2023 – Present</p>
+              <ul className="list-disc ml-6 text-sm text-zinc-400 space-y-1">
+                <li>Maintained FiveM scripts for 18,000+ servers; Drove 27,000+ sales</li>
+                <li>Reduced bugs by 25%; Managed 200+ user feedback for 99.8% uptime</li>
+              </ul>
+            </div>
+            <div className="mb-8 p-4 border-[.5px] border-zinc-600 rounded-lg bg-zinc-800/50">
+              <h3 className="text-xl font-semibold mb-2">FiveM Open Source Community</h3>
+              <p className="text-zinc-400 mb-1">Remote Volunteer</p>
+              <p className="text-sm text-zinc-500 mb-3">Aug 2024 – Present</p>
+              <ul className="list-disc ml-6 text-sm text-zinc-400 space-y-1">
+                <li>Mentored 100+ developers</li>
+                <li>Shipped 2 Lua resources adopted by 340+ servers</li>
+              </ul>
+            </div>
             <h1 className="text-3xl mb-10 lg:md-20">Stuff I use</h1>
             <div className="mb-5">
               {!toolsLoaded ? (

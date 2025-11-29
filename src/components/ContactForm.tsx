@@ -36,8 +36,8 @@ const ContactForm = () => {
       const data = await res.json();
       if (data.error) throw new Error(data.error);
       toast({
-        title: "Thank you!",
-        description: "I'll get back to you as soon as possible.",
+        title: "Message sent! ✨",
+        description: "Thanks for reaching out. I'll get back to you soon!",
         variant: "default",
         className: cn("top-0 mx-auto flex fixed md:top-4 md:right-4"),
       });
@@ -65,10 +65,10 @@ const ContactForm = () => {
     <form className="min-w-7xl mx-auto sm:mt-4" onSubmit={handleSubmit}>
       <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
         <LabelInputContainer>
-          <Label htmlFor="fullname">Full name</Label>
+          <Label htmlFor="fullname">Name</Label>
           <Input
             id="fullname"
-            placeholder="Your Name"
+            placeholder="John Doe"
             type="text"
             required
             value={fullName}
@@ -76,7 +76,7 @@ const ContactForm = () => {
           />
         </LabelInputContainer>
         <LabelInputContainer className="mb-4">
-          <Label htmlFor="email">Email Address</Label>
+          <Label htmlFor="email">Email</Label>
           <Input
             id="email"
             placeholder="you@example.com"
@@ -88,16 +88,17 @@ const ContactForm = () => {
         </LabelInputContainer>
       </div>
       <div className="grid w-full gap-1.5 mb-4">
-        <Label htmlFor="content">Your Message</Label>
+        <Label htmlFor="content">Message</Label>
         <Textarea
-          placeholder="Tell me about about your project,"
+          placeholder="Excited about RL simulations, LLM deployments? Share your thoughts—let's innovate together!"
           id="content"
           required
           value={message}
           onChange={(e) => setMessage(e.target.value)}
+          rows={6}
         />
         <p className="text-sm text-muted-foreground">
-          I&apos;ll never share your data with anyone else. Pinky promise!
+          I typically respond within 24-48 hours. Looking forward to hearing from you!
         </p>
       </div>
       <Button

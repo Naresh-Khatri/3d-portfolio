@@ -69,29 +69,39 @@ const HeroSection = () => {
                   </Tooltip>
                 </BlurIn>
                 {/* <div className="md:block hidden bg-gradient-to-r from-zinc-300/0 via-zinc-300/50 to-zinc-300/0 w-screen h-px animate-fade-right animate-glow" /> */}
-                <BlurIn delay={1.2}>
+                {/* <BlurIn delay={1.2}>
                   <p
                     className={cn(
                       "md:self-start md:mt-4 font-thin text-md text-slate-500 dark:text-zinc-400 ml-3",
                       "cursor-default font-display sm:text-xl md:text-xl whitespace-nowrap bg-clip-text "
                     )}
                   >
-                    A Full Stack Web Developer
+                    Aspiring AI Researcher & Software Engineer | B.Tech AI '25 | GRE 327 | Building Intelligent Systems
                   </p>
-                </BlurIn>
+                </BlurIn> */}
               </div>
               <div className="mt-8 md:ml-2 flex flex-col gap-3">
+                <BoxReveal delay={1.4} width="100%">
+                  <p className="text-sm text-slate-500 dark:text-zinc-400 font-mono mb-2">
+                    Building intelligent systems with RL, LLMs, and real-world AI deployments.
+                  </p>
+                </BoxReveal>
+                <BoxReveal delay={1.6} width="100%">
+                  <div className="flex flex-wrap gap-2 text-xs text-slate-500 dark:text-zinc-400 font-mono">
+                    <span>4+ Research Projects</span>
+                    <span>•</span>
+                    <span>7 AI/ML Certifications</span>
+                  </div>
+                </BoxReveal>
                 <Link
-                  href={
-                    "https://drive.google.com/file/d/1O97WCk2DrO9x6SHOqf7LvRbmHkMgGIb4/view?usp=sharing"
-                  }
+                  href={"#"}
                   target="_blank"
                   className="flex-1"
                 >
                   <BoxReveal delay={2} width="100%" >
                     <Button className="flex items-center gap-2 w-full">
                       <File size={24} />
-                      <p>Resume</p>
+                      <p>Download CV</p>
                     </Button>
                   </BoxReveal>
                 </Link>
@@ -103,12 +113,12 @@ const HeroSection = () => {
                           variant={"outline"}
                           className="block w-full overflow-hidden"
                         >
-                          Hire Me
+                          Contact Me
                         </Button>
                       </Link>
                     </TooltipTrigger>
                     <TooltipContent side="bottom">
-                      <p>pls 🥹 🙏</p>
+                      <p>Let's connect! 🚀</p>
                     </TooltipContent>
                   </Tooltip>
                   <Link
