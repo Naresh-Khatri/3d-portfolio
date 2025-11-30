@@ -93,9 +93,9 @@ const HeroSection = () => {
                     <span>7 AI/ML Certifications</span>
                   </div>
                 </BoxReveal>
-                <Link
-                  href={"#"}
-                  target="_blank"
+                <a
+                  href={config.cvPath}
+                  download
                   className="flex-1"
                 >
                   <BoxReveal delay={2} width="100%" >
@@ -104,7 +104,7 @@ const HeroSection = () => {
                       <p>Download CV</p>
                     </Button>
                   </BoxReveal>
-                </Link>
+                </a>
                 <div className="md:self-start flex gap-3">
                   <Tooltip delayDuration={300}>
                     <TooltipTrigger asChild>
