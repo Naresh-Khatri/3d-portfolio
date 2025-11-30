@@ -116,11 +116,11 @@ function distributeIntoColumns(quotesArray: Quote[]): ContentItem[][] {
           let minDistance = Infinity;
 
           // Check distance to images in adjacent columns
-          for (const [row, cols] of imagePositions) {
+          imagePositions.forEach((cols, row) => {
             if (cols.has(col - 1) || cols.has(col + 1)) {
               minDistance = Math.min(minDistance, Math.abs(pos - row));
             }
-          }
+          });
 
           if (minDistance > maxMinDistance) {
             maxMinDistance = minDistance;

@@ -111,7 +111,7 @@ export async function updateImagePlaneTexture(
       if (parent) {
         const allObjects = splineApp.getAllObjects();
         iconObj = allObjects.find(
-          (obj) => obj.name === iconName && obj.parent === parent
+          (obj) => obj.name === iconName && (obj as any).parent === parent
         ) as SPEObject;
       }
     }

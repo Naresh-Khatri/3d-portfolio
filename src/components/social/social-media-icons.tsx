@@ -20,12 +20,12 @@ const BUTTONS = [
   },
   {
     name: "Twitter",
-    href: config.social.twitter,
+    href: (config.social as any).twitter || "",
     icon: <SiX size={"24"} color={"#fff"} />,
   },
   {
     name: "Instagram",
-    href: config.social.instagram,
+    href: (config.social as any).instagram || "",
     icon: <SiInstagram size={"24"} color={"#fff"} />,
   },
 ].filter((button) => button.href); // Filter out buttons with undefined href
