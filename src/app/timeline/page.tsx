@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState, useMemo, useEffect, useRef } from "react";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 import timelineData from "@/data/timeline";
-import { cn } from "@/lib/utils";
 import RevealAnimation from "@/components/reveal-animations";
-import ScrollProgress from "@/components/ui/scroll-progress";
 
 type TimelineEvent = {
   start: number;
@@ -66,18 +66,18 @@ export default function TimelinePage() {
   ];
 
   const scrollToClosestYear = (targetYear: number) => {
-    const yearGroups = document.querySelectorAll('.timeline-year-group');
-    let closestGroup: Element | null = null;
+    const yearGroups = Array.from(document.querySelectorAll('.timeline-year-group')) as HTMLElement[];
+    let closestGroup: HTMLElement | null = null;
     let closestDistance = Infinity;
 
-    yearGroups.forEach((group) => {
+    for (const group of yearGroups) {
       const year = parseInt(group.getAttribute('data-year') || '0');
       const distance = Math.abs(year - targetYear);
       if (distance < closestDistance) {
         closestDistance = distance;
         closestGroup = group;
       }
-    });
+    }
 
     if (closestGroup) {
       closestGroup.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -85,7 +85,7 @@ export default function TimelinePage() {
   };
 
   const jumpToRandomYear = () => {
-    const yearGroups = document.querySelectorAll('.timeline-year-group');
+    const yearGroups = Array.from(document.querySelectorAll('.timeline-year-group')) as HTMLElement[];
     if (yearGroups.length > 0) {
       const randomIndex = Math.floor(Math.random() * yearGroups.length);
       const randomGroup = yearGroups[randomIndex];
@@ -97,17 +97,8 @@ export default function TimelinePage() {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.code === 'Space' && timelineRef.current) {
-        const rect = timelineRef.current.getBoundingClientRect();
-        const isOverTimeline = 
-          e.clientX >= rect.left && 
-          e.clientX <= rect.right && 
-          e.clientY >= rect.top && 
-          e.clientY <= rect.bottom;
-        
-        if (isOverTimeline) {
-          e.preventDefault();
-          jumpToRandomYear();
-        }
+        e.preventDefault();
+        jumpToRandomYear();
       }
     };
 
@@ -121,9 +112,16 @@ export default function TimelinePage() {
 
   return (
     <div className="min-h-screen relative font-sans">
-      <ScrollProgress className="bg-gradient-to-r from-violet-500 to-purple-500" />
-      
       <div className="container mx-auto px-4 py-24 max-w-7xl">
+        {/* Back Button */}
+        <Link 
+          href="/"
+          className="inline-flex items-center gap-2 text-zinc-400 hover:text-violet-400 transition-colors mb-8"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          <span>Back to Home</span>
+        </Link>
+
         <RevealAnimation>
           <h1 className="text-4xl md:text-6xl font-bold text-center mb-4 bg-clip-text text-transparent bg-gradient-to-r from-violet-400 to-purple-600">
             History Timeline
@@ -181,10 +179,7 @@ export default function TimelinePage() {
         <RevealAnimation delay={0.2}>
           <div ref={timelineRef} id="timeline-container" className="history-timeline relative max-w-5xl mx-auto">
             {sortedYears.length > 0 ? (
-              <div className="timeline-axis relative pr-32">
-                {/* Vertical Timeline Line - Fixed on the right, centered */}
-                <div className="timeline-line absolute top-0 bottom-0 w-0.5 bg-violet-500/50" style={{ right: '0', transform: 'translateX(50%)' }}></div>
-
+              <div className="timeline-axis relative">
                 {/* Timeline Events */}
                 <div className="timeline-events space-y-12">
                   {sortedYears.map((year) => {
@@ -202,8 +197,8 @@ export default function TimelinePage() {
                           </div>
                         </div>
 
-                        {/* Events Container - Between date and line */}
-                        <div className="timeline-events-container ml-32 mr-8 space-y-4">
+                        {/* Events Container */}
+                        <div className="timeline-events-container ml-32 space-y-4">
                           {events.map((event, index) => {
                             const isSpanning = event.start !== event.end;
                             return (
@@ -223,15 +218,6 @@ export default function TimelinePage() {
                                     </p>
                                   </div>
                                 </div>
-
-                                {/* Dot Marker - Connected to line on the right, same position as line */}
-                                <div 
-                                  className={cn(
-                                    "timeline-event-marker absolute top-2 z-10 w-3 h-3 rounded-full border-2 border-violet-500",
-                                    isSpanning ? "bg-violet-400" : "bg-violet-600"
-                                  )} 
-                                  style={{ right: '0', transform: 'translateX(50%)' }}
-                                ></div>
                               </div>
                             );
                           })}
