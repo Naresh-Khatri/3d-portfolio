@@ -34,7 +34,17 @@ const links: Link[] = [
   {
     title: 'Blogs',
     href: '/blogs',
-    thumbnail: '/assets/nav-link-previews/blog.png',
+    thumbnail: '/assets/nav-link-previews/projects.png',
+  },
+  {
+    title: 'Articles',
+    href: '/articles',
+    thumbnail: '/assets/nav-link-previews/projects.png',
+  },
+  {
+    title: 'Quotes',
+    href: '/quotes',
+    thumbnail: '/assets/nav-link-previews/projects.png',
   },
   {
     title: 'Contact',

@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Button } from "../ui/button";
 import { File, Github, Linkedin } from "lucide-react";
 import {
@@ -16,6 +16,20 @@ import { config } from "@/data/config";
 
 const HeroSection = () => {
   const { isLoading } = usePreloader();
+  const buttonsContainerRef = useRef<HTMLDivElement>(null);
+  const buttonsRowRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const matchWidth = () => {
+      if (buttonsContainerRef.current && buttonsRowRef.current) {
+        buttonsContainerRef.current.style.width = `${buttonsRowRef.current.offsetWidth}px`;
+      }
+    };
+
+    matchWidth();
+    window.addEventListener("resize", matchWidth);
+    return () => window.removeEventListener("resize", matchWidth);
+  }, [isLoading]);
 
   return (
     <section id="hero" className={cn("relative w-full h-screen")}>
@@ -93,19 +107,21 @@ const HeroSection = () => {
                     <span>7 AI/ML Certifications</span>
                   </div>
                 </BoxReveal>
-                <a
-                  href={config.cvPath}
-                  download
-                  className="flex-1"
-                >
-                  <BoxReveal delay={2} width="100%" >
-                    <Button className="flex items-center gap-2 w-full">
-                      <File size={24} />
-                      <p>Download CV</p>
-                    </Button>
-                  </BoxReveal>
-                </a>
-                <div className="md:self-start flex gap-3">
+                <div ref={buttonsContainerRef} className="md:self-start flex gap-3">
+                  <a
+                    href={config.cvPath}
+                    download
+                    className="flex-1"
+                  >
+                    <BoxReveal delay={2} width="100%" >
+                      <Button className="flex items-center gap-2 w-full">
+                        <File size={24} />
+                        <p>Download CV</p>
+                      </Button>
+                    </BoxReveal>
+                  </a>
+                </div>
+                <div ref={buttonsRowRef} className="md:self-start flex gap-3">
                   <Tooltip delayDuration={300}>
                     <TooltipTrigger asChild>
                       <Link href={"#contact"}>

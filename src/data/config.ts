@@ -30,6 +30,9 @@ const config = {
   githubUsername: "gurusarank",
   githubRepo: "portfolio",
 
+  // CV/Resume file path
+  cvPath: "/assets/cv.pdf", // Add your CV file to /public/assets/cv.pdf
+
   get ogImg() {
     return this.site + "/assets/seo/og-image.png";
   },

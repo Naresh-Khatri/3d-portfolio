@@ -4,12 +4,12 @@ import { Application, SPEObject, SplineEvent } from "@splinetool/runtime";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 const Spline = React.lazy(() => import("@splinetool/react-spline"));
-import { Skill, SkillNames, SKILLS } from "@/data/constants";
+import { Skill, SkillNames, SKILLS, SPLINE_NAME_TO_SKILL } from "@/data/constants";
 import { sleep } from "@/lib/utils";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { usePreloader } from "./preloader";
 import { useTheme } from "next-themes";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { Section, getKeyboardState } from "./animated-background-config";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -30,6 +30,7 @@ const AnimatedBackground = () => {
 
   const [keyboardRevealed, setKeyboardRevealed] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
 
   // --- Event Handlers ---
 
@@ -38,14 +39,23 @@ const AnimatedBackground = () => {
 
     if (e.target.name === "body" || e.target.name === "platform") {
       setSelectedSkill(null);
-      if (splineApp.getVariable("heading") && splineApp.getVariable("desc")) {
-        splineApp.setVariable("heading", "");
-        splineApp.setVariable("desc", "");
+      try {
+        if (splineApp.getVariable("heading")) {
+          splineApp.setVariable("heading", "");
+        }
+        if (splineApp.getVariable("desc")) {
+          splineApp.setVariable("desc", "");
+        }
+      } catch (error) {
+        // Variables don't exist - expected if not set up in Spline
       }
     } else {
       if (!selectedSkill || selectedSkill.name !== e.target.name) {
-        const skill = SKILLS[e.target.name as SkillNames];
-        setSelectedSkill(skill);
+        const skillName = SPLINE_NAME_TO_SKILL[e.target.name];
+        if (skillName) {
+          const skill = SKILLS[skillName];
+          setSelectedSkill(skill);
+        }
       }
     }
   };
@@ -54,15 +64,28 @@ const AnimatedBackground = () => {
     if (!splineApp) return;
     splineApp.addEventListener("keyUp", () => {
       if (!splineApp) return;
-      splineApp.setVariable("heading", "");
-      splineApp.setVariable("desc", "");
+      try {
+        if (splineApp.getVariable("heading")) {
+          splineApp.setVariable("heading", "");
+        }
+        if (splineApp.getVariable("desc")) {
+          splineApp.setVariable("desc", "");
+        }
+      } catch (error) {
+        // Variables don't exist - expected if not set up in Spline
+      }
     });
     splineApp.addEventListener("keyDown", (e) => {
       if (!splineApp) return;
-      const skill = SKILLS[e.target.name as SkillNames];
-      if (skill) setSelectedSkill(skill);
-      splineApp.setVariable("heading", skill.label);
-      splineApp.setVariable("desc", skill.shortDescription);
+      const skillName = SPLINE_NAME_TO_SKILL[e.target.name];
+      if (skillName) {
+        const skill = SKILLS[skillName];
+        if (skill) {
+          setSelectedSkill(skill);
+          splineApp.setVariable("heading", skill.label);
+          splineApp.setVariable("desc", skill.shortDescription);
+        }
+      }
     });
     splineApp.addEventListener("mouseHover", handleMouseHover);
   };
@@ -108,6 +131,16 @@ const AnimatedBackground = () => {
     if (!splineApp || !splineContainer.current) return;
     const kbd = splineApp.findObjectByName("keyboard");
     if (!kbd) return;
+
+    // Check if we're on a specific page route
+    if (pathname === "/quotes") {
+      const quotesState = getKeyboardState({ section: "quotes", isMobile });
+      gsap.set(kbd.scale, quotesState.scale);
+      gsap.set(kbd.position, quotesState.position);
+      gsap.set(kbd.rotation, quotesState.rotation);
+      setActiveSection("quotes");
+      return;
+    }
 
     // Initial state
     const heroState = getKeyboardState({ section: "hero", isMobile });
@@ -261,7 +294,7 @@ const AnimatedBackground = () => {
       keycapAnimationsRef.current?.stop()
     }
 
-  }, [splineApp, isMobile]);
+  }, [splineApp, isMobile, pathname]);
 
   // Handle keyboard text visibility based on theme and section
   useEffect(() => {
@@ -301,9 +334,17 @@ const AnimatedBackground = () => {
   // Handle keyboard press interaction
   useEffect(() => {
     if (!selectedSkill || !splineApp) return;
-    splineApp.setVariable("heading", selectedSkill.label);
-    splineApp.setVariable("desc", selectedSkill.shortDescription);
-  }, [selectedSkill]);
+    try {
+      splineApp.setVariable("heading", selectedSkill.label);
+      splineApp.setVariable("desc", selectedSkill.shortDescription);
+    } catch (error) {
+      // Variables don't exist in Spline file
+      // To fix: Create "heading" and "desc" variables in Spline editor
+      // 1. Open your Spline file
+      // 2. Go to Variables panel
+      // 3. Create two String variables: "heading" and "desc"
+    }
+  }, [selectedSkill, splineApp]);
 
   // Handle rotation and teardown animations based on active section
   useEffect(() => {
@@ -345,8 +386,17 @@ const AnimatedBackground = () => {
     const manageAnimations = async () => {
       // Reset text if not in skills
       if (activeSection !== "skills") {
-        splineApp.setVariable("heading", "");
-        splineApp.setVariable("desc", "");
+        try {
+          if (splineApp.getVariable("heading")) {
+            splineApp.setVariable("heading", "");
+          }
+          if (splineApp.getVariable("desc")) {
+            splineApp.setVariable("desc", "");
+          }
+        } catch (error) {
+          // Variables don't exist in Spline file - this is expected if not set up yet
+          // To fix: Create "heading" and "desc" variables in Spline editor
+        }
       }
 
       // Handle Rotate/Teardown Tweens
@@ -391,12 +441,15 @@ const AnimatedBackground = () => {
 
   // Reveal keyboard on load/route change
   useEffect(() => {
-    const hash = activeSection === "hero" ? "#" : `#${activeSection}`;
-    router.push("/" + hash, { scroll: false });
+    // Don't update URL hash for dedicated pages like /quotes
+    if (pathname !== "/quotes" && pathname !== "/articles") {
+      const hash = activeSection === "hero" ? "#" : `#${activeSection}`;
+      router.push("/" + hash, { scroll: false });
+    }
 
     if (!splineApp || isLoading || keyboardRevealed) return;
     updateKeyboardTransform();
-  }, [splineApp, isLoading, activeSection]);
+  }, [splineApp, isLoading, activeSection, pathname]);
 
   return (
     <Suspense fallback={<div>Loading...</div>}>

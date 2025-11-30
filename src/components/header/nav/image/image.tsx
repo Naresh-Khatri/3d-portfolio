@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import styles from "./style.module.scss";
@@ -11,6 +11,18 @@ interface IndexProps {
 }
 
 const Index: React.FC<IndexProps> = ({ src, isActive }) => {
+  const [imgSrc, setImgSrc] = useState(src);
+  const [hasError, setHasError] = useState(false);
+
+  // Fallback to a default image if the provided one fails
+  const handleError = () => {
+    if (!hasError) {
+      setHasError(true);
+      // Use landing.png as fallback
+      setImgSrc("/assets/nav-link-previews/landing.png");
+    }
+  };
+
   return (
     <motion.div
       variants={opacity}
@@ -19,11 +31,12 @@ const Index: React.FC<IndexProps> = ({ src, isActive }) => {
       className={styles.imageContainer}
     >
       <Image
-        src={src}
+        src={imgSrc}
         width={400}
         height={400}
         className="my-32 w-full h-auto object-cover"
         alt={"Image"}
+        onError={handleError}
         // priority={true}
       />
     </motion.div>

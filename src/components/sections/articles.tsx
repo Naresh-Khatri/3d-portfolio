@@ -41,6 +41,29 @@ const ArticlesSection = () => {
       <p className="text-center text-zinc-500 dark:text-zinc-400 mb-12 max-w-2xl mx-auto">
         A curated collection of academic papers and quotes that influence my research and thinking across various domains. Click on a card for some thoughts.
       </p>
+      
+      <div className="flex justify-center gap-4 mb-12">
+        <Button 
+          variant="outline" 
+          className="group hover:border-purple-500/50 hover:text-purple-400 hover:scale-105 transition-all duration-300 rounded-md"
+          asChild
+        >
+          <Link href="/quotes" className="no-underline flex items-center">
+            View All Quotes
+            <MessageSquareQuote className="w-4 h-4 ml-2 group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300" />
+          </Link>
+        </Button>
+        <Button 
+          variant="outline" 
+          className="group hover:border-purple-500/50 hover:text-purple-400 hover:scale-105 transition-all duration-300 rounded-md"
+          asChild
+        >
+          <Link href="/articles" className="no-underline flex items-center">
+            View All Articles
+            <BookOpen className="w-4 h-4 ml-2 group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300" />
+          </Link>
+        </Button>
+      </div>
 
       {/* Quotes Section */}
       <div className="mb-20">
@@ -51,19 +74,19 @@ const ArticlesSection = () => {
           </div>
         </BoxReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {shuffledQuotes.slice(0, 6).map((quote, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          {shuffledQuotes.slice(0, 2).map((quote, index) => (
             <BoxReveal key={quote.id} delay={index * 0.1}>
-              <Card
-                className={cn(
-                  "cursor-pointer transition-all hover:scale-105 hover:shadow-lg",
-                  "bg-white/70 dark:bg-black/70 backdrop-blur-sm",
-                  selectedQuote?.id === quote.id && "ring-2 ring-purple-500"
-                )}
-                onClick={() =>
-                  setSelectedQuote(selectedQuote?.id === quote.id ? null : quote)
-                }
-              >
+              <div className="rounded-lg overflow-hidden">
+                <Card
+                  className={cn(
+                    "cursor-pointer transition-all hover:scale-105 hover:shadow-lg",
+                    "bg-white/70 dark:bg-black/70 backdrop-blur-sm"
+                  )}
+                  onClick={() =>
+                    setSelectedQuote(selectedQuote?.id === quote.id ? null : quote)
+                  }
+                >
                 <CardHeader>
                   <CardTitle className="text-lg font-medium">
                     {quote.author || "Anonymous"}
@@ -82,10 +105,25 @@ const ArticlesSection = () => {
                     <p className="text-xs text-zinc-500 mt-2">{quote.source}</p>
                   )}
                 </CardContent>
-              </Card>
+                </Card>
+              </div>
             </BoxReveal>
           ))}
         </div>
+        
+        <BoxReveal width="100%">
+          <div className="flex justify-center items-center mt-8 w-full">
+            <Link href="/quotes" className="no-underline">
+              <Button 
+                variant="outline" 
+                className="group hover:border-purple-500/50 hover:text-purple-400 hover:scale-105 transition-all duration-300 rounded-md flex items-center"
+              >
+                View All Quotes
+                <MessageSquareQuote className="w-4 h-4 ml-2 group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300" />
+              </Button>
+            </Link>
+          </div>
+        </BoxReveal>
       </div>
 
       {/* Articles Section */}
@@ -97,21 +135,16 @@ const ArticlesSection = () => {
           </div>
         </BoxReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {shuffledArticles.map((article, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+          {shuffledArticles.slice(0, 2).map((article, index) => (
             <BoxReveal key={article.id} delay={index * 0.1}>
-              <Card
-                className={cn(
-                  "cursor-pointer transition-all hover:scale-[1.02] hover:shadow-lg",
-                  "bg-white/70 dark:bg-black/70 backdrop-blur-sm",
-                  selectedArticle?.id === article.id && "ring-2 ring-purple-500"
-                )}
-                onClick={() =>
-                  setSelectedArticle(
-                    selectedArticle?.id === article.id ? null : article
-                  )
-                }
-              >
+              <div className="rounded-lg overflow-hidden">
+                <Card
+                  className={cn(
+                    "transition-all hover:scale-[1.02] hover:shadow-lg",
+                    "bg-white/70 dark:bg-black/70 backdrop-blur-sm"
+                  )}
+                >
                 <CardHeader>
                   <div className="flex items-start justify-between gap-2">
                     <CardTitle className="text-lg font-semibold flex-1">
@@ -148,7 +181,7 @@ const ArticlesSection = () => {
                     </span>
                   </div>
                 </CardHeader>
-                {selectedArticle?.id === article.id && article.thoughts && (
+                {article.thoughts && (
                   <CardContent>
                     <div className="pt-4 border-t border-zinc-200 dark:border-zinc-800">
                       <p className="text-sm text-zinc-600 dark:text-zinc-400 italic">
@@ -157,10 +190,25 @@ const ArticlesSection = () => {
                     </div>
                   </CardContent>
                 )}
-              </Card>
+                </Card>
+              </div>
             </BoxReveal>
           ))}
         </div>
+        
+        <BoxReveal width="100%">
+          <div className="flex justify-center items-center mt-8 w-full">
+            <Link href="/articles" className="no-underline">
+              <Button 
+                variant="outline" 
+                className="group hover:border-purple-500/50 hover:text-purple-400 hover:scale-105 transition-all duration-300 rounded-md flex items-center"
+              >
+                View All Articles
+                <BookOpen className="w-4 h-4 ml-2 group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300" />
+              </Button>
+            </Link>
+          </div>
+        </BoxReveal>
       </div>
     </section>
   );

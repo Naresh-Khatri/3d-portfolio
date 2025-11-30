@@ -29,6 +29,8 @@ import {
   SiPytorch,
   SiTensorflow,
   SiOpenai,
+  SiStreamlit,
+  SiUnrealengine,
 } from "react-icons/si";
 import { TbBrandFramerMotion } from "react-icons/tb";
 const BASE_PATH = "/assets/projects-screenshots";
@@ -257,6 +259,48 @@ const PROJECT_SKILLS = {
     fg: "white",
     icon: <span className="text-lg font-bold">📊</span>,
   },
+  langchain: {
+    title: "LangChain",
+    bg: "black",
+    fg: "white",
+    icon: <span className="text-sm font-bold">🔗</span>,
+  },
+  langgraph: {
+    title: "LangGraph",
+    bg: "black",
+    fg: "white",
+    icon: <span className="text-sm font-bold">📈</span>,
+  },
+  faiss: {
+    title: "FAISS",
+    bg: "black",
+    fg: "white",
+    icon: <span className="text-sm font-bold">🔍</span>,
+  },
+  streamlit: {
+    title: "Streamlit",
+    bg: "black",
+    fg: "white",
+    icon: <SiStreamlit />,
+  },
+  gradio: {
+    title: "Gradio",
+    bg: "black",
+    fg: "white",
+    icon: <span className="text-sm font-bold">🎨</span>,
+  },
+  openaiGym: {
+    title: "OpenAI Gym",
+    bg: "black",
+    fg: "white",
+    icon: <span className="text-sm font-bold">🏋️</span>,
+  },
+  unrealEngine: {
+    title: "Unreal Engine",
+    bg: "black",
+    fg: "white",
+    icon: <SiUnrealengine />,
+  },
 };
 export type Project = {
   id: string;
@@ -277,8 +321,8 @@ const projects: Project[] = [
     src: "/assets/projects-screenshots/portfolio/landing.png",
     screenshots: ["landing.png"],
     skills: {
-      frontend: [PROJECT_SKILLS.python],
-      backend: [PROJECT_SKILLS.python, PROJECT_SKILLS.openai, PROJECT_SKILLS.pandas],
+      frontend: [PROJECT_SKILLS.python, PROJECT_SKILLS.streamlit],
+      backend: [PROJECT_SKILLS.python, PROJECT_SKILLS.openai, PROJECT_SKILLS.langchain, PROJECT_SKILLS.faiss, PROJECT_SKILLS.pandas],
     },
     live: "#",
     github: "https://github.com/gurusarank/llm-support-bot",
@@ -318,8 +362,8 @@ const projects: Project[] = [
     src: "/assets/projects-screenshots/portfolio/landing.png",
     screenshots: ["landing.png"],
     skills: {
-      frontend: [PROJECT_SKILLS.python],
-      backend: [PROJECT_SKILLS.python, PROJECT_SKILLS.openai, PROJECT_SKILLS.pandas, PROJECT_SKILLS.numpy],
+      frontend: [PROJECT_SKILLS.python, PROJECT_SKILLS.streamlit],
+      backend: [PROJECT_SKILLS.python, PROJECT_SKILLS.pandas, PROJECT_SKILLS.numpy, PROJECT_SKILLS.langchain, PROJECT_SKILLS.langgraph],
     },
     live: "#",
     github: "https://github.com/gurusarank",
@@ -356,7 +400,7 @@ const projects: Project[] = [
     screenshots: ["landing.png"],
     skills: {
       frontend: [PROJECT_SKILLS.python],
-      backend: [PROJECT_SKILLS.python, PROJECT_SKILLS.pandas, PROJECT_SKILLS.numpy],
+      backend: [PROJECT_SKILLS.python, PROJECT_SKILLS.pandas, PROJECT_SKILLS.numpy, PROJECT_SKILLS.openaiGym, PROJECT_SKILLS.unrealEngine],
     },
     live: "#",
     github: "https://github.com/gurusarank",
@@ -434,7 +478,7 @@ const projects: Project[] = [
     src: "/assets/projects-screenshots/portfolio/landing.png",
     screenshots: ["landing.png"],
     skills: {
-      frontend: [PROJECT_SKILLS.python],
+      frontend: [PROJECT_SKILLS.python, PROJECT_SKILLS.gradio],
       backend: [PROJECT_SKILLS.python, PROJECT_SKILLS.tensorflow, PROJECT_SKILLS.pandas],
     },
     live: "#",

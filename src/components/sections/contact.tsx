@@ -23,8 +23,8 @@ const ContactSection = () => {
             "dark:bg-gradient-to-b dark:from-white/80 dark:to-white/20 dark:bg-opacity-50"
           )}
         >
-          LET&apos;S WORK <br />
-          TOGETHER
+          LET&apos;S CODE <br />
+          THE FUTURE!
         </h2>
       </Link>
       <div className="grid grid-cols-1 md:grid-cols-2 z-[9999]">

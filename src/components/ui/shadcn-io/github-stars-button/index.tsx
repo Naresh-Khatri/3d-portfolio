@@ -67,6 +67,13 @@ function GitHubStarsButton({
   );
 
   useEffect(() => {
+    // Only fetch if username and repo are provided
+    if (!username || !repo) {
+      setRepoExists(false);
+      setIsLoading(false);
+      return;
+    }
+
     fetch(`https://api.github.com/repos/${username}/${repo}`)
       .then((response) => {
         if (!response.ok) {
@@ -80,12 +87,20 @@ function GitHubStarsButton({
       .then((data) => {
         if (data && typeof data.stargazers_count === 'number') {
           setStars(data.stargazers_count);
+        } else {
+          setRepoExists(false);
         }
       })
-      .catch(() => {
+      .catch((error) => {
         // Silently handle errors (network issues, etc.)
-        setRepoExists(false);
-        setIsLoading(false);
+        // Don't log 404 errors as they're expected for private/non-existent repos
+        if (error instanceof TypeError || error.message?.includes('404')) {
+          setRepoExists(false);
+        } else {
+          // Only log unexpected errors
+          console.debug('GitHub API error:', error);
+          setRepoExists(false);
+        }
       })
       .finally(() => setIsLoading(false));
   }, [username, repo]);

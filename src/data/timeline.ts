@@ -1,0 +1,5002 @@
+[
+    {
+      start: -3100,
+      end: -1600,
+      event: "Stonehenge construction"
+    },
+    {
+      start: -3000,
+      end: -3000,
+      event: "Egyptian base-10 number system appears"
+    },
+    {
+      start: -2700,
+      end: -1500,
+      event: "Egyptian pyramids construction"
+    },
+    {
+      start: -2600,
+      end: -2500,
+      event: "peak of Indus Valley civilization"
+    },
+    {
+      start: -2600,
+      end: -2600,
+      event: "The Egyptian Hieratic Numeration system is introduced, using distinct symbols for 1-9 and each power of 10."
+    },
+    {
+      start: -2070,
+      end: -2070,
+      event: "Xia Dynasty in China starts"
+    },
+    {
+      start: -2000,
+      end: -2000,
+      event: "Babylonian base-60 place-value number system appear"
+    },
+    {
+      start: -1900,
+      end: -1600,
+      event: "dates of many astronomical cuniform tablets"
+    },
+    {
+      start: -1792,
+      end: -1750,
+      event: "Reign of Hammurabi, Babylonian king"
+    },
+    {
+      start: -1650,
+      end: -1650,
+      event: "The Rhind Papyrus approximates the area of a unit circle as $$4^2$$."
+    },
+    {
+      start: -1600,
+      end: -1600,
+      event: "date of the Edwin Smith Papyrus, Egyptian surgical text"
+    },
+    {
+      start: -1600,
+      end: -1600,
+      event: "Babylonians knew how to solve quadratic equations, essentially using the method of completing the square, showing early algebraic thinking that would eventually contribute to equation theory"
+    },
+    {
+      start: -1600,
+      end: -1600,
+      event: "The Babylonians use spaces to indicate missing places in theri place value statement"
+    },
+    {
+      start: -1600,
+      end: -1600,
+      event: "Shang Dynasty in China starts"
+    },
+    {
+      start: -1550,
+      end: -1550,
+      event: "date of the Ebers papyrus, Egyptian herbal medicine text"
+    },
+    {
+      start: -999,
+      end: -900,
+      event: "Veneti people inhabit Venice area"
+    },
+    {
+      start: -1046,
+      end: -256,
+      event: "Zhou Dynasty in China"
+    },
+    {
+      start: -800,
+      end: -400,
+      event: "Development of Upanishads in India and key Hindu texts"
+    },
+    {
+      start: -770,
+      end: -476,
+      event: "Spring and Autumn Period in China"
+    },
+    {
+      start: -753,
+      end: -753,
+      event: "Rome founded by Romulus and Remus, twin brothers of Mars; Romulus is the first king"
+    },
+    {
+      start: -715,
+      end: -715,
+      event: "Numa Pompilius becomes second king of Rome, introduces the Roman lunar calendar"
+    },
+    {
+      start: -700,
+      end: -700,
+      event: "Hesiod, *Works and Days* and *Theogony*"
+    },
+    {
+      start: -672,
+      end: -672,
+      event: "Tullus Hostilus becomes the third king of Rome"
+    },
+    {
+      start: -640,
+      end: -640,
+      event: "Ancus Marcius becomes the fourth king of Rome"
+    },
+    {
+      start: -624,
+      end: -546,
+      event: "Thales of Miletus active, \"first scientist\" -- searches for an \"arche\", or natural explanation for natural phenomena"
+    },
+    {
+      start: -624,
+      end: -428,
+      event: "Ionian philosophers active -- propose different arche"
+    },
+    {
+      start: -616,
+      end: -616,
+      event: "Lucius Tarquinius Priscus becomes the fifth king of Rome"
+    },
+    {
+      start: -594,
+      end: -594,
+      event: "Solon institutes debt relief in Athens, was popular among the indebted"
+    },
+    {
+      start: -576,
+      end: -576,
+      event: "Servius Tullius becomes the sixth king of Rome"
+    },
+    {
+      start: -570,
+      end: -490,
+      event: "Pythagoras active"
+    },
+    {
+      start: -559,
+      end: -500,
+      event: "Persian expansion under Cyrus the Great"
+    },
+    {
+      start: -546,
+      end: -546,
+      event: "Kingdom of Lydia falls to Persia"
+    },
+    {
+      start: -534,
+      end: -534,
+      event: "Lucius Tarquinius Superbus becomes the seventh king of Rome after killing Servius Tullius"
+    },
+    {
+      start: -515,
+      end: -450,
+      event: "Parmenides active -- rejects Heraclitus, proposes a static universe"
+    },
+    {
+      start: -509,
+      end: -509,
+      event: "Roman Republic founded after the rape of Lucretia and the revolt against Tarquin the Proud"
+    },
+    {
+      start: -508,
+      end: -508,
+      event: "Cleisthenes establishes democracy in Athens, giving power to the people"
+    },
+    {
+      start: -500,
+      end: -500,
+      event: "defeat of the king of Rome, oligarchy senate established"
+    },
+    {
+      start: -500,
+      end: -428,
+      event: "Anaxagoras active -- proposes \"nous\" as the arche"
+    },
+    {
+      start: -500,
+      end: -500,
+      event: "roughly the time Confucius was active"
+    },
+    {
+      start: -499,
+      end: -493,
+      event: "Ionian Revolt against Persia, crushed"
+    },
+    {
+      start: -494,
+      end: -494,
+      event: "First Secession of the Plebs in Rome, plebeians demand political representation, establishes the tribunes of the plebs"
+    },
+    {
+      start: -492,
+      end: -449,
+      event: "Persian Wars; Athens and Sparta defeat Persia"
+    },
+    {
+      start: -484,
+      end: -424,
+      event: "Empedocles active -- proposes four elements"
+    },
+    {
+      start: -480,
+      end: -420,
+      event: "Leucippus active -- proposes atomism"
+    },
+    {
+      start: -480,
+      end: -479,
+      event: "Second Persian invasion of Greece, Athens is burned, but Persians defeated at Salamis"
+    },
+    {
+      start: -475,
+      end: -221,
+      event: "Warring States Period in China"
+    },
+    {
+      start: -470,
+      end: -399,
+      event: "Socrates active -- develops dialectic"
+    },
+    {
+      start: -461,
+      end: -429,
+      event: "Pericles active in the Golden age of Athenian democracy"
+    },
+    {
+      start: -460,
+      end: -370,
+      event: "Democritus active -- develops atomism"
+    },
+    {
+      start: -460,
+      end: -460,
+      event: "Ephialtes creates \"radical democracy\" in Athens, e.g. paying juries, sometimes with thousands of people serving on juries"
+    },
+    {
+      start: -460,
+      end: -370,
+      event: "Hippocrates active -- develops medicine, humor theory"
+    },
+    {
+      start: -451,
+      end: -450,
+      event: "The Twelve Tables, Roman law is codified in writing by the decemvirite"
+    },
+    {
+      start: -449,
+      end: -449,
+      event: "the second secession of the Plebs, ends the Decemvirate after the Decemvir attempts to enslave Verginia as his sex slave"
+    },
+    {
+      start: -445,
+      end: -445,
+      event: "the third secession of the Plebs, ends intermarriage prohibition"
+    },
+    {
+      start: -431,
+      end: -404,
+      event: "Peloponnesian War between Athens and Sparta over hegemony of Greece; results in Athenian defeat"
+    },
+    {
+      start: -427,
+      end: -347,
+      event: "Plato active -- develops idealism"
+    },
+    {
+      start: -404,
+      end: -403,
+      event: "the Thirty Tyrants rule Athens, oligarchic government"
+    },
+    {
+      start: -403,
+      end: -403,
+      event: "Athens is returned to nominal democratic rule after the Thirty Tyrants are overthrown"
+    },
+    {
+      start: -400,
+      end: -400,
+      event: "The Mayan numeration system uses dots for 1, bars for 5, and a positional system generally based on 20, as well as a shell symbol for zero"
+    },
+    {
+      start: -399,
+      end: -300,
+      event: "rise of Asclepian healing temples"
+    },
+    {
+      start: -399,
+      end: -300,
+      event: "Babylonians put a dot to avoid ambiguity in spacing to represent absent places in their place value system"
+    },
+    {
+      start: -384,
+      end: -322,
+      event: "Aristotle active -- develops \"empiricism\""
+    },
+    {
+      start: -380,
+      end: -380,
+      event: "Plato writes *The Republic*"
+    },
+    {
+      start: -367,
+      end: -367,
+      event: "Lician-Sextian reforms, allowing plebeians to become consuls"
+    },
+    {
+      start: -347,
+      end: -347,
+      event: "Speusippus, Plato's nephew, becomes head of the Academy; modifies the school towards a dogmatically skeptical phase"
+    },
+    {
+      start: -343,
+      end: -290,
+      event: "Latin and Samnite wars"
+    },
+    {
+      start: -342,
+      end: -342,
+      event: "fourth secession of the Plebs, an obscure military revolt"
+    },
+    {
+      start: -341,
+      end: -270,
+      event: "Epicurus active -- develops atomism, hedonism"
+    },
+    {
+      start: -340,
+      end: -340,
+      event: "Aristotle writes the *Nicomachean Ethics*"
+    },
+    {
+      start: -338,
+      end: -338,
+      event: "Philip II of Macedon defeats Greece at Chaeronea"
+    },
+    {
+      start: -325,
+      end: -265,
+      event: "Euclid active -- develops geometry"
+    },
+    {
+      start: -323,
+      end: -323,
+      event: "Alexander the Great dies"
+    },
+    {
+      start: -322,
+      end: -322,
+      event: "Aristotle moves from Athens, thinking it is no longer safe, and dies"
+    },
+    {
+      start: -300,
+      end: -300,
+      event: "Euclid publishes *Elements of Geometry*"
+    },
+    {
+      start: -299,
+      end: -200,
+      event: "Archimedes writes *The Sand Reckoner*"
+    },
+    {
+      start: -287,
+      end: -212,
+      event: "Archimedes active -- develops mathematics, physics"
+    },
+    {
+      start: -287,
+      end: -287,
+      event: "the fifth secession of the Plebs, Lex Hortensia, gives decisions of the plebeian council the force of law, gives plebians full equality - makes decisions of the Plebian Council binding on all citizens, ends the struggle of the orders"
+    },
+    {
+      start: -264,
+      end: -146,
+      event: "Punic Wars between Rome and Carthage"
+    },
+    {
+      start: -261,
+      end: -261,
+      event: "first Punic war, the Romans defeat the Carthiginians"
+    },
+    {
+      start: -240,
+      end: -240,
+      event: "Archimedes shows that $$\\pi$$ is between $$3 \\frac{10}{71}$$ and $$3 \\frac{10}{70}$$."
+    },
+    {
+      start: -221,
+      end: -221,
+      event: "Qin Dynasty unifies China, starts the Great Wall"
+    },
+    {
+      start: -218,
+      end: -201,
+      event: "second Punic war, Hannibal gets into Italy but does not defeat Rome, Romans defeat Carthage again and take over their empire"
+    },
+    {
+      start: -214,
+      end: -148,
+      event: "Rome intervenes in various conflicts between different Greek kingdoms, Rome annexes all of Greece eventually"
+    },
+    {
+      start: -212,
+      end: -212,
+      event: "Rome conquers Syracuse"
+    },
+    {
+      start: -212,
+      end: -212,
+      event: "Archimedes killed by Roman soldier in siege of Syracuse"
+    },
+    {
+      start: -206,
+      end: -206,
+      event: "Han Dynasty in China starts"
+    },
+    {
+      start: -168,
+      end: -168,
+      event: "Roman conquest of Greece"
+    },
+    {
+      start: -155,
+      end: -155,
+      event: "Carneades takes over Plato's Academy"
+    },
+    {
+      start: -146,
+      end: -146,
+      event: "Rome concludes the third Punic war, destroying Carthage"
+    },
+    {
+      start: -133,
+      end: 121,
+      event: "Gracchi Reforms, Tiberius and Gaius attempt law reforms - beginning of the Gracchi period"
+    },
+    {
+      start: -133,
+      end: -133,
+      event: "Tiberius Gracchus is assassinated by the Senate for proposing land reforms unpopular with the aristocracy"
+    },
+    {
+      start: -123,
+      end: -123,
+      event: "Gaius Gracchus, younger brother of Tiberius Gracchus, is elected to the tribune of the plebs"
+    },
+    {
+      start: -121,
+      end: -121,
+      event: "Gaius Gracchus is assassinated by the Senate for proposing economic reforms unpopular with the aristocracy; 3000 of his followers are executed; open political violence era"
+    },
+    {
+      start: -112,
+      end: -105,
+      event: "Jugurthine War, Gaius Marius rises to prominence with the help of Lucius Cornelius Sulla"
+    },
+    {
+      start: -107,
+      end: -107,
+      event: "Gaius Marius is elected consul, begins military reforms"
+    },
+    {
+      start: -107,
+      end: -78,
+      event: "Marius and Sulla reform the army and political system"
+    },
+    {
+      start: -106,
+      end: -106,
+      event: "Marcus Tullius Cicero is buorn in Arpinum"
+    },
+    {
+      start: -100,
+      end: -44,
+      event: "Julius Caesar active -- conquers Gaul, civil war, dictator"
+    },
+    {
+      start: -100,
+      end: -100,
+      event: "The Chinese *Nine Chapters on Mathematical Art* is written, containing similar notation for fractions to our contemporary one"
+    },
+    {
+      start: -99,
+      end: -55,
+      event: "Lucretius active, revives Epicureanism with political dimensions"
+    },
+    {
+      start: -91,
+      end: -87,
+      event: "Social War between Rome and its Italian allies, who demand Roman citizenship"
+    },
+    {
+      start: -88,
+      end: -88,
+      event: "Sulla becomes consul, commands the Roman army to make war against the Mithradates king of Pontus"
+    },
+    {
+      start: -88,
+      end: -88,
+      event: "Sulla marches his legions on Rome, violating the sacrosanct boundary, proscribes all of his enemies, reorganizes the government, castrates the plebian tribunate, and benefits the optimates"
+    },
+    {
+      start: -63,
+      end: -63,
+      event: "Cicero becomes consul"
+    },
+    {
+      start: -63,
+      end: -63,
+      event: "Octavian / Augustus is born"
+    },
+    {
+      start: -59,
+      end: -59,
+      event: "Florence established by Romans as a colony for veteran soldiers"
+    },
+    {
+      start: -59,
+      end: -44,
+      event: "Rise of Julius Caesar"
+    },
+    {
+      start: -59,
+      end: -59,
+      event: "Caesar is elected to consul"
+    },
+    {
+      start: -59,
+      end: -59,
+      event: "Roman historian Livy is born"
+    },
+    {
+      start: -58,
+      end: -50,
+      event: "Caesar conquers Gaul"
+    },
+    {
+      start: -58,
+      end: -58,
+      event: "Cicero is exiled by the tribune Clodius Pulcher"
+    },
+    {
+      start: -57,
+      end: -57,
+      event: "Cicero is recalled at the behsest of Pompey"
+    },
+    {
+      start: -51,
+      end: -50,
+      event: "Cicero serves as governor of Cilicia"
+    },
+    {
+      start: -59,
+      end: -50,
+      event: "Lucretius writes *On the Nature of Things*"
+    },
+    {
+      start: -49,
+      end: -49,
+      event: "Pompey orchestrates to deny Caesar the right to run for re-election to the consulship after Caesar wants to run again; Mark Antony vetoes the anti-Caesar measures but is threatened by the Pompeians"
+    },
+    {
+      start: -49,
+      end: -49,
+      event: "Caesar crosses the Rubicon, civil war begins; Cicero sides with the Pompeians; Pompey is defeated in Greece and flees to Egypt; Egypt kills pompey."
+    },
+    {
+      start: -47,
+      end: -47,
+      event: "Vitruvius writes *On Architecture*"
+    },
+    {
+      start: -47,
+      end: -47,
+      event: "Caesar pardons Cicero"
+    },
+    {
+      start: -44,
+      end: -44,
+      event: "Cicero delivers the 14 *Philippics*, a denunciation against the consul Mark Antony"
+    },
+    {
+      start: -44,
+      end: -44,
+      event: "Julius Caesar assassinated by a conspiracy of 60-70 senators, including Cassius, Brutus' co-leader"
+    },
+    {
+      start: -43,
+      end: -43,
+      event: "Octavian allies with the Senate to defeat Mark Antony at Mutina, then abandons the senate"
+    },
+    {
+      start: -43,
+      end: -43,
+      event: "Cicero is killed by the Second Triumvirate as part of the Second Proscription launched by the Second Triumvirate; more organized than Sulla's proscription"
+    },
+    {
+      start: -43,
+      end: -43,
+      event: "Second Triumvirate formed by Octavian, Antony, Lepidus"
+    },
+    {
+      start: -39,
+      end: -39,
+      event: "the Second Triumvirate forms a peace pact with Sextus Pompey in Sicily but then wage war and kill him in 35 BCE"
+    },
+    {
+      start: -31,
+      end: -31,
+      event: "Battle of Actium, Octavian defeats Antony and Cleopatra to become the sole ruler of Rome"
+    },
+    {
+      start: -27,
+      end: -27,
+      event: "Roman Empire established, Augustus becomes first emperor"
+    },
+    {
+      start: -14,
+      end: -14,
+      event: "Tiberius becomes emperor of Roman Empire after Augustus dies; Tiberius is Augustus' adopted son but chosen last since all other successors died. The Principate is institutionalized with this lineage succession."
+    },
+    {
+      start: -1,
+      end: 65,
+      event: "Seneca active -- develops Stoicism"
+    },
+    {
+      start: 0,
+      end: 0,
+      event: "Jesus of Nazareth born"
+    },
+    {
+      start: 23,
+      end: 79,
+      event: "Pliny the Elder active -- writes *Natural History*, \"cut and paste\""
+    },
+    {
+      start: 37,
+      end: 41,
+      event: "Caligula becomes emperor of Roman Empire"
+    },
+    {
+      start: 41,
+      end: 54,
+      event: "Claudius becomes emperor of Roman Empire"
+    },
+    {
+      start: 43,
+      end: 43,
+      event: "Roman conquest of Britain"
+    },
+    {
+      start: 54,
+      end: 54,
+      event: "Claudius is poisoned by Agrippina the Younger to ensure Nero's succession"
+    },
+    {
+      start: 54,
+      end: 68,
+      event: "Nero becomes emperor of Roman Empire"
+    },
+    {
+      start: 61,
+      end: 112,
+      event: "Pliny the Younger active -- writes letters, civil historian"
+    },
+    {
+      start: 64,
+      end: 64,
+      event: "Great Fire of Rome"
+    },
+    {
+      start: 68,
+      end: 68,
+      event: "Nero overthrown, commits suicide and declared enemy of the state"
+    },
+    {
+      start: 68,
+      end: 69,
+      event: "Year of the Four Emporers, civil war between Galba, Otho, Vitellius, and Vespasian"
+    },
+    {
+      start: 69,
+      end: 79,
+      event: "Vespasian becomes emporer of the Roman Empire, begins construction of the Colosseum"
+    },
+    {
+      start: 70,
+      end: 70,
+      event: "Romans expel Jews from Judea, creating Jewish diaspora"
+    },
+    {
+      start: 79,
+      end: 79,
+      event: "Eruption of Mount Vesuvius"
+    },
+    {
+      start: 80,
+      end: 80,
+      event: "Fire in Rome"
+    },
+    {
+      start: 81,
+      end: 96,
+      event: "Domitian becomes emporer of Roman Empire"
+    },
+    {
+      start: 98,
+      end: 117,
+      event: "Trajan becomes emporer of Roman Empire, expands Empire to its greatest territorial extent"
+    },
+    {
+      start: 100,
+      end: 170,
+      event: "Claudius Ptolemy active -- develops astronomy"
+    },
+    {
+      start: 117,
+      end: 117,
+      event: "Hadrian becomes emporer of Roman Empire"
+    },
+    {
+      start: 129,
+      end: 216,
+      event: "Galen active -- develops medicine, anatomy"
+    },
+    {
+      start: 150,
+      end: 150,
+      event: "Ptolemy publishes *Almagest*"
+    },
+    {
+      start: 150,
+      end: 150,
+      event: "Ptolemy uses $$377 / 120$$ for $$\\pi$$"
+    },
+    {
+      start: 155,
+      end: 220,
+      event: "Tertullian active -- \"What has Athens to teach Jerusalem?\""
+    },
+    {
+      start: 161,
+      end: 180,
+      event: "Marcus Aurelius becomes emporer of Roman Empire"
+    },
+    {
+      start: 170,
+      end: 170,
+      event: "Marcus Aurelius writes *Meditations*"
+    },
+    {
+      start: 200,
+      end: 280,
+      event: "Three Kingdoms Period between Wei, Shu, Wu"
+    },
+    {
+      start: 313,
+      end: 313,
+      event: "Edict of Milan legalizes Christianity"
+    },
+    {
+      start: 324,
+      end: 324,
+      event: "Constantinople founded on Byzantium"
+    },
+    {
+      start: 330,
+      end: 330,
+      event: "Constantine moves capital of Roman Empire to Constantinople from Rome"
+    },
+    {
+      start: 354,
+      end: 430,
+      event: "Augustine of Hippo active -- develops theology, philosophy"
+    },
+    {
+      start: 370,
+      end: 415,
+      event: "Hypatia active -- develops mathematics, astronomy"
+    },
+    {
+      start: 380,
+      end: 380,
+      event: "Theodosius I makes Christianity the state religion"
+    },
+    {
+      start: 394,
+      end: 400,
+      event: "Augustine writes *Confessions*, reflection on scripture vs. classical philosophy, \"handmaid\""
+    },
+    {
+      start: 410,
+      end: 410,
+      event: "Visigoths sack Rome"
+    },
+    {
+      start: 415,
+      end: 415,
+      event: "Hypatia killed by Christian mob"
+    },
+    {
+      start: 420,
+      end: 589,
+      event: "Southern and North Dynasties in China"
+    },
+    {
+      start: 421,
+      end: 421,
+      event: "Dedication of first church on Rialto, San Giacomo"
+    },
+    {
+      start: 476,
+      end: 476,
+      event: "Fall of the Western Roman Empire when Odoacer deposes the last emporer Roulus Augustus, Byzantine Empire continues"
+    },
+    {
+      start: 476,
+      end: 476,
+      event: "\"Middle Ages\" / \"Dark Ages\" / \"Medeilval Period\" begins"
+    },
+    {
+      start: 480,
+      end: 524,
+      event: "Boethius active, establishes the seven liberal arts"
+    },
+    {
+      start: 480,
+      end: 547,
+      event: "Benedict of Nursia active, establishes monasticism"
+    },
+    {
+      start: 480,
+      end: 480,
+      event: "Zu Chongzhi uses $$355/113$$ to approximate $$\\pi$$"
+    },
+    {
+      start: 490,
+      end: 585,
+      event: "Cassiodorus active, establishes monastic handbook"
+    },
+    {
+      start: 500,
+      end: 500,
+      event: "Aryabhata uses $$62832/20000$$ for $$\\pi$$."
+    },
+    {
+      start: 537,
+      end: 537,
+      event: "Siege of Rome by Ostrogoths during GOTHIC WAR"
+    },
+    {
+      start: 570,
+      end: 570,
+      event: "Muhammad born, prophet of Islam"
+    },
+    {
+      start: 581,
+      end: 618,
+      event: "Sui Dynasty"
+    },
+    {
+      start: 590,
+      end: 590,
+      event: "Gregory I becomes pope"
+    },
+    {
+      start: 600,
+      end: 699,
+      event: "Indians had already developed place-value system in base 10, using the digits 0 to 9. A small circle was used as a placeholder, \"sunya\" was an absence of quantity"
+    },
+    {
+      start: 610,
+      end: 610,
+      event: "Muhammad receives first revelation"
+    },
+    {
+      start: 618,
+      end: 907,
+      event: "Tang Dynasty in China"
+    },
+    {
+      start: 636,
+      end: 636,
+      event: "Isidore of Selville dies, \"last scholar of the ancient world\""
+    },
+    {
+      start: 697,
+      end: 697,
+      event: "First Doge of Venice, Paolo Lucio Anafesto, elected; Republic of Venice established"
+    },
+    {
+      start: 690,
+      end: 699,
+      event: "Brahmagupta starts to recognize and work with negative quantities, treating them as debts and doing arithmetic with them, yet still not allowing negative solutions to equations"
+    },
+    {
+      start: 700,
+      end: 799,
+      event: "Islamic \"Golden Age\" begins"
+    },
+    {
+      start: 732,
+      end: 732,
+      event: "Battle of Tours, Charles Martel defeats Muslim forces"
+    },
+    {
+      start: 735,
+      end: 735,
+      event: "\"The Venerable Bede\" dies, monasterial intellectual tradition"
+    },
+    {
+      start: 774,
+      end: 774,
+      event: "Charlemagne conquers Florence"
+    },
+    {
+      start: 790,
+      end: 850,
+      event: "Al-Khwarizmi active -- develops algebra, algorithm"
+    },
+    {
+      start: 800,
+      end: 800,
+      event: "Charlemagne crowned Holy Roman Emperor by Pope Leo III, reviving the Roman Empire concept"
+    },
+    {
+      start: 800,
+      end: 899,
+      event: "emergence of \"cathedral schools\" for training preists and clerics, teaching the trivium and quadrivium"
+    },
+    {
+      start: 800,
+      end: 899,
+      event: "Mahavira declares that $n \\cdot 0 = 0$ and $n - 0 = n$, claiming $n / 0 = n$; Bhaskara II later proposes that $n / 0 = \\infty$. Arabs adopt the Indian system during Islamic expansion into India, using \"sifr\" for zero"
+    },
+    {
+      start: 850,
+      end: 850,
+      event: "Mahavira introduces the \"invert and multiply\" rule for dividing fractions"
+    },
+    {
+      start: 900,
+      end: 999,
+      event: "erbert d'Aurillac visits Spain to lain mathematics and reorganizes the cathedral school in Rheims, France to introduce the study of arithmetic and geometry, using Hindu-Arabic numerals"
+    },
+    {
+      start: 907,
+      end: 960,
+      event: "Five Dynasties and Ten Kingdoms period in China"
+    },
+    {
+      start: 960,
+      end: 12279,
+      event: "Song Dynasty in China"
+    },
+    {
+      start: 965,
+      end: 1040,
+      event: "Ibn al-Haytham active -- develops optics, scientific method"
+    },
+    {
+      start: 980,
+      end: 1037,
+      event: "Ibn Sina active -- develops medicine, philosophy"
+    },
+    {
+      start: 1000,
+      end: 1000,
+      event: "start of the \"High Middle Ages\""
+    },
+    {
+      start: 1058,
+      end: 1111,
+      event: "al-Ghazali active -- develops theology, philosophy"
+    },
+    {
+      start: 1084,
+      end: 1084,
+      event: "Rome sacked by Robert Guiscard"
+    },
+    {
+      start: 1095,
+      end: 1095,
+      event: "al-Ghazali writes \"The Incoherence of the Philosophers."
+    },
+    {
+      start: 1096,
+      end: 1096,
+      event: "evidence of teaching at Oxford"
+    },
+    {
+      start: 1096,
+      end: 1291,
+      event: "First Crusade initiated by Pope Urban II to capture Jerusalem and the Holy Land from Muslim control"
+    },
+    {
+      start: 1100,
+      end: 1199,
+      event: "Al-Khwarizmi's works introduce zero to Europe"
+    },
+    {
+      start: 1100,
+      end: 1199,
+      event: "Arbs insert a horizontal bar between top and bottom numbers in fractions"
+    },
+    {
+      start: 1100,
+      end: 1156,
+      event: "Thierry of Chartres active -- develops metaphysics, theology, neo-Platonism"
+    },
+    {
+      start: 1145,
+      end: 1145,
+      event: "Translation of Al-Khwarizmi's algebra book by Robert of Chesta"
+    },
+    {
+      start: 1115,
+      end: 1115,
+      event: "Florentine Republic established"
+    },
+    {
+      start: 1126,
+      end: 1198,
+      event: "Ibn Rushd active -- develops philosophy, science, theology"
+    },
+    {
+      start: 1147,
+      end: 1149,
+      event: "Second Crusade"
+    },
+    {
+      start: 1189,
+      end: 1192,
+      event: "Third Crusade; failed to retake Jerusalem but secured Christian access"
+    },
+    {
+      start: 1200,
+      end: 1299,
+      event: "Venice becomes most properous city in Europe due to trading extensively with the Byzantine Empire and the Middle East"
+    },
+    {
+      start: 1200,
+      end: 1299,
+      event: "\"fall\" of Islamic \"Golden Age\""
+    },
+    {
+      start: 1200,
+      end: 1280,
+      event: "Albertus Magnus active -- develops theology, philosophy, science"
+    },
+    {
+      start: 1201,
+      end: 1274,
+      event: "al-Tusi active -- develops mathematics, astronomy, proposes the al-Tusi couple"
+    },
+    {
+      start: 1202,
+      end: 1202,
+      event: "Leonardo of Pisa writes the *Liber Abbaci*, exploring quadratic equations geometrically and addressing practical problems of currency conversion and profits"
+    },
+    {
+      start: 1202,
+      end: 1204,
+      event: "Fourth Crusade, damaged Western vs. Eastern Christian relaions"
+    },
+    {
+      start: 1206,
+      end: 1368,
+      event: "Mongol Empire under Genghis Khan and successors; largest contiguous land empire"
+    },
+    {
+      start: 1210,
+      end: 1210,
+      event: "Grosseteste becomes a \"secular master\" at Oxford, develops light metaphysics"
+    },
+    {
+      start: 1214,
+      end: 1292,
+      event: "Roger Bacon active -- develops optics, scientific method"
+    },
+    {
+      start: 1217,
+      end: 1221,
+      event: "Fifth Crusade"
+    },
+    {
+      start: 1225,
+      end: 1274,
+      event: "Thomas Aquinas active -- develops theology, philosophy, science"
+    },
+    {
+      start: 1228,
+      end: 1229,
+      event: "Sixth Crusade"
+    },
+    {
+      start: 1240,
+      end: 1284,
+      event: "Siger of Brabant, proponent of Averroism, professor at Paris"
+    },
+    {
+      start: 1248,
+      end: 1254,
+      event: "Seventh Crusade"
+    },
+    {
+      start: 1259,
+      end: 1259,
+      event: "Maragheh observatory established"
+    },
+    {
+      start: 1265,
+      end: 1274,
+      event: "Thomas Aquinas writes *Summa Theologica*"
+    },
+    {
+      start: 1270,
+      end: 1270,
+      event: "Bishop condemns 13 propositions of Aristotle in Paris"
+    },
+    {
+      start: 1270,
+      end: 1270,
+      event: "Eighth Crusade"
+    },
+    {
+      start: 1271,
+      end: 1272,
+      event: "Ninth Crusade"
+    },
+    {
+      start: 1271,
+      end: 1368,
+      event: "Yuan Dynasty in China"
+    },
+    {
+      start: 1277,
+      end: 1277,
+      event: "Condemnations of 1277, rejection of Aristotelianism in Paris universities"
+    },
+    {
+      start: 1287,
+      end: 1347,
+      event: "William of Ockham active -- develops nominalism, theology, philosophy"
+    },
+    {
+      start: 1299,
+      end: 1299,
+      event: "Ottoman Empire established in Anatolia"
+    },
+    {
+      start: 1300,
+      end: 1300,
+      event: "endof the \"High Middle Ages\", start of the \"Late Middle Ages\""
+    },
+    {
+      start: 1301,
+      end: 1358,
+      event: "Jean Buridan active -- develops physics, impetus theory"
+    },
+    {
+      start: 1323,
+      end: 1323,
+      event: "Aquinas becomes a saint, defends the Christianization of Aristotle"
+    },
+    {
+      start: 1323,
+      end: 1382,
+      event: "Nicole Oresme active, develops physics"
+    },
+    {
+      start: 1326,
+      end: 1326,
+      event: "Ottomans capture Bursa, cutting off Byzantine Empire from Anatolia / Asia Minor"
+    },
+    {
+      start: 1346,
+      end: 1351,
+      event: "Black Death in Europe"
+    },
+    {
+      start: 1300,
+      end: 1399,
+      event: "Oxford Calculators take a mathematical rather than causal approach to physics"
+    },
+    {
+      start: 1368,
+      end: 1644,
+      event: "Ming Dynasty in China"
+    },
+    {
+      start: 1420,
+      end: 1420,
+      event: "Ulugh Beg establishes Samarkand observatory, in modern Uzbekistan"
+    },
+    {
+      start: 1436,
+      end: 1436,
+      event: "the Chinese abacus is first mentioned"
+    },
+    {
+      start: 1470,
+      end: 1479,
+      event: "Regiomonatus uses \"et\" for addition and unconventional symbols, e.g. \"5 et 6 7-4\" to represent 5 + 6 - 7 = 4"
+    },
+    {
+      start: 1492,
+      end: 1492,
+      event: "Christopher Columbus reaches the Americas"
+    },
+    {
+      start: 1453,
+      end: 1453,
+      event: "Fall of Constantinople to the Ottoman Empire to Sultan Mehmed II the Conquerer, end of the Byzantine Empire"
+    },
+    {
+      start: 1473,
+      end: 1543,
+      event: "Nicolaus Copernicus active -- develops heliocentrism"
+    },
+    {
+      start: 1489,
+      end: 1489,
+      event: "Johann Widman introduces + and - for addition and subtraction in print, using \"5 + 6 - 7 das ist 4\" to represent 5 + 6 - 7 = 4"
+    },
+    {
+      start: 1493,
+      end: 1541,
+      event: "Paracelsus active -- develops medicine, alchemy, proposes \"wandering around\" as a method, likes Aristotle but opposes the institutionalization of his thought"
+    },
+    {
+      start: 1494,
+      end: 1559,
+      event: "Italian Wars, France and Spain vy for control of Italy"
+    },
+    {
+      start: 1494,
+      end: 1494,
+      event: "Luca Pacioli uses p for plus and m for minus, \"using 5 p 6 m 7 - 4\" to represent 5 + 6 - 7 = 4"
+    },
+    {
+      start: 1498,
+      end: 1498,
+      event: "Girolamo Savonarola executed in Florence for heresy -- accuses the Pope of corruption, lambasts attachment to material riches"
+    },
+    {
+      start: 1499,
+      end: 1557,
+      event: "Niccolo Tartaglia active -- improves upon the Aristoteilan explanation for projectile motion, combination of violent and natural motion"
+    },
+    {
+      start: 1400,
+      end: 1499,
+      event: "establishment of Jesuit schools worldwide"
+    },
+    {
+      start: 1400,
+      end: 1499,
+      event: "Artists explore perspective, leading to mathematical insights"
+    },
+    {
+      start: 1500,
+      end: 1500,
+      event: "start of the \"Early Modern Period\""
+    },
+    {
+      start: 1500,
+      end: 1599,
+      event: "printing of Luca Pacioli's *Summa de arithmetica, geometria, proportioni et proportionalita* introduces double-entry bookkeeping, early work on algebraic notation by European \"cossists\""
+    },
+    {
+      start: 1500,
+      end: 1599,
+      event: "porminent mathematicians like Cardano, VIete, and Stifel reject negative numbers, calling them fictiious or absurd"
+    },
+    {
+      start: 1500,
+      end: 1599,
+      event: "Discovery of methods for solving cubic equations by Sciopione del Ferro, Niccolo Tartaglia, and Gerolamo Cardano"
+    },
+    {
+      start: 1540,
+      end: 1540,
+      event: "Italian mathematicians developed algebraic methods for solving cubic and quartic equations, setting the stage for the next major problem: solving the quintic"
+    },
+    {
+      start: 1501,
+      end: 1504,
+      event: "Michelangelo sculpts *David* in Florence"
+    },
+    {
+      start: 1506,
+      end: 1506,
+      event: "Construction begins on St. Peter's Basilica under Pope Julius II"
+    },
+    {
+      start: 1510,
+      end: 1510,
+      event: "Copernicus writes *Commentariolus*, suggesting heliocentrism"
+    },
+    {
+      start: 1512,
+      end: 1512,
+      event: "Michelangelo finishes painting the Sistine Chapel ceiling"
+    },
+    {
+      start: 1513,
+      end: 1513,
+      event: "Niccolo Machiavelli writes *The Prince*"
+    },
+    {
+      start: 1513,
+      end: 1513,
+      event: "Vasco Núñez de Balboa executes Indigenous people accused of homosexuality in Panama"
+    },
+    {
+      start: 1517,
+      end: 1517,
+      event: "Martin Luther nails 95 Theses to church door, beginning of Protestant Reformation, scorns Copernicus"
+    },
+    {
+      start: 1519,
+      end: 1521,
+      event: "Hernan Cortes conquers Aztec Empire"
+    },
+    {
+      start: 1526,
+      end: 1526,
+      event: "Mughal Empire established in India"
+    },
+    {
+      start: 1526,
+      end: 1572,
+      event: "Rafael Bombelli active; addresses issues in Cardano's method for solving cubic equations involving square roots of negative numbers, initiates the development of complex number"
+    },
+    {
+      start: 1527,
+      end: 1527,
+      event: "Sack of Rome by Charles V"
+    },
+    {
+      start: 1532,
+      end: 1532,
+      event: "Holy Roman Empire makes sodomy punishable by death"
+    },
+    {
+      start: 1532,
+      end: 1832,
+      event: "Michelangelo writes over 300 love poems, many to men, throughout his life"
+    },
+    {
+      start: 1533,
+      end: 1533,
+      event: "Henry VIII passes Buggery Act 1533, making anal intercourse a capital offense in England"
+    },
+    {
+      start: 1531,
+      end: 1531,
+      event: "Florence becomes a monarchy"
+    },
+    {
+      start: 1532,
+      end: 1532,
+      event: "Niccolo Machiavelli writes *The Prince*"
+    },
+    {
+      start: 1535,
+      end: 1615,
+      event: "Giambattista della Porta active -- develops \"natural magic\""
+    },
+    {
+      start: 1543,
+      end: 1543,
+      event: "*On the Revolutions of the Heavenly Spheres* by Copernicus published"
+    },
+    {
+      start: 1543,
+      end: 1543,
+      event: "supposed start of the \"Scientific Revolution\""
+    },
+    {
+      start: 1545,
+      end: 1612,
+      event: "John Gerard active -- writes *Herball*, herbal medicine"
+    },
+    {
+      start: 1545,
+      end: 1545,
+      event: "Council of Trent begins, Catholic Counter-Reformation"
+    },
+    {
+      start: 1545,
+      end: 1545,
+      event: "Cardano publishes the *Ars Magna*, generalizing Tartaglia's method for solving all cubic equations and fourth-egree equations"
+    },
+    {
+      start: 1556,
+      end: 1556,
+      event: "Agricola writes *De Re Metallica*, mining and metallurgy"
+    },
+    {
+      start: 1557,
+      end: 1557,
+      event: "Robert Recorde introduces the equality symbol =, explaining it as \"no two things can be more equal than parallel lines\", writing \"5 + 6 - 7 = 4\" to represent 5 + 6 - 7 = 4"
+    },
+    {
+      start: 1561,
+      end: 1626,
+      event: "Francis Bacon active -- develops empiricism, inductive reasoning, experimental method"
+    },
+    {
+      start: 1570,
+      end: 1579,
+      event: "Francois Viete is active, introducing systematic algebraic notation with vowels for unknowns and consonants for knowns, pursues equidimensionality in algebraic quantities, links Greek analysis to algebra, and promotes algebra as a field"
+    },
+    {
+      start: 1585,
+      end: 1585,
+      event: "Simon Stevin publishes *The Tenth*, introduces decimal fractions, contributes to the acceptance of irrationals and transcendentals as numbers"
+    },
+    {
+      start: 1596,
+      end: 1650,
+      event: "Rene Decartes active, advancing algebraic notation, developing coordinate geometry"
+    },
+    {
+      start: 1598,
+      end: 1647,
+      event: "Bonaventura Cavalieri active -- develops the \"principle of indivisibles\", considering planar regions as infinite sets of parallel lines, computing areas of curved figures"
+    },
+    {
+      start: 1580,
+      end: 1599,
+      event: "Elizabethan government grants patents for inventions"
+    },
+    {
+      start: 1600,
+      end: 1699,
+      event: "Fermat active, introducing new algebraic problems focused on whole numbers and proving negative propositions"
+    },
+    {
+      start: 1600,
+      end: 1620,
+      event: "Fermat worked on representing integers by binary quadratic forms, including his theorem that every prime of the form 4n+1 can be represented as a sum of two squares x²+y²"
+    },
+    {
+      start: 1600,
+      end: 1630,
+      event: "Thomas Harriot develops Harriot's principle by proposing rewriting equations in the form $f(x) = 0$, revolutionizing algebraic problem solving by linking roots to zero properties of integral domains, popularized by Rene Decartes in analytic geometry"
+    },
+    {
+      start: 1629,
+      end: 1631,
+      event: "Italian plague; kills 1/3 of Venice's citizens"
+    },
+    {
+      start: 1629,
+      end: 1629,
+      event: "Albert Girard uses ÷ for subtraction and division interchangeably"
+    },
+    {
+      start: 1631,
+      end: 1631,
+      event: "William Oughtred advocates for +, -, = and use scolons for grouping: :5 + 6 :-7 = 4. Popularizes the $\\times$ symbolf ro multiplication."
+    },
+    {
+      start: 1637,
+      end: 1637,
+      event: "Rene Decartes uses unconventional symbols, delaying the widespread acceptance of the = symbol."
+    },
+    {
+      start: 1641,
+      end: 1641,
+      event: "Rene Descartes writes *Meditations on First Philosophy*"
+    },
+    {
+      start: 1642,
+      end: 1651,
+      event: "English Civil War, execution of Charles I and rule of Oliver Cromwell"
+    },
+    {
+      start: 1643,
+      end: 1727,
+      event: "Isaac Newton active -- develops calculus, physics, optics, gravity"
+    },
+    {
+      start: 1664,
+      end: 1912,
+      event: "Qing Dynasty in China"
+    },
+    {
+      start: 1651,
+      end: 1651,
+      event: "Thomas Hobbes writes *Leviathan*"
+    },
+    {
+      start: 1655,
+      end: 1655,
+      event: "John Wallis argues in *Arithmetica Infinitorum* that negative numbers are larger than infinity, since 3/0 is infinite and 3/-1 = -3 should be larger"
+    },
+    {
+      start: 1660,
+      end: 1660,
+      event: "Royal Society of London founded"
+    },
+    {
+      start: 1677,
+      end: 1677,
+      event: "Baruch Spinoza's *Ethics* published"
+    },
+    {
+      start: 1680,
+      end: 1699,
+      event: "Isaac Newton an Gottfried Wilhelm Leibniz independently develop calculus, Newton using \"fluxions\" and Leibniz using \"infinitesimals\""
+    },
+    {
+      start: 1687,
+      end: 1687,
+      event: "*Philosophiæ Naturalis Principia Mathematica* by Newton published"
+    },
+    {
+      start: 1696,
+      end: 1696,
+      event: "Johann Bernoulli teaches calculus to Marquis de l'Hospital, leading to the first calculus textbook"
+    },
+    {
+      start: 1698,
+      end: 1698,
+      event: "Leibniz introduces the raised dot for multiplication to avoid confusion with the variable $x$ and advocates for the colon for division"
+    },
+    {
+      start: 1700,
+      end: 1730,
+      event: "parentheses become standard for grouping terms in arithmetic expressions, promoted by Leibniz, the Bernoullis, and Euler"
+    },
+    {
+      start: 1700,
+      end: 1799,
+      event: "Euler uses complex integers to solve Diophantine equations like x² + 2 = y³, demonstrating that extending beyond ordinary integers helps solve integer problems"
+    },
+    {
+      start: 1713,
+      end: 1713,
+      event: "Treaty of Utrecht transfers Italian territories to Austrian Hapsburgs"
+    },
+    {
+      start: 1725,
+      end: 1783,
+      event: "Leonhard Euler active -- advances calculus and applies to a variety of contexts, develops the concept of functions, introduces a lot of modern matehmatical notation, pioneered graph theory"
+    },
+    {
+      start: 1730,
+      end: 1739,
+      event: "Euler adopts symbol $\\pi$ for the ratio of the circumference of a circle to its diameter, which becomes standard by the end of the century"
+    },
+    {
+      start: 1734,
+      end: 1734,
+      event: "George Berkeley publishes *The Analyst*, criticizing the foundations of calculus, calling Newton's and Leibniz's methods \"ghosts of departed quantities\"; Jean le Rond d'Alembert encourages faith in calculus, \"Persist, and faith will come\""
+    },
+    {
+      start: 1762,
+      end: 1762,
+      event: "Jean-Jacques Rousseau writes *The Social Contract*"
+    },
+    {
+      start: 1765,
+      end: 1765,
+      event: "Johann Lambert proves that $\\pi$ is an irrational number"
+    },
+    {
+      start: 1770,
+      end: 1827,
+      event: "Pierre-Simon Laplace is active, writing extensively on celestial mechanics and probability"
+    },
+    {
+      start: 1770,
+      end: 1770,
+      event: "Joseph Louis Lagrange wrote \"Reflections on the solution of algebraic equations,\" analyzing methods by Viète, Descartes, Euler, and Bezout. He associated resolvent equations with polynomial equations and connected solutions with permutations of roots, establishing that k divides n! - the source of Lagrange's theorem in group theory"
+    },
+    {
+      start: 1770,
+      end: 1770,
+      event: "Euler demonstrates comfort over dealing with negative quantities, published in *Elements of Algebra*"
+    },
+    {
+      start: 1775,
+      end: 1783,
+      event: "American Revolutionary War"
+    },
+    {
+      start: 1776,
+      end: 1776,
+      event: "Adam Smith writes *The Wealth of Nations*"
+    },
+    {
+      start: 1781,
+      end: 1781,
+      event: "Immanuel Kant writes *Critique of Pure Reason*"
+    },
+    {
+      start: 1787,
+      end: 1787,
+      event: "King Louis XVI convenes the Assembly of Notables to address the financial crisis in France, Charles Alexandre de Calonne proposes a universal land tax but is rejected and Calonne is dismissed. Brienne attempts similar reforms but is also rejected. Parlement claims that only the Estates-General can authorize new taxes"
+    },
+    {
+      start: 1789,
+      end: 1789,
+      event: "The Estates-General Convenes for the first time since 1614; the Third Estate demands double representation and voting by head; the Third Estate declares itself the National Assembly; the deputies convene in a tennis court and take the Tennis Court Oath not to disband until they've written a constitution"
+    },
+    {
+      start: 1789,
+      end: 1789,
+      event: "Jacques Necker is dismissed by King Louis XVI, enraging the Parisian public, leading to the storming of the Bastille on July 14th"
+    },
+    {
+      start: 1789,
+      end: 1789,
+      event: "Louis begins concentrating royal troops around Paris and Versailles to defend against possible grain riots"
+    },
+    {
+      start: 1789,
+      end: 1789,
+      event: "Great Fear, fear in the countryside of aristocratic conspiracy - peasants gather together and arm/defend themselves against brigands, lots of violence on the chateaus, destroying papersand symbols of privilege like windmills and weathervanes"
+    },
+    {
+      start: 1789,
+      end: 1789,
+      event: "National Assembly adopts the Declaration of the Rights of Man and of the Citizen"
+    },
+    {
+      start: 1789,
+      end: 1789,
+      event: "Women march on Versailles, angry over bread shortages, the King is brought back to Paris with the Queen after protesters break into the palace and kill royal guards; the royal family moves to the Tuileries Palace"
+    },
+    {
+      start: 1789,
+      end: 1789,
+      event: "the Jacobin Club begoins"
+    },
+    {
+      start: 1789,
+      end: 1789,
+      event: "National Assembly decrees the nationalization of church lands"
+    },
+    {
+      start: 1790,
+      end: 1790,
+      event: "The English conservative Edmund Burke writes the critical *Reflections on the Revolution in France*"
+    },
+    {
+      start: 1790,
+      end: 1790,
+      event: "The Civil Constitution of the Clergy is passed by the nAtional Assembly, reorganizing the church under state authority; in November the National Assembly declares all clergy must swear an oath of loyalty to this Civil Constitution"
+    },
+    {
+      start: 1790,
+      end: 1790,
+      event: "The Festival of Federation held on the first anniversary of the toppling of the Bastille is head in the Champs de Mars, Lousi XVI takes an oath of commitment to the constitution"
+    },
+    {
+      start: 1791,
+      end: 1791,
+      event: "Olympe de Gouges writes *Declaration of the Rights of Woman and of the Female Citizen*"
+    },
+    {
+      start: 1971,
+      end: 1971,
+      event: "Pope Pius VI officially condemns the Civil Constitution of the clergy"
+    },
+    {
+      start: 1791,
+      end: 1791,
+      event: "Catherine the Great establishes the Pale of Settlement in Russia"
+    },
+    {
+      start: 1791,
+      end: 1791,
+      event: "Enslaved Haitians revolt against French rule"
+    },
+    {
+      start: 1791,
+      end: 1791,
+      event: "The Flight to Varennes, King Louis XVI and his family attempt to flee Paris but are caught and returned, leading to the King being seen as a traitor"
+    },
+    {
+      start: 1792,
+      end: 1797,
+      event: "War of the First Coalition"
+    },
+    {
+      start: 1794,
+      end: 1794,
+      event: "French National Convention abolishes slavery in all French territories"
+    },
+    {
+      start: 1795,
+      end: 1795,
+      event: "French Academy of Sciences develops the metric system and is adopted, then spread internationally later by the late 19th century"
+    },
+    {
+      start: 1796,
+      end: 1814,
+      event: "Napoleon invades Italy"
+    },
+    {
+      start: 1797,
+      end: 1797,
+      event: "Republic of Venice loses independence to Napolean Bonparte"
+    },
+    {
+      start: 1798,
+      end: 1798,
+      event: "Austrians take control of Venice by agreement"
+    },
+    {
+      start: 1798,
+      end: 1798,
+      event: "French forces under Napoleon occupy Rome, briefly ending papal rule"
+    },
+    {
+      start: 1801,
+      end: 1801,
+      event: "Carl Friedrich Gauss publishes *Disquisitiones Arithmeticae*, marking rigorous developments in number theory"
+    },
+    {
+      start: 1801,
+      end: 1801,
+      event: "Carl Friedrich Gauss published Disquisitiones Arithmeticae, unifying number theory and establishing properties of finite abelian groups without group terminology. He proved Z*p is cyclic, defined element order, and studied groups in four guises: integers modulo m, multiplicative groups, equivalence classes of binary quadratic forms, and nth roots of unity"
+    },
+    {
+      start: 1800,
+      end: 1850,
+      event: "Ring theory begins as mathematicians recognize that number-theoretic problems require domains beyond ordinary integers"
+    },
+    {
+      start: 1804,
+      end: 1804,
+      event: "Haiti becomes independent from France; massacre of French colonists"
+    },
+    {
+      start: 1805,
+      end: 1805,
+      event: "Venice taken back again from Austria by Napolean"
+    },
+    {
+      start: 1805,
+      end: 1814,
+      event: "Kingdom of Italy"
+    },
+    {
+      start: 1807,
+      end: 1807,
+      event: "Georg Wilhelm Friedrich Hegel writes *Phenomenology of Spirit*"
+    },
+    {
+      start: 1812,
+      end: 1812,
+      event: "War of 1812"
+    },
+    {
+      start: 1813,
+      end: 1813,
+      event: "Joseph-Louis Lagrange dies; he analyzed permutations of polynomial roots to understand solutions for equations."
+    },
+    {
+      start: 1814,
+      end: 1814,
+      event: "Venice returned to Austria following Napolean's defeat"
+    },
+    {
+      start: 1815,
+      end: 1815,
+      event: "Congress of Vienna reinforces fragmented Italian states"
+    },
+    {
+      start: 1815,
+      end: 1815,
+      event: "Augustin-Louis Cauchy published papers making permutation theory an autonomous subject, introducing modern permutation notation, cyclic notation, and proving results like \"every even permutation is a product of 3-cycles\""
+    },
+    {
+      start: 1818,
+      end: 1818,
+      event: "Arthur Schopenhauer writes *The World as Will and Representation*"
+    },
+    {
+      start: 1821,
+      end: 1821,
+      event: "Augustin Louis Cauchy publishes *Cours d'Analyse*, introducing the concept of limits and continuity rigorously, highlighting the fundamental theorem of calculus"
+    },
+    {
+      start: 1829,
+      end: 1831,
+      event: "Gauss introduces Gaussian integers Z[i] = {a + bi} and proves they form a unique factorization domain. This was revolutionary: showing that an extended number system could preserve the fundamental property of unique prime factorization"
+    },
+    {
+      start: 1820,
+      end: 1839,
+      event: "Gauss, János Bolyai, Nicolai Lobachevsky, and Bernhard Riemann develop non-Euclidean geometry"
+    },
+    {
+      start: 1822,
+      end: 1822,
+      event: "Niels Henrik Abel proves that there is no general solution in radicals to the general polynomial equation of degree five or higher"
+    },
+    {
+      start: 1825,
+      end: 1825,
+      event: "France forces Haiti to pay crippling reparations for independence"
+    },
+    {
+      start: 1830,
+      end: 1830,
+      event: "France invades and colonizes Algeria"
+    },
+    {
+      start: 1830,
+      end: 1830,
+      event: "Évariste Galois developed his theory. He first used \"group\" technically, defined normal subgroups, and showed that solvability of equations relates to properties of their associated groups"
+    },
+    {
+      start: 1831,
+      end: 1861,
+      event: "Resurgence movement aims to unify Italy under a single state"
+    },
+    {
+      start: 1831,
+      end: 1831,
+      event: "British logician Augustus De Morgan writes that imaginary and negative expressions are equally imaginary / inconsistent / absurd"
+    },
+    {
+      start: 1832,
+      end: 1832,
+      event: "Evariste Galois develops Galois theory, linking group theory and algebraic equations."
+    },
+    {
+      start: 1833,
+      end: 1833,
+      event: "Abolition of slavery in British colonies"
+    },
+    {
+      start: 1839,
+      end: 1839,
+      event: "Beginning of Tanzimat reforms in the Ottoman Empire"
+    },
+    {
+      start: 1839,
+      end: 1842,
+      event: "First Opium War between UK and China"
+    },
+    {
+      start: 1843,
+      end: 1843,
+      event: "Hamilton invents quaternions - the first noncommutative number system where multiplication order matters. This shattered the assumption that all number systems must be commutative, opening an entirely new branch of mathematics"
+    },
+    {
+      start: 1843,
+      end: 1843,
+      event: "Soren Kierkegaard writes *Fear and Trembling*"
+    },
+    {
+      start: 1844,
+      end: 1844,
+      event: "The floodgates open: Cayley introduces 8-dimensional octonions, Grassmann creates exterior algebras for n-dimensional vector spaces. Mathematics suddenly has multiple new \"number systems\" to explore"
+    },
+    {
+      start: 1844,
+      end: 1844,
+      event: "Cauchy published another major paper defining groups of permutations generated by elements, determining subgroups of S₃, S₄, S₅, and S₆"
+    },
+    {
+      start: 1847,
+      end: 1847,
+      event: "Lamé's dramatic failed proof of Fermat's Last Theorem at the Paris Academy - Kummer points out that unique factorization fails in many algebraic integer domains, revealing a fundamental crisis in algebraic number theory"
+    },
+    {
+      start: 1840,
+      end: 1849,
+      event: "Kummer saves unique factorization by introducing \"ideal numbers\" - mysterious objects that exist only through their divisibility properties, like \"free radicals\" in chemistry"
+    },
+    {
+      start: 1846,
+      end: 1846,
+      event: "Liouville posthumously published Galois' work; Dirichlet established that the group of units in an algebraic number field is a direct product of a finite cyclic group and a free abelian group of finite rank; Kummer introduced \"ideal numbers\" for cyclotomic fields"
+    },
+    {
+      start: 1846,
+      end: 1848,
+      event: "Mexican-American War"
+    },
+    {
+      start: 1848,
+      end: 1849,
+      event: "Revlutions across Italy push for unification and liberal reforms"
+    },
+    {
+      start: 1848,
+      end: 1848,
+      event: "Karl Marx and Friedrich Engels write *The Communist Manifesto*"
+    },
+    {
+      start: 1850,
+      end: 1850,
+      event: "Beginning of Cayley-Sylvester Invariant Theory, studying invariants of \"forms\" under transformations, implicitly group-theoretic and a precursor to Klein's Erlangen Program"
+    },
+    {
+      start: 1850,
+      end: 1864,
+      event: "Taiping Rebellion in China against the Qing Dynasty"
+    },
+    {
+      start: 1854,
+      end: 1854,
+      event: "Cayley defines group algebras, connecting group theory to ring theory for the first time"
+    },
+    {
+      start: 1854,
+      end: 1854,
+      event: "Arthur Cayley gave the first abstract definition of a finite group: \"A set of symbols 1, α, β, ..., all of them different, and such that the product of any two of them... belongs to the set.\" He proved Cayley's theorem"
+    },
+    {
+      start: 1855,
+      end: 1858,
+      event: "Cayley introduces matrices as \"single quantities\" that can be added and multiplied, noting their non-commutativity"
+    },
+    {
+      start: 1856,
+      end: 1856,
+      event: "William Rowan Hamilton implicitly considered \"groups\" of regular solids in motion geometry"
+    },
+    {
+      start: 1856,
+      end: 1856,
+      event: "Imperial Reform Decree in the Ottoman Empire"
+    },
+    {
+      start: 1858,
+      end: 1858,
+      event: "Richard Dedekind gave another abstract definition of groups in his Göttingen lectures on Galois theory"
+    },
+    {
+      start: 1856,
+      end: 1860,
+      event: "Second Opium War between UK and China"
+    },
+    {
+      start: 1857,
+      end: 1858,
+      event: "Indian Rebellion against British rule"
+    },
+    {
+      start: 1858,
+      end: 1858,
+      event: "Ottoman land reform enabling private land sales"
+    },
+    {
+      start: 1859,
+      end: 1859,
+      event: "The Riemann Hypothesis is proposed by Bernhard Riemann"
+    },
+    {
+      start: 1859,
+      end: 1861,
+      event: "Kingdom of Sardinia begins unifying Italy; Lombardy annexed after Second Italian War of Independence"
+    },
+    {
+      start: 1860,
+      end: 1880,
+      event: "Camille Jordan wrote over 30 articles on groups during this period, synthesizing and extending group theory"
+    },
+    {
+      start: 1861,
+      end: 1865,
+      event: "American Civil War"
+    },
+    {
+      start: 1861,
+      end: 1861,
+      event: "Abraham Lincoln becomes president of US"
+    },
+    {
+      start: 1861,
+      end: 1861,
+      event: "Karl Weierstrauss develops the epsilon-delta definition of limit, rigorously defining continuity and differentiability"
+    },
+    {
+      start: 1861,
+      end: 1861,
+      event: "Émile Mathieu discovers M11 and M12, the first two sporadic simple groups, while investigating multiply transitive permutation groups. He briefly mentions M24, giving its order"
+    },
+    {
+      start: 1865,
+      end: 1865,
+      event: "Florence becomes the capital of Italy"
+    },
+    {
+      start: 1865,
+      end: 1865,
+      event: "Andrew Johnson becomes president of US"
+    },
+    {
+      start: 1866,
+      end: 1866,
+      event: "Third Italian War of Independence between Kingdom of Italy and Austrian Empire; Venetia annexed"
+    },
+    {
+      start: 1869,
+      end: 1869,
+      event: "Ottoman citizenship law allows non-Muslims to become citizens"
+    },
+    {
+      start: 1869,
+      end: 1869,
+      event: "Ulysses S. Grant becomes president of US"
+    },
+    {
+      start: 1868,
+      end: 1868,
+      event: "Jordan classified all subgroups of the group of motions of Euclidean 3-space"
+    },
+    {
+      start: 1869,
+      end: 1869,
+      event: "Schering, Gauss's former student, found a basis for the abelian group of equivalence classes of binary quadratic forms"
+    },
+    {
+      start: 1870,
+      end: 1870,
+      event: "Benjamin Peirce's groundbreaking 150-page \"Linear Associative Algebra\" - the first systematic study classifying all algebras up to dimension 6, introducing nilpotent and idempotent elements, and the Peirce decomposition"
+    },
+    {
+      start: 1870,
+      end: 1870,
+      event: "Jordan published \"Treatise on Substitutions and Algebraic Equations,\" presenting group theory as its own field. He introduced concepts of isomorphism, homomorphism, solvable groups, composition series, and proved An is simple for n>4. Kronecker gave an abstract treatment of finite abelian groups in \"An exposition of some properties of the class number of ideal complex numbers\""
+    },
+    {
+      start: 1871,
+      end: 1871,
+      event: "Dedekind's revolutionary introduction of ideals - replacing Kummer's vague \"ideal numbers\" with concrete sets of algebraic integers. This paper essentially created modern algebraic number theory and introduced the first essentially axiomatic definition of a ring"
+    },
+    {
+      start: 1870,
+      end: 1870,
+      event: "Luke McRedmond files Homestead Act claim in what becomes Redmond, Washington"
+    },
+    {
+      start: 1870,
+      end: 1870,
+      event: "Italy annexes Rome from the Papal States during the Franco-Prussian War, completing unification"
+    },
+    {
+      start: 1871,
+      end: 1871,
+      event: "Rome is declared the capital of Italy"
+    },
+    {
+      start: 1872,
+      end: 1872,
+      event: "Felix Klein delivered his Erlangen Program lecture at University of Erlangen, classifying geometry as the study of invariants under transformation groups. Ludwig Sylow proved his theorem for permutation groups"
+    },
+    {
+      start: 1874,
+      end: 1874,
+      event: "Sophus Lie introduced continuous transformation groups, aiming to do for differential equations what Abel and Galois did for algebraic equations. Klein focused on geometry applications"
+    },
+    {
+      start: 1871,
+      end: 1871,
+      event: "Mokrani revolt in Algeria against French rule by Algerian Berbers an Arabs"
+    },
+    {
+      start: 1872,
+      end: 1872,
+      event: "Jerusalem designated as an independent Ottoman district"
+    },
+    {
+      start: 1873,
+      end: 1873,
+      event: "William Shanks computes a decimal value of $\\pi$ to 607 places, taking him more than 15 years."
+    },
+    {
+      start: 1873,
+      end: 1873,
+      event: "Émile Mathieu gives explicit generating sets for M22, M23, and M24, completing the five Mathieu sporadic groups. Their existence remained controversial for decades; Miller (1898) mistakenly claimed M24 does not exist before retracting"
+    },
+    {
+      start: 1876,
+      end: 1876,
+      event: "Henri Poincaré and Klein began work on automorphic functions and associated discontinuous groups"
+    },
+    {
+      start: 1877,
+      end: 1877,
+      event: "Rutherford B. Hayes becomes president of US"
+    },
+    {
+      start: 1878,
+      end: 1878,
+      event: "Frobenius proves the stunning result that the ONLY finite-dimensional division algebras over real numbers are R, C, and Hamilton's quaternions - no other possibilities exist"
+    },
+    {
+      start: 1878,
+      end: 1878,
+      event: "Cayley returned to abstract group theory with four influential papers, stating the problem of finding all groups of given order and noting that abstract treatment is better than just studying permutation groups"
+    },
+    {
+      start: 1879,
+      end: 1879,
+      event: "Frobenius and Stickelberger prove every finite abelian group decomposes into cyclic groups of prime-power order - a \"fundamental theorem of arithmetic\" for groups"
+    },
+    {
+      start: 1879,
+      end: 1879,
+      event: "Georg Frobenius and Ludwig Stickelberger explicitly used abstract abelian groups, proved the basis theorem including uniqueness of decomposition, and recognized that the abstract concept embraces multiple concrete realizations"
+    },
+    {
+      start: 1879,
+      end: 1879,
+      event: "Gottlob Frege publishes *Begriffsschrift*, founding modern predicate logic and analytic philosophy"
+    },
+    {
+      start: 1879,
+      end: 1884,
+      event: "Georg Cantor develops set theory, introducing the concept of infinite sets and cardinality"
+    },
+    {
+      start: 1881,
+      end: 1881,
+      event: "James Garfield becomes president of US"
+    },
+    {
+      start: 1881,
+      end: 1881,
+      event: "Chester Arthur becomes president of US after Garfield's assassination by Charles Guiteau for no apparent materialist reason"
+    },
+    {
+      start: 1880,
+      end: 1889,
+      event: "porgroms in Russia lead to Jewish emigration to the US and Palestine"
+    },
+    {
+      start: 1882,
+      end: 1882,
+      event: "Dedekind and Weber's masterpiece connecting algebraic number theory to algebraic geometry by showing deep analogies between number fields and function fields"
+    },
+    {
+      start: 1882,
+      end: 1882,
+      event: "Heinrich Weber gave a modern definition of abstract finite groups with three axioms. Walther von Dyck published \"Group-theoretic studies,\" first consciously combining all sources, defining groups via generators and relations, constructing free groups"
+    },
+    {
+      start: 1883,
+      end: 1883,
+      event: "Von Dyck applied abstract group theory to various concrete cases. Émile Picard began work on Galois theory for differential equations"
+    },
+    {
+      start: 1884,
+      end: 1884,
+      event: "Klein published \"Lectures on the Icosahedron,\" using the icosahedron's symmetry group to \"solve\" the quintic, introducing the Klein 4-group"
+    },
+    {
+      start: 1887,
+      end: 1887,
+      event: "Frobenius gave an abstract proof of Sylow's theorem, deliberately avoiding the \"alien\" symmetric group used in previous proofs"
+    },
+    {
+      start: 1889,
+      end: 1889,
+      event: "Otto Hölder defined quotient groups abstractly and completed the Jordan-Hölder theorem proof"
+    },
+    {
+      start: 1882,
+      end: 1903,
+      event: "First Aliyah to Palestine from Eastern Europe and Yemen motivated by Zionism and persecution"
+    },
+    {
+      start: 1882,
+      end: 1882,
+      event: "Italy joins the Triple Alliance with Germany and Austria-Hungary"
+    },
+    {
+      start: 1883,
+      end: 1883,
+      event: "Friedrich Nietzsche writes *Thus Spoke Zarathustra*"
+    },
+    {
+      start: 1884,
+      end: 1885,
+      event: "The Scramble for Africa, Europeans divide Africa at Berlin Conference"
+    },
+    {
+      start: 1885,
+      end: 1885,
+      event: "Grover Cleveland becomes president of US"
+    },
+    {
+      start: 1894,
+      end: 1896,
+      event: "First Sino-Japanese War, Japan emerges as a colonial power"
+    },
+    {
+      start: 1886,
+      end: 1886,
+      event: "Friedrich Nietzsche writes *Beyond Good and Evil*"
+    },
+    {
+      start: 1888,
+      end: 1888,
+      event: "Richard Dedekind formalizes arithmetic, publishing \"Was sind und was sollen die Zahlen?\""
+    },
+    {
+      start: 1889,
+      end: 1889,
+      event: "Giuseppe Peano publishes the Peano axioms for arithmetic"
+    },
+    {
+      start: 1889,
+      end: 1889,
+      event: "Benjamin Harrison becomes president of US"
+    },
+    {
+      start: 1890,
+      end: 1890,
+      event: "Hilbert shocks the mathematical world with his non-constructive proof of the Basis Theorem. Gordan protests \"This is not mathematics, it is theology!\" - but this \"theology\" becomes standard mathematics by the 1920s"
+    },
+    {
+      start: 1890,
+      end: 1899,
+      event: "Cartan, Frobenius, Molien independently prove the structure theorem: every finite-dimensional algebra decomposes into nilpotent and semisimple parts, with the semisimple part being a direct sum of matrix algebras over division rings"
+    },
+    {
+      start: 1890,
+      end: 1890,
+      event: "Eritrea becomes an Italian colony"
+    },
+    {
+      start: 1892,
+      end: 1892,
+      event: "Ernest Vessiot contributed to the Galois theory of differential equations"
+    },
+    {
+      start: 1893,
+      end: 1893,
+      event: "Hölder introduced automorphisms abstractly, studied simple groups abstractly, and determined all simple groups of order up to 200"
+    },
+    {
+      start: 1893,
+      end: 1893,
+      event: "Mao Zedong is born in Hunan Province, China to a peasant family"
+    },
+    {
+      start: 1893,
+      end: 1893,
+      event: "Grover Cleveland becomes president of US"
+    },
+    {
+      start: 1895,
+      end: 1895,
+      event: "Japan takes Taiwan from China"
+    },
+    {
+      start: 1896,
+      end: 1896,
+      event: "Italy suffers a humiliating defeat in Ethiopia trying to colonize it"
+    },
+    {
+      start: 1897,
+      end: 1898,
+      event: "Dedekind and G.A. Miller independently characterized Hamiltonian groups, introduced commutators and commutator subgroups"
+    },
+    {
+      start: 1897,
+      end: 1897,
+      event: "William McKinley becomes president of US"
+    },
+    {
+      start: 1898,
+      end: 1898,
+      event: "\"100 Days of Reform\" in China, attempt to modernize and reform the Qing Dynasty, fails"
+    },
+    {
+      start: 1898,
+      end: 1900,
+      event: "William Burnside, Frobenius, and Theodor Molien created character theory and representation theory for finite groups"
+    },
+    {
+      start: 1898,
+      end: 1898,
+      event: "Spanish-American War"
+    },
+    {
+      start: 1899,
+      end: 1899,
+      event: "Philippine-American War"
+    },
+    {
+      start: 1899,
+      end: 1899,
+      event: "The *Communist Manifesto* is first translated into Chinese"
+    },
+    {
+      start: 1900,
+      end: 1901,
+      event: "Edmund Husserl publishes *Logical Investigations*, establishing phenomenology as distinct philosophical approach"
+    },
+    {
+      start: 1900,
+      end: 1900,
+      event: "Hilbert's 23 problems are presented at the International Congress of Mathematicians in Paris"
+    },
+    {
+      start: 1900,
+      end: 1900,
+      event: "Boxer Rebellion in China against foreign influence"
+    },
+    {
+      start: 1901,
+      end: 1901,
+      event: "Australia becomes a federation within the British Empire"
+    },
+    {
+      start: 1901,
+      end: 1901,
+      event: "Theodore Roosevelt becomes president of US after McKinley's assassination"
+    },
+    {
+      start: 1903,
+      end: 1903,
+      event: "First recorded US raid on gay bathhouse in New York City; 34 people arrested"
+    },
+    {
+      start: 1904,
+      end: 1904,
+      event: "J.A. de Séguier published \"Elements of the Theory of Abstract Groups,\" the first monograph entirely on abstract groups, including set-theoretic foundations based on Cantor"
+    },
+    {
+      start: 1904,
+      end: 1914,
+      event: "Second Aliyah to Palestine by Jews fleeing pogroms in Russia and Eastern Europe"
+    },
+    {
+      start: 1904,
+      end: 1905,
+      event: "Russo-Japanese War, Japan emerges as colonial power"
+    },
+    {
+      start: 1905,
+      end: 1905,
+      event: "Partition of Bengal by British"
+    },
+    {
+      start: 1907,
+      end: 1907,
+      event: "Wedderburn's landmark paper extends the structure theorem from R and C to arbitrary fields, introducing modern conceptual approach with ideals, quotient algebras, radicals, direct sums"
+    },
+    {
+      start: 1907,
+      end: 1907,
+      event: "Peak of Second Boer War, British consolidate control over South Africa"
+    },
+    {
+      start: 1908,
+      end: 1908,
+      event: "Empress Dowager Cixi dies, leaves the two-year-old Puyi as emperor"
+    },
+    {
+      start: 1909,
+      end: 1909,
+      event: "William Howard Taft becomes president of US"
+    },
+    {
+      start: 1910,
+      end: 1910,
+      event: "Bertrand Russell and Alfred North Whitehead write *Principia Mathematica*"
+    },
+    {
+      start: 1910,
+      end: 1910,
+      event: "Japan annexes Korea as a colony"
+    },
+    {
+      start: 1910,
+      end: 1910,
+      event: "Emma Goldman begins public advocacy for homosexual rights in the United States"
+    },
+    {
+      start: 1911,
+      end: 1911,
+      event: "Wuchang Uprising in China, beginning of the Xinhai Revolution"
+    },
+    {
+      start: 1911,
+      end: 1911,
+      event: "Xinhai Revolution overthrows Qing Dynasty"
+    },
+    {
+      start: 1912,
+      end: 1912,
+      event: "Sun-Yat Sen voted provincial president of Republic of China"
+    },
+    {
+      start: 1912,
+      end: 1912,
+      event: "The Kuomintang is founded by Sun Yat-Sen"
+    },
+    {
+      start: 1912,
+      end: 1912,
+      event: "Redmond, Washington incorporated after reaching 300 residents"
+    },
+    {
+      start: 1912,
+      end: 1912,
+      event: "First Dutch anti-discrimination organization established to advocate for homosexual rights"
+    },
+    {
+      start: 1913,
+      end: 1913,
+      event: "Yuan Shikai becomes president of Republic of China"
+    },
+    {
+      start: 1913,
+      end: 1913,
+      event: "Edmund Husserl publishes *Ideas: General Introduction to Pure Phenomenology*, introducing transcendental idealism"
+    },
+    {
+      start: 1913,
+      end: 1913,
+      event: "Miguel de Unamuno publishes *The Tragic Sense of Life in Men and Nations*, early existentialist work"
+    },
+    {
+      start: 1913,
+      end: 1913,
+      event: "Woodrow Wilson becomes president of US"
+    },
+    {
+      start: 1913,
+      end: 1913,
+      event: "Song Jiaoren, leader of the Guomindang, is assassinated supposedly by Yuan Shikai"
+    },
+    {
+      start: 1914,
+      end: 1918,
+      event: "World War I"
+    },
+    {
+      start: 1914,
+      end: 1914,
+      event: "Fraenkel gives the FIRST truly abstract definition of a ring - remarkably late! This is the birth of rings as abstract algebraic structures, not just specific examples like polynomials or matrices. He defines rings axiomatically with two operations satisfying specific properties"
+    },
+    {
+      start: 1914,
+      end: 1914,
+      event: "Ramanujan comes to England to work with Hardy"
+    },
+    {
+      start: 1914,
+      end: 1914,
+      event: "Sun Yat-Sen organizes the new Chinese Revolutionary Party"
+    },
+    {
+      start: 1915,
+      end: 1934,
+      event: "US occupation of Haiti"
+    },
+    {
+      start: 1915,
+      end: 1915,
+      event: "Italy enters WWI on the Allies' side, hoping to gain territory"
+    },
+    {
+      start: 1915,
+      end: 1916,
+      event: "McMahon-Hussein Correspondence, British promise of Arab independence"
+    },
+    {
+      start: 1915,
+      end: 1915,
+      event: "Chen Duxiu founds the influential journal *New Youth*"
+    },
+    {
+      start: 1915,
+      end: 1915,
+      event: "Japan gives Yuan Shikai the \"Twenty-One Demands\", increasing Japanese influence in China"
+    },
+    {
+      start: 1915,
+      end: 1915,
+      event: "New Culture Movement in China, promoting Western-style modernization and democracy"
+    },
+    {
+      start: 1916,
+      end: 1916,
+      event: "Otto Schmidt published \"Abstract Theory of Groups,\" the first to treat infinite and finite groups on equal footing, with finite groups relegated to later chapters"
+    },
+    {
+      start: 1916,
+      end: 1916,
+      event: "Sykes-Picot Agreement, British and French carve up the Middle East"
+    },
+    {
+      start: 1916,
+      end: 1916,
+      event: "Yuan Shikai dies, starts Warlord Era in China"
+    },
+    {
+      start: 1916,
+      end: 1916,
+      event: "Easter Rising in Ireland against British rule"
+    },
+    {
+      start: 1916,
+      end: 1918,
+      event: "150k Chinese contract workers sent to work in Europe"
+    },
+    {
+      start: 1917,
+      end: 1917,
+      event: "Sono gives an even more modern abstract treatment, discussing quotient rings, maximal ideals, isomorphism theorems - the full modern apparatus"
+    },
+    {
+      start: 1917,
+      end: 1917,
+      event: "Russian Revolution; Bolsheviks take power and establish Soviet Union"
+    },
+    {
+      start: 1917,
+      end: 1917,
+      event: "Russian Revolution decriminalizes homosexuality, making Soviet Union one of first countries to do so"
+    },
+    {
+      start: 1917,
+      end: 1917,
+      event: "Balfour Declaration, British support for a Jewish homeland in Palestine"
+    },
+    {
+      start: 1917,
+      end: 1917,
+      event: "British fofrces capture Palestine from the Ottomans"
+    },
+    {
+      start: 1917,
+      end: 1917,
+      event: "Sun Yat-Sen fails to re-establish the Republic of China"
+    },
+    {
+      start: 1919,
+      end: 1919,
+      event: "League of Nations Convenant Article 22 establishes Mandate system"
+    },
+    {
+      start: 1919,
+      end: 1919,
+      event: "Institute for Sex Research founded in Berlin by Magnus Hirschfeld, pioneering research on sexuality and gender"
+    },
+    {
+      start: 1919,
+      end: 1923,
+      event: "Third Aliyah to Palestine, supporte by Balfour Declaration"
+    },
+    {
+      start: 1919,
+      end: 1919,
+      event: "Treaty of Versailles establishes League of Nations manates"
+    },
+    {
+      start: 1919,
+      end: 1919,
+      event: "Amritsar Massacre in India, British kill hundreds of protesters"
+    },
+    {
+      start: 1920,
+      end: 1920,
+      event: "Gandhi launches non-cooperation movement in India"
+    },
+    {
+      start: 1920,
+      end: 1930,
+      event: "Group theory diverged into specialized areas: finite group theory, infinite groups with finiteness conditions, combinatorial group theory, infinite abelian groups, topological groups"
+    },
+    {
+      start: 1920,
+      end: 1920,
+      event: "San Remo Resolution applies the mandate system to Palestine and incorporates the Balfour declaration"
+    },
+    {
+      start: 1920,
+      end: 1929,
+      event: "40-50k landowners in Canton escape to Hong Kong to avoid executions by Communist-led farmer uprisings, which were extremely violent and hateful"
+    },
+    {
+      start: 1920,
+      end: 1920,
+      event: "Nabi Musa riots in Jerusalem, Haycraft commission investigates"
+    },
+    {
+      start: 1920,
+      end: 1920,
+      event: "Mao Zedong talks with Chen Duxiu and is convinced by communism"
+    },
+    {
+      start: 1920,
+      end: 1921,
+      event: "Famine in China under warlord rule, kills ~0.5 million"
+    },
+    {
+      start: 1921,
+      end: 1921,
+      event: "Emmy Noether's \"Ideal theory in rings\" - shows that results seemingly specific to polynomial rings actually follow from a single axiom, creating the theory of Noetherian rings"
+    },
+    {
+      start: 1921,
+      end: 1921,
+      event: "Ludwig Wittgenstein publishes *Tractatus Logico-Philosophicus*, developing logical atomism and picture theory of meaning"
+    },
+    {
+      start: 1921,
+      end: 1921,
+      event: "Warren G. Harding becomes president of US"
+    },
+    {
+      start: 1921,
+      end: 1922,
+      event: "The episodic novella The True Story of Ah Q is published by Lu Xun, the first time vernacular Chinese is used in literature, criticizing Chinese people and their revolutionary leaders"
+    },
+    {
+      start: 1921,
+      end: 1921,
+      event: "Comintern agent Grigorii Vointinsky helps facilitate a meeting in the French Concession of Shanghai that establishes the Chinese Communist Party"
+    },
+    {
+      start: 1921,
+      end: 1921,
+      event: "Mao Zedong becomes a founding member of the Chinese Communist Party"
+    },
+    {
+      start: 1921,
+      end: 1921,
+      event: "Attack on the Hadassah house in Hebron"
+    },
+    {
+      start: 1922,
+      end: 1922,
+      event: "Palestine mandate document finalized"
+    },
+    {
+      start: 1922,
+      end: 1922,
+      event: "USSR officially decriminalizes homosexual acts in new legal code"
+    },
+    {
+      start: 1922,
+      end: 1922,
+      event: "First Marxist Workweek organized, precursor to Frankfurt School"
+    },
+    {
+      start: 1922,
+      end: 1922,
+      event: "Martin Buber publishes *I and Thou*"
+    },
+    {
+      start: 1922,
+      end: 1922,
+      event: "Benito Mussolini and Fascist Party rise to power"
+    },
+    {
+      start: 1922,
+      end: 1922,
+      event: "Irish Free State established under Anglo-Irish treaty, Northern Ireland remains part of UK"
+    },
+    {
+      start: 1923,
+      end: 1923,
+      event: "Institute for Social Research established at University of Frankfurt by Carl Grünberg"
+    },
+    {
+      start: 1923,
+      end: 1923,
+      event: "Ottoman Sultanate abolished, Turkey becomes a republic"
+    },
+    {
+      start: 1923,
+      end: 1923,
+      event: "Chiang Kai-Shek helps Sun Yat-Sen escape assassination by a local warlord"
+    },
+    {
+      start: 1923,
+      end: 1923,
+      event: "the First United Front is formed between the Guomindang and the Chinese Communist Party"
+    },
+    {
+      start: 1923,
+      end: 1923,
+      event: "Calvin Coolidge becomes president of US"
+    },
+    {
+      start: 1923,
+      end: 1923,
+      event: "The Mathematical Association of America recommends abandoning ÷ and : for division in favor of fractional notation"
+    },
+    {
+      start: 1923,
+      end: 1923,
+      event: "Palestine mandate comes into effect"
+    },
+    {
+      start: 1924,
+      end: 1929,
+      event: "Fourth Aliyah to Palestine, middle-class Jews from Poland and Hungary"
+    },
+    {
+      start: 1924,
+      end: 1924,
+      event: "Sun Yat-Sen dies, split opens in the United Front between Chiang Kai-Shek and Wang Jingwei"
+    },
+    {
+      start: 1925,
+      end: 1925,
+      event: "May Thirtieth Incident in Shanghai when police fire on protesters, killing 9, sparks anti-imperialist movement"
+    },
+    {
+      start: 1926,
+      end: 1926,
+      event: "Otto Schreier developed the theory of group extensions, leading to cohomology of groups"
+    },
+    {
+      start: 1926,
+      end: 1928,
+      event: "Great Northern Expedition in China, Chiang Kai-Shek attempts to unify China in collaboration with the Communists and the Soviet Union"
+    },
+    {
+      start: 1927,
+      end: 1927,
+      event: "Two masterpieces: Noether characterizes Dedekind domains abstractly, Artin develops theory of rings with descending chain condition. Together, Noether and Artin transform ring theory from studying specific examples to a powerful abstract theory, making rings equal partners with groups and fields in abstract algebra"
+    },
+    {
+      start: 1928,
+      end: 1928,
+      event: "Schmidt proved the Remak-Krull-Schmidt theorem for groups with finiteness conditions"
+    },
+    {
+      start: 1926,
+      end: 1926,
+      event: "Mao Zedong writes the \"Analysis of the Classes in Chinese Society\", asserting that peasants are a semi-proletariat"
+    },
+    {
+      start: 1927,
+      end: 1927,
+      event: "Martin Heidegger writes *Being and Time*"
+    },
+    {
+      start: 1927,
+      end: 1927,
+      event: "Chiang Kai-Shek and the Nationalists take over Shanghai and establish capital in Nanjing, beginning of the \"Nanjing decade\""
+    },
+    {
+      start: 1927,
+      end: 1927,
+      event: "Chiang Kai-Shek purges communists in Shanghai and United Front breaks down"
+    },
+    {
+      start: 1927,
+      end: 1927,
+      event: "Mao Zedong writes the \"Report on an Investigation of the Peasant movement in hunan\", asserting that violence is necessary to purge China of centuries of oppression"
+    },
+    {
+      start: 1928,
+      end: 1930,
+      event: "Famine in China under warlord rule, kills ~3 million"
+    },
+    {
+      start: 1928,
+      end: 1938,
+      event: "the \"Nanjing decade\" in China, relative peace with the Nationalist government in Nanjing"
+    },
+    {
+      start: 1928,
+      end: 1928,
+      event: "Chiang Kai-Shek officially establishes the Nationalist Government following the split of the united front"
+    },
+    {
+      start: 1929,
+      end: 1929,
+      event: "Wall Street Crash, beginning of the Great Depression"
+    },
+    {
+      start: 1929,
+      end: 1939,
+      event: "Fifth Aliyah, Jews escaping anti-Semitism in Europe and Nazis in Germany"
+    },
+    {
+      start: 1929,
+      end: 1929,
+      event: "Herbert Hoover becomes president of US"
+    },
+    {
+      start: 1929,
+      end: 1929,
+      event: "Strike by Beijing rickshaw pullers"
+    },
+    {
+      start: 1929,
+      end: 1929,
+      event: "Western Wall / Al-Buraq riots; Shaw commission investigates"
+    },
+    {
+      start: 1929,
+      end: 1929,
+      event: "Lateran Treaty establishes Vatican City"
+    },
+    {
+      start: 1930,
+      end: 1930,
+      event: "Max Horkheimer becomes director of Frankfurt School; recruits Adorno, Fromm, and Marcuse"
+    },
+    {
+      start: 1930,
+      end: 1930,
+      event: "Gandhi leads the Salt March"
+    },
+    {
+      start: 1930,
+      end: 1939,
+      event: "A group of young mathematicians writing under the pseudonym Bourbaki writes a series of textbooks on modern mathematics, the *Elements of Mathematics*"
+    },
+    {
+      start: 1930,
+      end: 1930,
+      event: "Chiang Kai-shek attempts to eliminate the Communist presence in China with encirclement campaigns"
+    },
+    {
+      start: 1931,
+      end: 1931,
+      event: "Statute of Westminster grants autonomy to British dominions"
+    },
+    {
+      start: 1931,
+      end: 1931,
+      event: "Japan invades Manchuria, Chiang Kai-Shek refuses to fight"
+    },
+    {
+      start: 1931,
+      end: 1931,
+      event: "Kurt Godel publishes his incompleteness theorems"
+    },
+    {
+      start: 1932,
+      end: 1932,
+      event: "An anti-Japanese mob kills a Japanese monk in Shanghai, prompting Japanese arial bombing; over 20k are killed in the one-month conflict"
+    },
+    {
+      start: 1933,
+      end: 1933,
+      event: "Hitler becomes Chancellor of Germany"
+    },
+    {
+      start: 1933,
+      end: 1933,
+      event: "Nazi Germany criminalizes homosexuality and burns Magnus Hirschfeld's Institute for Sex Research"
+    },
+    {
+      start: 1933,
+      end: 1933,
+      event: "USSR recriminalizes homosexuality under Stalin with penalties up to 5 years imprisonment"
+    },
+    {
+      start: 1933,
+      end: 1933,
+      event: "Frankfurt School flees Nazi Germany; Institute relocates from Frankfurt to Geneva"
+    },
+    {
+      start: 1933,
+      end: 1933,
+      event: "Denmark decriminalizes homosexuality"
+    },
+    {
+      start: 1933,
+      end: 1933,
+      event: "Franklin D. Roosevelt becomes president of US"
+    },
+    {
+      start: 1933,
+      end: 1933,
+      event: "Chiang Kai-Shek launches fourth and fifth encirclement campaigns against the Communists"
+    },
+    {
+      start: 1934,
+      end: 1934,
+      event: "Chiang Kai-Shek launches the \"New Life Movement\" to simultaneously promote Confucianism, Christianity, and fascism"
+    },
+    {
+      start: 1934,
+      end: 1934,
+      event: "Chinese Communists start the long march to escape Nationalist forces"
+    },
+    {
+      start: 1934,
+      end: 1948,
+      event: "Aliyah Bet, illegal Jewish immigration to Palestine"
+    },
+    {
+      start: 1935,
+      end: 1935,
+      event: "Izz al-Din al-Qassam is killed by British forces, becomes a symbol of Palestinian resistance"
+    },
+    {
+      start: 1935,
+      end: 1935,
+      event: "Frankfurt School relocates from Geneva to New York City, joining Columbia University"
+    },
+    {
+      start: 1935,
+      end: 1935,
+      event: "Italian invasion of Ethiopia under Mussolini"
+    },
+    {
+      start: 1935,
+      end: 1935,
+      event: "Chinese Communists reach Yan'an, establish base"
+    },
+    {
+      start: 1935,
+      end: 1935,
+      event: "December Ninth demonstrations by Beijing students protesting Chiang Kai-Shek's civil war with the communists and refusal to fight Japan"
+    },
+    {
+      start: 1936,
+      end: 1936,
+      event: "Arab Revolt against British rule and Zionist expansion"
+    },
+    {
+      start: 1936,
+      end: 1936,
+      event: "Alan Turing publishes 'On Computable Numbers' introducing the Turing machine; Church and Turing independently prove the Entscheidungsproblem unsolvable"
+    },
+    {
+      start: 1936,
+      end: 1936,
+      event: "Chiang Kai-shek flies to Xi'an to destroy the Communist base in Yan'an but is held hostage by Zhang Xueliang to form a second United Front to fight Japan"
+    },
+    {
+      start: 1937,
+      end: 1937,
+      event: "Peel Commission investigates 1936 Arab Revolt and recommends partition"
+    },
+    {
+      start: 1937,
+      end: 1937,
+      event: "Second Sino-Japanese War begins when Japan launches a full-scale invasion of China"
+    },
+    {
+      start: 1937,
+      end: 1937,
+      event: "\"Black Saturday\" --- 1000 people killed in Shanghai"
+    },
+    {
+      start: 1937,
+      end: 1937,
+      event: "The \"Rape of Nanking\" by Japanese forces"
+    },
+    {
+      start: 1938,
+      end: 1938,
+      event: "Chinese unified front breaks dams on the Yellow River to slow the Japanese advance, killing 500k locals either due to drowning or starvation"
+    },
+    {
+      start: 1938,
+      end: 1938,
+      event: "Mao Zedong marries Jiang Qing, Shanghai actress"
+    },
+    {
+      start: 1939,
+      end: 1939,
+      event: "White Paper limits Jewish immigration into Palestine"
+    },
+    {
+      start: 1939,
+      end: 1939,
+      event: "Italy signs Pact of Steel with Germany"
+    },
+    {
+      start: 1939,
+      end: 1945,
+      event: "World War II"
+    },
+    {
+      start: 1940,
+      end: 1949,
+      event: "Armand Borel and Claude Chevalley made fundamental contributions to the theory of algebraic groups"
+    },
+    {
+      start: 1940,
+      end: 1940,
+      event: "Japan allows Wang Jingwei to establish a puppet government in Nanjing"
+    },
+    {
+      start: 1941,
+      end: 1941,
+      event: "Amin al-Husseini, Grand Mufti of Jerusalem, meets with Adolf Hitler in Berlin"
+    },
+    {
+      start: 1941,
+      end: 1941,
+      event: "Japan attacks Pearl Harbor, US enters WWII"
+    },
+    {
+      start: 1942,
+      end: 1942,
+      event: "Biltmore Conference in New York calls for a Jewish state in Palestine"
+    },
+    {
+      start: 1942,
+      end: 1942,
+      event: "Japanese attack Burma"
+    },
+    {
+      start: 1942,
+      end: 1942,
+      event: "Chiang Kai-shek meets with Mohatma Gandhi in India"
+    },
+    {
+      start: 1942,
+      end: 1942,
+      event: "Henan famine in China, 2-3 million people die"
+    },
+    {
+      start: 1942,
+      end: 1942,
+      event: "Mao begins the Rectification Movement"
+    },
+    {
+      start: 1943,
+      end: 1943,
+      event: "Mussolini deposed, Italy surreners to Allies"
+    },
+    {
+      start: 1943,
+      end: 1943,
+      event: "Jean-Paul Sartre writes *Being and Nothingness*"
+    },
+    {
+      start: 1943,
+      end: 1943,
+      event: "McCulloch and Pitts develop first mathematical model of artificial neural networks"
+    },
+    {
+      start: 1944,
+      end: 1944,
+      event: "Adorno and Horkheimer publish *Dialectic of Enlightenment*, critique of Enlightenment rationality"
+    },
+    {
+      start: 1944,
+      end: 1944,
+      event: "Assassination of Lord Moyne by the Stern Gang, extremist Zionist group"
+    },
+    {
+      start: 1944,
+      end: 1944,
+      event: "Japanese launch Operation Ichigo"
+    },
+    {
+      start: 1944,
+      end: 1944,
+      event: "Rome is liberated by Allied forces during WWII"
+    },
+    {
+      start: 1944,
+      end: 1944,
+      event: "Wang Jingwei dies"
+    },
+    {
+      start: 1945,
+      end: 1945,
+      event: "Roosevelt dies on April 12, Truman becomes president"
+    },
+    {
+      start: 1945,
+      end: 1945,
+      event: "Hiroshima and Nagasaki atomic bombings on August 6 and 9"
+    },
+    {
+      start: 1945,
+      end: 1945,
+      event: "Harry Truman becomes president of US"
+    },
+    {
+      start: 1945,
+      end: 1945,
+      event: "Mao Zedong visits Chongqing to negotiate with Chiang Kai-Shek in August"
+    },
+    {
+      start: 1945,
+      end: 1945,
+      event: "End of World War II, establishment of the United Nations, beginning of the Cold War"
+    },
+    {
+      start: 1945,
+      end: 1945,
+      event: "Holocaust ends; estimated 3,000-9,000 gay men died in Nazi concentration camps"
+    },
+    {
+      start: 1945,
+      end: 1945,
+      event: "Sartre delivers lecture 'Existentialism Is a Humanism' at Club Maintenant in Paris"
+    },
+    {
+      start: 1945,
+      end: 1945,
+      event: "First post-war gay bars open in major European and American cities"
+    },
+    {
+      start: 1945,
+      end: 1945,
+      event: "Setif and Guelma Massacres, French forces kill thousands of protesting Algerians"
+    },
+    {
+      start: 1945,
+      end: 1945,
+      event: "Taiwan is returned to China from Japan"
+    },
+    {
+      start: 1946,
+      end: 1946,
+      event: "Italians vote in referendum to abolish monarchy, establishing Italian Republic"
+    },
+    {
+      start: 1946,
+      end: 1946,
+      event: "Anglo-American Committee of Inquiry investigates Jewish-Arab conflict"
+    },
+    {
+      start: 1946,
+      end: 1946,
+      event: "Land reform begins in \"old liberated areas\" in Northern China under Communist influence"
+    },
+    {
+      start: 1947,
+      end: 1947,
+      event: "Exodus steamship carrying Jewish refugees is returned to Germany"
+    },
+    {
+      start: 1947,
+      end: 1947,
+      event: "UN General Assembly Resolution 181 proposes partition of Palestine"
+    },
+    {
+      start: 1947,
+      end: 1947,
+      event: "Partition of India, creation of Pakistan"
+    },
+    {
+      start: 1947,
+      end: 1947,
+      event: "Theodor Adorno and Max Horkheimer write *Dialectic of Enlightenment*"
+    },
+    {
+      start: 1948,
+      end: 1948,
+      event: "Deir Yassin massacre by Irgun and Lehi, Jewish paramilitary groups"
+    },
+    {
+      start: 1948,
+      end: 1948,
+      event: "Apartheid established in South Africa"
+    },
+    {
+      start: 1948,
+      end: 1948,
+      event: "Communist forces surround the Chinese cities Shenyang and Changchun"
+    },
+    {
+      start: 1948,
+      end: 1948,
+      event: "Israel declares independence on May 14"
+    },
+    {
+      start: 1948,
+      end: 1948,
+      event: "British Mandate ends; Arab-Israeli War begins May 15"
+    },
+    {
+      start: 1949,
+      end: 1949,
+      event: "Indonesian independence recognized by Netherlands after armed struggle"
+    },
+    {
+      start: 1949,
+      end: 1949,
+      event: "Simone de Beauvoir writes *The Second Sex*"
+    },
+    {
+      start: 1949,
+      end: 1949,
+      event: "Claude Shannon publishes 'Communication Theory of Secrecy Systems,' founding modern cryptography"
+    },
+    {
+      start: 1949,
+      end: 1949,
+      event: "John von Neumann uses the ENIAC computer to work out $\\pi$ to 2035 decimal places"
+    },
+    {
+      start: 1949,
+      end: 1949,
+      event: "Armistic agreements signed, forming Green Line"
+    },
+    {
+      start: 1949,
+      end: 1949,
+      event: "Beijing, Nanjing, Shanghai, Wuhan, and Hangzhou fall to the Communists"
+    },
+    {
+      start: 1949,
+      end: 1949,
+      event: "Mao Zedong declares the People's Republic of China on October 1"
+    },
+    {
+      start: 1949,
+      end: 1949,
+      event: "The new Communist government closes 224 brothels and arrests 1,286 prostitutes in Beijings"
+    },
+    {
+      start: 1950,
+      end: 1953,
+      event: "Korean War"
+    },
+    {
+      start: 1950,
+      end: 1950,
+      event: "CCP passes the Agrarian Reform Law, redistributing land to peasants"
+    },
+    {
+      start: 1950,
+      end: 1950,
+      event: "Israel passes Absentee Property Law which allows confiscation of Palestinian property, and Preventing Infiltration Law which allows expulsion of Palestinians, denies right of return to Palestinians expelled during the 1948 war"
+    },
+    {
+      start: 1950,
+      end: 1950,
+      event: "Sino-Soviet Friendship Treaty signed"
+    },
+    {
+      start: 1950,
+      end: 1950,
+      event: "Alan Turing publishes 'Computing Machinery and Intelligence,' proposing the Turing test"
+    },
+    {
+      start: 1950,
+      end: 1950,
+      event: "CCP passes the Marriage Law, affirming the euqal rights of both sexes and protection of lawful interests of women and children"
+    },
+    {
+      start: 1950,
+      end: 1950,
+      event: "Mattachine Society established in Los Angeles, one of the earliest American homosexual rights organizations"
+    },
+    {
+      start: 1950,
+      end: 1951,
+      event: "CCP launches aggressive anti-counter-revolutionary campaign, arresting 2.6m and carrying out 712k"
+    },
+    {
+      start: 1950,
+      end: 1951,
+      event: "Tens of thousands of intellectuals go through thought reform at revolutionary universities in China"
+    },
+    {
+      start: 1951,
+      end: 1951,
+      event: "King Abdullah of Jordan is assassinated at Al-Aqsa Mosque for perceived collaboration with Israelis"
+    },
+    {
+      start: 1951,
+      end: 1951,
+      event: "Marvin Minsky and Dean Edmonds build SNARC, the first neural network machine"
+    },
+    {
+      start: 1951,
+      end: 1952,
+      event: "Three Antis campaign by CCP targets corruption, waste, and mismanagement"
+    },
+    {
+      start: 1952,
+      end: 1952,
+      event: "Mau Mau Urprising in Kenya against British rule"
+    },
+    {
+      start: 1952,
+      end: 1952,
+      event: "Eritrea federated with Ethopia under UN resolution"
+    },
+    {
+      start: 1952,
+      end: 1952,
+      event: "\"Land to the Tiller\" movement complete under Communist China; 43% of cultivated land redistributed to 60% of rural population; 88% of households affected"
+    },
+    {
+      start: 1952,
+      end: 1952,
+      event: "Five Antis Campaign by CCP targets bribery and tax evasion by businessmen"
+    },
+    {
+      start: 1952,
+      end: 1952,
+      event: "Dismantling of secret societies in Shanghai by CCP"
+    },
+    {
+      start: 1953,
+      end: 1953,
+      event: "Qibya Massacre by Israeli forces"
+    },
+    {
+      start: 1953,
+      end: 1953,
+      event: "Death of Stalin; Khrushchev becomes leader of USSR"
+    },
+    {
+      start: 1953,
+      end: 1953,
+      event: "CCP announces end of \"new democracy\" phase, beginning of First Five-Year Plan, emphasizing central planning and growth of industry"
+    },
+    {
+      start: 1953,
+      end: 1954,
+      event: "CCP introuces new quota-based district-level system for agricultural production"
+    },
+    {
+      start: 1953,
+      end: 1953,
+      event: "Frankfurt School formally re-established in Frankfurt; Horkheimer, Adorno, and Pollock return to West Germany"
+    },
+    {
+      start: 1953,
+      end: 1953,
+      event: "Wittgenstein's *Philosophical Investigations* published posthumously, introducing language-games and meaning-as-use"
+    },
+    {
+      start: 1953,
+      end: 1953,
+      event: "Dwigth D. Eisenhower becomes president of US"
+    },
+    {
+      start: 1954,
+      end: 1954,
+      event: "Alan Turing commits suicide after being subjected to chemical castration as punishment for homosexuality"
+    },
+    {
+      start: 1954,
+      end: 1954,
+      event: "First Indochina War ends, Vietnam divided at 17th parallel"
+    },
+    {
+      start: 1954,
+      end: 1962,
+      event: "Algerian War of Independence against France"
+    },
+    {
+      start: 1954,
+      end: 1954,
+      event: "Full achievement of CCP state building in China; state and Party organs function fully in China"
+    },
+    {
+      start: 1955,
+      end: 1955,
+      event: "Daughters of Bilitis founded in San Francisco, first lesbian rights organization in the United States"
+    },
+    {
+      start: 1955,
+      end: 1975,
+      event: "Vietnam War"
+    },
+    {
+      start: 1955,
+      end: 1955,
+      event: "Mao aims to accelerate cooperatization by encouraging labor-intensive industries"
+    },
+    {
+      start: 1956,
+      end: 1956,
+      event: "Dartmouth Conference establishes artificial intelligence as an academic discipline; term 'artificial intelligence' coined by John McCarthy"
+    },
+    {
+      start: 1956,
+      end: 1956,
+      event: "Suez Crisis, Egypt nationalizes the Suez Canal -- UK, France, and Israel invade Egypt, Israel temporarily occupies Sinai and Gaza"
+    },
+    {
+      start: 1956,
+      end: 1957,
+      event: "Israeli occupation of Gaza following the Suez Crisis"
+    },
+    {
+      start: 1956,
+      end: 1956,
+      event: "Believing that intellectuals were not voicing their concerns, Mao Zedong launches the Hundred Flowers Campaign, inviting criticism of the government"
+    },
+    {
+      start: 1956,
+      end: 1957,
+      event: "Large-scale strike in Shanghai"
+    },
+    {
+      start: 1956,
+      end: 1956,
+      event: "CCP announces 5-7 year plan to reduce illiteracy, process of simplifying Chinese characters begins"
+    },
+    {
+      start: 1956,
+      end: 1956,
+      event: "Mao launches the hundred flowers campaign"
+    },
+    {
+      start: 1957,
+      end: 1957,
+      event: "Frank Rosenblatt invents the perceptron, first trainable neural network"
+    },
+    {
+      start: 1957,
+      end: 1957,
+      event: "Population of the urban industrial working class in China reaches 10 million; urban population reaches 100 million"
+    },
+    {
+      start: 1957,
+      end: 1958,
+      event: "Anti-rightist campaign in China, 1.1m people branded as rightists"
+    },
+    {
+      start: 1958,
+      end: 1958,
+      event: "Coup in Iraq overthrows King Faisal II"
+    },
+    {
+      start: 1958,
+      end: 1961,
+      event: "Great Leap Forward in China, Mao's attempt to rapidly industrialize and collectivize agriculture, away from the Soviet model. China should rely on its one major resource -- people."
+    },
+    {
+      start: 1958,
+      end: 1958,
+      event: "In Jiangsu, Pi County, peasants produce 105k paintings, drawings, and murals depicting a glorious Communist future"
+    },
+    {
+      start: 1958,
+      end: 1958,
+      event: "The CCP knows about widening famine in regions but continues with the Great Leap Forward"
+    },
+    {
+      start: 1959,
+      end: 1959,
+      event: "Mao Zedong orders a second Great Leap Forward, leading to the worst famine in human history"
+    },
+    {
+      start: 1960,
+      end: 1960,
+      event: "Rome hosts the Summer Olympics"
+    },
+    {
+      start: 1961,
+      end: 1961,
+      event: "Bay of Pigs invasion of Cuba by US"
+    },
+    {
+      start: 1963,
+      end: 1963,
+      event: "Walter Feit and John Thompson proved that every finite group of odd order is solvable"
+    },
+    {
+      start: 1961,
+      end: 1961,
+      event: "Eritrean War of Independence begins"
+    },
+    {
+      start: 1961,
+      end: 1961,
+      event: "John F. Kennedy becomes president of US"
+    },
+    {
+      start: 1962,
+      end: 1962,
+      event: "Cuban Missile Crisis, peak of US-Soviet tensions"
+    },
+    {
+      start: 1962,
+      end: 1962,
+      event: "Illinois becomes first US state to decriminalize same-sex sexual activity"
+    },
+    {
+      start: 1962,
+      end: 1962,
+      event: "Following the 1958 Central Committee announcement that official labors should do labor, 2 million urbanites have been sent to the countryside for 1-year stints, although this appeared not to have reduced bureaucratism and factionalism, leading to the Cultural Revolution"
+    },
+    {
+      start: 1962,
+      end: 1962,
+      event: "Ethiopia annexes Eritrea"
+    },
+    {
+      start: 1962,
+      end: 1962,
+      event: "Evian accords grant Algerian independence from France"
+    },
+    {
+      start: 1962,
+      end: 1962,
+      event: "China and India fight a brief border war"
+    },
+    {
+      start: 1962,
+      end: 1962,
+      event: "Taming of CCP agricultural policy; 30% of households are farming inependently; the CCP launches the Socialist Education Movement to ensure ideological alignment and pinning the Great Leap Forward's failures on local officials"
+    },
+    {
+      start: 1963,
+      end: 1963,
+      event: "Assassination of John F. Kennedy"
+    },
+    {
+      start: 1963,
+      end: 1963,
+      event: "Lyndon B. Johnson becomes president of US"
+    },
+    {
+      start: 1964,
+      end: 1973,
+      event: "US involvement in the Vietnam War"
+    },
+    {
+      start: 1964,
+      end: 1964,
+      event: "Founding of the Palestine Liberation Organization in East Jerusalem"
+    },
+    {
+      start: 1964,
+      end: 1964,
+      event: "France recognizes the People's Republic of China"
+    },
+    {
+      start: 1964,
+      end: 1964,
+      event: "China successfuly tests a nuclear bomb"
+    },
+    {
+      start: 1964,
+      end: 1964,
+      event: "Jacques Tits shows that the derived subgroup of the Ree group 2F4(2) is a new simple group, now called the Tits group. Sometimes counted as the 27th sporadic group, it occupies an unusual position between groups of Lie type and sporadic groups"
+    },
+    {
+      start: 1965,
+      end: 1965,
+      event: "Zvonimir Janko discovers J1, the first sporadic simple group found since Mathieu's groups nearly a century earlier. The discovery causes a 'sensation' among group theorists and triggers an intense search for more sporadic groups"
+    },
+    {
+      start: 1965,
+      end: 1965,
+      event: "Voting Rights Act passes"
+    },
+    {
+      start: 1965,
+      end: 1965,
+      event: "Indian-Pakistan War"
+    },
+    {
+      start: 1965,
+      end: 1965,
+      event: "Malcolm X assassinated"
+    },
+    {
+      start: 1965,
+      end: 1965,
+      event: "Rhodesia declares independence from UK"
+    },
+    {
+      start: 1965,
+      end: 1965,
+      event: "Civil War in Dominican Republic, US intervenes"
+    },
+    {
+      start: 1965,
+      end: 1965,
+      event: "Indonesia anti-communist purge/coup begins"
+    },
+    {
+      start: 1966,
+      end: 1966,
+      event: "Chinese Cultural Revolution begins"
+    },
+    {
+      start: 1966,
+      end: 1966,
+      event: "Formation of the Black Panther Party"
+    },
+    {
+      start: 1966,
+      end: 1966,
+      event: "Botswana and Lesotho gain independence"
+    },
+    {
+      start: 1966,
+      end: 1966,
+      event: "South African border war begins"
+    },
+    {
+      start: 1967,
+      end: 1967,
+      event: "Six-Day War, Israel occupies West Bank, Gaza, Sinai, Golan Heights"
+    },
+    {
+      start: 1967,
+      end: 1967,
+      event: "Jacques Derrida writes *Of Grammatology*"
+    },
+    {
+      start: 1967,
+      end: 1967,
+      event: "UN Resolution 242 calls for \"land for peace\""
+    },
+    {
+      start: 1967,
+      end: 1967,
+      event: "Summer of Love in San Francisco"
+    },
+    {
+      start: 1967,
+      end: 1967,
+      event: "Che Guevara captured and executed"
+    },
+    {
+      start: 1967,
+      end: 1967,
+      event: "Loving v. Virginia, Supreme Court strikes down anti-miscegenation laws"
+    },
+    {
+      start: 1967,
+      end: 1967,
+      event: "England and Wales decriminalize homosexuality for men over 21 years old"
+    },
+    {
+      start: 1967,
+      end: 1967,
+      event: "Nigerian Civil War, >1 million killed mainly from famine"
+    },
+    {
+      start: 1968,
+      end: 1968,
+      event: "Fair Housing Act passed"
+    },
+    {
+      start: 1968,
+      end: 1968,
+      event: "Prague Spring and USSR invasion of Czechoslovakia"
+    },
+    {
+      start: 1968,
+      end: 1968,
+      event: "Mai Lai massacre in Vietnam"
+    },
+    {
+      start: 1968,
+      end: 1968,
+      event: "Tet Offensive and beginning of US withdrawal from Vietnam"
+    },
+    {
+      start: 1968,
+      end: 1968,
+      event: "Huge student protests in the US, France, Mexico, Germany, Italy"
+    },
+    {
+      start: 1968,
+      end: 1968,
+      event: "Martin Luther King Jr. assassinated"
+    },
+    {
+      start: 1968,
+      end: 1968,
+      event: "Robert F. Kennedy assassinated"
+    },
+    {
+      start: 1968,
+      end: 1968,
+      event: "Hellen Keller dies"
+    },
+    {
+      start: 1968,
+      end: 1968,
+      event: "John Steinbeck dies"
+    },
+    {
+      start: 1968,
+      end: 1968,
+      event: "Edith Piaf dies"
+    },
+    {
+      start: 1968,
+      end: 1968,
+      event: "Yuri Gagarin dies"
+    },
+    {
+      start: 1968,
+      end: 1968,
+      event: "Paris May riots against Charles de Gaulle, nearly topples government"
+    },
+    {
+      start: 1968,
+      end: 1968,
+      event: "Battle of Karameh between Palestinians and Israelis"
+    },
+    {
+      start: 1968,
+      end: 1968,
+      event: "Democratic National Convention riots in Chicago"
+    },
+    {
+      start: 1968,
+      end: 1968,
+      event: "Tlatelolco massacre against protesters in the Mexico City Olympic Games"
+    },
+    {
+      start: 1968,
+      end: 1968,
+      event: "Italy's Hot Autumn, massive strikes and protests"
+    },
+    {
+      start: 1968,
+      end: 1968,
+      event: "Hall and Wales construct J2 (the Hall-Janko group) as a rank 3 permutation group on 100 points, predicted by Janko. Higman and Sims discover HS while attending Hall's presentation, by checking for rank 3 permutation groups containing M22"
+    },
+    {
+      start: 1968,
+      end: 1969,
+      event: "John Conway discovers Co1, Co2, and Co3 as automorphisms of the Leech lattice. He identifies connections to McLaughlin's McL and the Higman-Sims group HS. This opens the 'second generation' of sporadic groups"
+    },
+    {
+      start: 1969,
+      end: 1969,
+      event: "Michio Suzuki discovers the Suzuki sporadic group Suz as a rank 3 permutation group. Jack McLaughlin discovers McL. Dieter Held finds He by studying involution centralizers like M24's"
+    },
+    {
+      start: 1969,
+      end: 1969,
+      event: "Janko predicts J3, constructed by Higman and McKay. J3 is later shown to be a 'pariah' -- one of the six sporadic groups not contained in the Monster"
+    },
+    {
+      start: 1969,
+      end: 1969,
+      event: "Apollo 11 mission, first moon landing"
+    },
+    {
+      start: 1969,
+      end: 1969,
+      event: "Muammar Gaddafi leads coup in Libya"
+    },
+    {
+      start: 1969,
+      end: 1969,
+      event: "Richard Nixon becomes president of US"
+    },
+    {
+      start: 1969,
+      end: 1969,
+      event: "Canada decriminalizes homosexuality; Prime Minister Trudeau states \"the state has no place in the bedrooms of the nation\""
+    },
+    {
+      start: 1969,
+      end: 1969,
+      event: "Stonewall riots at Greenwich Village gay bar in New York City mark turning point for LGBT rights movement"
+    },
+    {
+      start: 1969,
+      end: 1969,
+      event: "Gay Liberation Front formed in New York following Stonewall riots"
+    },
+    {
+      start: 1969,
+      end: 1969,
+      event: "The Troubles begin in Northern Ireland between Catholics and Protestants"
+    },
+    {
+      start: 1969,
+      end: 1969,
+      event: "China-USSR border conflicts at the Ussuri River border"
+    },
+    {
+      start: 1969,
+      end: 1969,
+      event: "Woodstock music festival"
+    },
+    {
+      start: 1970,
+      end: 1970,
+      event: "Incursion of Vietnam War into Cambodia"
+    },
+    {
+      start: 1970,
+      end: 1970,
+      event: "Overthrow of Cambodian government by Khmer Rouge, leading to genocide in 1975"
+    },
+    {
+      start: 1970,
+      end: 1970,
+      event: "Black September in Jordan, PLO is expelled from Jordan"
+    },
+    {
+      start: 1970,
+      end: 1970,
+      event: "Dawson's Field Hijackings in Jordan by PFLP"
+    },
+    {
+      start: 1970,
+      end: 1970,
+      event: "American journalist Edgar Snow is invited to stand beside Mao at the 1970 national day parade"
+    },
+    {
+      start: 1970,
+      end: 1970,
+      event: "Matiyasevich proves Hilbert's tenth problem is undecidable"
+    },
+    {
+      start: 1970,
+      end: 1970,
+      event: "Seppo Linnainmaa publishes automatic differentiation method, foundational for backpropagation"
+    },
+    {
+      start: 1970,
+      end: 1970,
+      event: "Kent State shootings"
+    },
+    {
+      start: 1970,
+      end: 1970,
+      event: "First Gay Pride marches held in New York, Los Angeles, San Francisco, and Chicago commemorating Stonewall"
+    },
+    {
+      start: 1970,
+      end: 1970,
+      event: "Death of Abdel Nasser, Sadat becomes president of Egypt"
+    },
+    {
+      start: 1970,
+      end: 1970,
+      event: "Black September in Jordan, PLO vs. Jordanian government"
+    },
+    {
+      start: 1971,
+      end: 1971,
+      event: "Proof that cyclotomic integer rings Dp fail unique factorization for all primes p ≥ 23, showing Kummer's ideal theory was absolutely necessary"
+    },
+    {
+      start: 1971,
+      end: 1971,
+      event: "Bernd Fischer discovers the three Fischer groups Fi22, Fi23, Fi24 while investigating groups generated by 3-transpositions"
+    },
+    {
+      start: 1971,
+      end: 1971,
+      event: "Nixon declares War on Drugs"
+    },
+    {
+      start: 1971,
+      end: 1971,
+      event: "Bangladesh War of Independence / Liberation War"
+    },
+    {
+      start: 1971,
+      end: 1971,
+      event: "Lin Biao, who attempted a coup against Mao, is put on a plane fleeing China, crashing in Mongolia"
+    },
+    {
+      start: 1971,
+      end: 1971,
+      event: "UN awards China a seat"
+    },
+    {
+      start: 1971,
+      end: 1971,
+      event: "\"Ping-Pong\" diplomacy trip between American ping pong team and Chinese"
+    },
+    {
+      start: 1972,
+      end: 1972,
+      event: "Israeli athletes killed at the Munich Olympics by Black September"
+    },
+    {
+      start: 1972,
+      end: 1972,
+      event: "Watergate break-in at Democratic National Committee headquarters"
+    },
+    {
+      start: 1972,
+      end: 1972,
+      event: "Nixon visits China"
+    },
+    {
+      start: 1972,
+      end: 1972,
+      event: "Intel Releases the 4004 Microprocessor"
+    },
+    {
+      start: 1972,
+      end: 1972,
+      event: "Bloody Sunday in Northern Ireland, British Army kills 13 unarmed protesters in Derry"
+    },
+    {
+      start: 1973,
+      end: 1973,
+      event: "Yom Kippur War, surprise attack by Egypt and Syria on Israel"
+    },
+    {
+      start: 1973,
+      end: 1973,
+      event: "Roe v. Wade, Supreme Court legalizes abortion"
+    },
+    {
+      start: 1973,
+      end: 1973,
+      event: "American Psychiatric Association removes homosexuality from the Diagnostic and Statistical Manual"
+    },
+    {
+      start: 1973,
+      end: 1973,
+      event: "US ends draft for Vietnam War"
+    },
+    {
+      start: 1973,
+      end: 1973,
+      event: "Pinochet overthrows Allende with U.S. support, establishing military dictatorship in Chile"
+    },
+    {
+      start: 1973,
+      end: 1973,
+      event: "Bernd Fischer and Robert Griess predict the Monster group as containing a double cover of the Baby Monster. The Baby Monster is also discovered by Fischer. Arunas Rudvalis finds Ru, later constructed by Conway and Wales"
+    },
+    {
+      start: 1972,
+      end: 1973,
+      event: "Richard Lyons characterizes the Lyons group Ly; Sims proves its existence using computer calculations. Ly is a 'pariah' -- not contained in the Monster"
+    },
+    {
+      start: 1974,
+      end: 1974,
+      event: "China seizes the Xisha islands from South Vietnam"
+    },
+    {
+      start: 1974,
+      end: 1974,
+      event: "Saturday Night Massacre in Watergate scandal; special prosecutor fired"
+    },
+    {
+      start: 1974,
+      end: 1974,
+      event: "Nixon resigns over Watergate scandal, only US president to resign; Gerald Ford becomes president"
+    },
+    {
+      start: 1974,
+      end: 1974,
+      event: "Gerald Ford pardons Richard Nixon"
+    },
+    {
+      start: 1975,
+      end: 1975,
+      event: "Microsoft founded by Bill Gates and Paul Allen in Albuquerque, New Mexico"
+    },
+    {
+      start: 1975,
+      end: 1975,
+      event: "Michel Foucault writes *Discipline and Punish*"
+    },
+    {
+      start: 1975,
+      end: 1975,
+      event: "Deng Xiao Ping is reinstated to inner circle of power in CCP"
+    },
+    {
+      start: 1975,
+      end: 1975,
+      event: "Janko finds J4, the last of his four sporadic groups. Its existence is verified by computer in 1980. J4 is a 'pariah' -- not a subquotient of the Monster. Simon Norton and Koichiro Harada independently discover the Harada-Norton group HN"
+    },
+    {
+      start: 1976,
+      end: 1976,
+      event: "John Thompson finds the Thompson group Th, constructed by Smith as the automorphism group of a lattice in the 248-dimensional Lie algebra of E8. Michael O'Nan discovers O'N, the last of the six 'pariah' sporadic groups"
+    },
+    {
+      start: 1976,
+      end: 1976,
+      event: "Zhou Enlai dies; radicals demonstrate in his memory in Tiananmen Square"
+    },
+    {
+      start: 1976,
+      end: 1976,
+      event: "A devastating earthquake kills a quarter of a million people in Tangshan, China -- the \"mandate of heaven\" has been lost"
+    },
+    {
+      start: 1976,
+      end: 1976,
+      event: "Diffie and Hellman publish 'New Directions in Cryptography,' introducing public-key cryptography and Diffie-Hellman key exchange"
+    },
+    {
+      start: 1976,
+      end: 1976,
+      event: "Mao Zedong dies on September 9th"
+    },
+    {
+      start: 1977,
+      end: 1977,
+      event: "Rivest, Shamir, and Adleman invent RSA algorithm, first practical public-key cryptosystem"
+    },
+    {
+      start: 1977,
+      end: 1977,
+      event: "Jimmy Carter becomes president of US"
+    },
+    {
+      start: 1977,
+      end: 1977,
+      event: "Harvey Milk elected to San Francisco Board of Supervisors, one of first openly gay elected officials in US"
+    },
+    {
+      start: 1977,
+      end: 1977,
+      event: "Quebec becomes first major jurisdiction to prohibit discrimination based on sexual orientation"
+    },
+    {
+      start: 1978,
+      end: 1978,
+      event: "Rainbow flag first used as symbol of LGBT pride by Gilbert Baker in San Francisco"
+    },
+    {
+      start: 1978,
+      end: 1978,
+      event: "Harvey Milk and Mayor George Moscone assassinated in San Francisco by Dan White"
+    },
+    {
+      start: 1979,
+      end: 1979,
+      event: "Camp David Accords, Israel withdraws from Sinai and establishes peace with Egypt"
+    },
+    {
+      start: 1979,
+      end: 1979,
+      event: "United States removes troops and diplomatic recognition from Taiwan"
+    },
+    {
+      start: 1980,
+      end: 1980,
+      event: "Gilles Deleuze and Felix Guattari write *A Thousand Plateaus*"
+    },
+    {
+      start: 1980,
+      end: 1980,
+      event: "Saul Kripke writes *Naming and Necessity*"
+    },
+    {
+      start: 1981,
+      end: 1981,
+      event: "The classification of all finite simple groups was completed, solving a problem posed by Hölder in 1893"
+    },
+    {
+      start: 1981,
+      end: 1981,
+      event: "IBM PC released with Microsoft's MS-DOS operating system"
+    },
+    {
+      start: 1981,
+      end: 1981,
+      event: "Ronald Reagan becomes president of US"
+    },
+    {
+      start: 1982,
+      end: 1982,
+      event: "First Lebanon War; Israel invades Lebanont to expel PLO"
+    },
+    {
+      start: 1982,
+      end: 1982,
+      event: "Sabra and Shatila Massacres under Israeli watch and support"
+    },
+    {
+      start: 1982,
+      end: 1982,
+      event: "Robert Griess constructs the Monster group M as the automorphism group of the 196,884-dimensional Griess algebra, completing the discovery of all 26 sporadic simple groups. He calls the 20 sporadics contained in the Monster the 'happy family' and the remaining 6 the 'pariahs'"
+    },
+    {
+      start: 1983,
+      end: 1983,
+      event: "Invasion of Grenada by US"
+    },
+    {
+      start: 1985,
+      end: 1985,
+      event: "Windows 1.0 released by Microsoft"
+    },
+    {
+      start: 1985,
+      end: 1987,
+      event: "Iran-Contra affair: Reagan administration secretly sells arms to Iran, diverts funds to Nicaraguan Contras"
+    },
+    {
+      start: 1986,
+      end: 1986,
+      event: "Microsoft relocates headquarters to Redmond, Washington"
+    },
+    {
+      start: 1986,
+      end: 1986,
+      event: "Microsoft goes public on NASDAQ"
+    },
+    {
+      start: 1986,
+      end: 1986,
+      event: "Iran-Contra affair exposed in Lebanese magazine"
+    },
+    {
+      start: 1986,
+      end: 1986,
+      event: "Rumelhart, Hinton, and Williams popularize backpropagation algorithm for training neural networks"
+    },
+    {
+      start: 1987,
+      end: 1987,
+      event: "First Intifada begins in Gaza and West Bank"
+    },
+    {
+      start: 1987,
+      end: 1987,
+      event: "Yasumasa Kanada works out $$\\pi$$ to 134217000 decimal places."
+    },
+    {
+      start: 1987,
+      end: 1987,
+      event: "CCP endorses authoritarian state capitalism, mixing market economy with tight political control."
+    },
+    {
+      start: 1988,
+      end: 1988,
+      event: "Hamas founded as offshoot of the Muslim Brotherhood"
+    },
+    {
+      start: 1989,
+      end: 1989,
+      event: "Invasion of Panama by US"
+    },
+    {
+      start: 1989,
+      end: 1989,
+      event: "George H.W. Bush becomes president of US"
+    },
+    {
+      start: 1990,
+      end: 1991,
+      event: "Gulf War"
+    },
+    {
+      start: 1991,
+      end: 1991,
+      event: "Orlando Patterson writes *Freedom in the Making of Western Culture*"
+    },
+    {
+      start: 1991,
+      end: 2002,
+      event: "Algerian Civil War, over 150k killed"
+    },
+    {
+      start: 1991,
+      end: 1991,
+      event: "The Eritrean Liberation Front defeats Ethiopia, Eritrea becomes independent"
+    },
+    {
+      start: 1993,
+      end: 1993,
+      event: "Oslo I Accord signed, establishing mutual recognition"
+    },
+    {
+      start: 1993,
+      end: 1993,
+      event: "Eritrea votes for independence in UN supervised referendum and becomes fully sovereign state"
+    },
+    {
+      start: 1993,
+      end: 1993,
+      event: "Bill Clinton becomes president of US"
+    },
+    {
+      start: 1993,
+      end: 1993,
+      event: "\"Don't Ask, Don't Tell\" policy enacted, allowing closeted gay people to serve in US military"
+    },
+    {
+      start: 1994,
+      end: 1994,
+      event: "Massacre at Al-Aqsa Mosque by Jewish extremist"
+    },
+    {
+      start: 1995,
+      end: 1995,
+      event: "Wiles and Taylor's paper on \"Ring-theoretic properties of certain Hecke algebras\" fills the gap in the proof of Fermat's Last Theorem - ring theory comes full circle to solve the problem that helped create it"
+    },
+    {
+      start: 1995,
+      end: 1995,
+      event: "Oslo II Accord signed, establishing Palestinian Authority and limited self-rule"
+    },
+    {
+      start: 1995,
+      end: 1995,
+      event: "Assassination of Yitzhak Rabin by Jewish extremist"
+    },
+    {
+      start: 1992,
+      end: 1992,
+      event: "President George H.W. Bush pardons six Iran-Contra officials including Caspar Weinberger"
+    },
+    {
+      start: 1994,
+      end: 1994,
+      event: "Amazon founded by Jeff Bezos in Seattle as online bookstore"
+    },
+    {
+      start: 1995,
+      end: 1995,
+      event: "Windows 95 released by Microsoft, major commercial success"
+    },
+    {
+      start: 1997,
+      end: 1997,
+      event: "Amazon goes public on NASDAQ with IPO"
+    },
+    {
+      start: 1997,
+      end: 1997,
+      event: "IBM's Deep Blue defeats chess world champion Garry Kasparov"
+    },
+    {
+      start: 1997,
+      end: 1997,
+      event: "Hochreiter and Schmidhuber invent Long Short-Term Memory networks"
+    },
+    {
+      start: 1998,
+      end: 1998,
+      event: "Clinton-Lewinsky scandal exposed; Clinton denies affair"
+    },
+    {
+      start: 1998,
+      end: 1998,
+      event: "Clinton admits 'improper relationship' with Monica Lewinsky"
+    },
+    {
+      start: 1998,
+      end: 1998,
+      event: "House of Representatives impeaches President Clinton for perjury and obstruction"
+    },
+    {
+      start: 1998,
+      end: 2000,
+      event: "Border dispute leads Eritrea to war with Ethopia"
+    },
+    {
+      start: 1999,
+      end: 1999,
+      event: "Senate acquits President Clinton on both impeachment charges"
+    },
+    {
+      start: 2000,
+      end: 2000,
+      event: "Steve Ballmer becomes CEO of Microsoft, succeeding Bill Gates"
+    },
+    {
+      start: 2000,
+      end: 2000,
+      event: "Camp David talks collapse"
+    },
+    {
+      start: 2000,
+      end: 2000,
+      event: "Second Intifada begins after Ariel Sharon visits Temple Mount"
+    },
+    {
+      start: 2001,
+      end: 2001,
+      event: "NIST adopts Advanced Encryption Standard replacing DES"
+    },
+    {
+      start: 2001,
+      end: 2001,
+      event: "Netherlands becomes first country in the world to legalize same-sex marriage"
+    },
+    {
+      start: 2001,
+      end: 2001,
+      event: "9/11 attacks"
+    },
+    {
+      start: 2001,
+      end: 2021,
+      event: "War in Afghanistan"
+    },
+    {
+      start: 2001,
+      end: 2001,
+      event: "George W. Bush becomes president of US"
+    },
+    {
+      start: 2003,
+      end: 2003,
+      event: "US Supreme Court rules in Lawrence v. Texas that sodomy laws nationwide are unconstitutional"
+    },
+    {
+      start: 2003,
+      end: 2011,
+      event: "Iraq War"
+    },
+    {
+      start: 2004,
+      end: 2004,
+      event: "Massachusetts becomes first US state to legalize same-sex marriage"
+    },
+    {
+      start: 2004,
+      end: 2004,
+      event: "Facebook founded by Mark Zuckerberg and Harvard roommates"
+    },
+    {
+      start: 2005,
+      end: 2005,
+      event: "Israel withdraws settlers and military forces from Gaza"
+    },
+    {
+      start: 2005,
+      end: 2005,
+      event: "I was born"
+    },
+    {
+      start: 2006,
+      end: 2006,
+      event: "Second Lebanon War begins"
+    },
+    {
+      start: 2008,
+      end: 2008,
+      event: "Global financial crisis due to subprime mortgage crisis"
+    },
+    {
+      start: 2009,
+      end: 2009,
+      event: "Barack Obama becomes president of US"
+    },
+    {
+      start: 2009,
+      end: 2009,
+      event: "Matthew Shepard and James Byrd Jr. Hate Crimes Prevention Act passed, expanding protections to include sexual orientation and gender identity"
+    },
+    {
+      start: 2010,
+      end: 2010,
+      event: "7.0-magnitude earthquake strikes Haiti, killing approximately 315,000 people"
+    },
+    {
+      start: 2010,
+      end: 2010,
+      event: "Polish President Lech Kaczyński dies in plane crash near Smolensk, Russia"
+    },
+    {
+      start: 2010,
+      end: 2010,
+      event: "8.8-magnitude earthquake in Chile kills over 525 people"
+    },
+    {
+      start: 2010,
+      end: 2010,
+      event: "Apple releases the first iPad"
+    },
+    {
+      start: 2010,
+      end: 2010,
+      event: "Instagram officially launches as photo-sharing social media platform"
+    },
+    {
+      start: 2010,
+      end: 2010,
+      event: "Julia Gillard becomes Australia's first female Prime Minister"
+    },
+    {
+      start: 2011,
+      end: 2011,
+      event: "Tunisia's president flees after protests, marking start of Arab Spring uprisings"
+    },
+    {
+      start: 2011,
+      end: 2011,
+      event: "Egyptian President Hosni Mubarak resigns after widespread protests"
+    },
+    {
+      start: 2011,
+      end: 2011,
+      event: "9.1-magnitude earthquake and tsunami strike Japan, triggering Fukushima nuclear crisis; nearly 20,000 dead"
+    },
+    {
+      start: 2011,
+      end: 2011,
+      event: "U.S. military operation kills al-Qaeda leader Osama bin Laden in Pakistan"
+    },
+    {
+      start: 2011,
+      end: 2011,
+      event: "South Sudan becomes independent, the world's newest nation"
+    },
+    {
+      start: 2011,
+      end: 2011,
+      event: "Libyan leader Muammar Gaddafi killed during civil conflict"
+    },
+    {
+      start: 2011,
+      end: 2011,
+      event: "Royal wedding of Prince William and Catherine Middleton watched by ~2 billion viewers"
+    },
+    {
+      start: 2011,
+      end: 2011,
+      event: "NASA's Space Shuttle program concludes with Atlantis's final mission"
+    },
+    {
+      start: 2011,
+      end: 2011,
+      event: "\"Don't Ask, Don't Tell\" repealed on September 20; gays, lesbians, and bisexuals can serve openly in US military"
+    },
+    {
+      start: 2011,
+      end: 2011,
+      event: "US intervention in Libya"
+    },
+    {
+      start: 2011,
+      end: 2011,
+      event: "Arab Spring uprisings throughout the Middle East"
+    },
+    {
+      start: 2012,
+      end: 2012,
+      event: "Vladimir Putin elected President of Russia"
+    },
+    {
+      start: 2012,
+      end: 2012,
+      event: "Costa Concordia cruise ship disaster kills 32 people off Italy's coast"
+    },
+    {
+      start: 2012,
+      end: 2012,
+      event: "Scientists at CERN announce discovery of particle consistent with Higgs boson"
+    },
+    {
+      start: 2012,
+      end: 2012,
+      event: "NASA's Curiosity rover successfully lands on Mars"
+    },
+    {
+      start: 2012,
+      end: 2012,
+      event: "Barack Obama wins reelection as U.S. President"
+    },
+    {
+      start: 2012,
+      end: 2012,
+      event: "Xi Jinping becomes General Secretary of China's Communist Party"
+    },
+    {
+      start: 2012,
+      end: 2012,
+      event: "Hurricane Sandy causes 233 deaths and $68.7 billion in damages"
+    },
+    {
+      start: 2012,
+      end: 2012,
+      event: "Sandy Hook Elementary School shooting kills 20 students and 6 teachers in Connecticut"
+    },
+    {
+      start: 2012,
+      end: 2012,
+      event: "AlexNet achieves breakthrough in ImageNet competition, launching deep learning revolution"
+    },
+    {
+      start: 2012,
+      end: 2012,
+      event: "Facebook goes public with IPO at $38 per share, raising $16 billion"
+    },
+    {
+      start: 2012,
+      end: 2012,
+      event: "Facebook acquires Instagram for $1 billion"
+    },
+    {
+      start: 2013,
+      end: 2013,
+      event: "Pope Benedict XVI resigns, first to do so voluntarily since 1294"
+    },
+    {
+      start: 2013,
+      end: 2013,
+      event: "Cardinal Jorge Mario Bergoglio elected Pope Francis"
+    },
+    {
+      start: 2013,
+      end: 2013,
+      event: "Egyptian President Mohamed Morsi deposed in military coup"
+    },
+    {
+      start: 2013,
+      end: 2013,
+      event: "Chelyabinsk meteor explosion over Russia injures approximately 1,500 people"
+    },
+    {
+      start: 2013,
+      end: 2013,
+      event: "Typhoon Haiyan kills at least 6,241 people across Philippines and Vietnam"
+    },
+    {
+      start: 2013,
+      end: 2013,
+      event: "Euromaidan pro-EU demonstrations begin in Ukraine"
+    },
+    {
+      start: 2014,
+      end: 2014,
+      event: "Ukrainian President Viktor Yanukovych removed after Revolution of Dignity protests"
+    },
+    {
+      start: 2014,
+      end: 2014,
+      event: "Russia formally annexes Crimea"
+    },
+    {
+      start: 2014,
+      end: 2014,
+      event: "Malaysia Airlines Flight 370 disappears with 239 people"
+    },
+    {
+      start: 2014,
+      end: 2014,
+      event: "ISIS declares itself a caliphate"
+    },
+    {
+      start: 2014,
+      end: 2014,
+      event: "Malaysia Airlines Flight 17 shot down over eastern Ukraine, 298 killed"
+    },
+    {
+      start: 2014,
+      end: 2014,
+      event: "West African Ebola epidemic becomes most severe in history; 28,616 infected, 11,310 deaths"
+    },
+    {
+      start: 2014,
+      end: 2014,
+      event: "India's Mangalyaan reaches Mars orbit, first Asian nation to achieve this"
+    },
+    {
+      start: 2014,
+      end: 2014,
+      event: "Satya Nadella becomes CEO of Microsoft, succeeding Steve Ballmer"
+    },
+    {
+      start: 2014,
+      end: 2014,
+      event: "Facebook acquires WhatsApp for $19 billion"
+    },
+    {
+      start: 2014,
+      end: 2014,
+      event: "Third Gaza War becomes most deadly conflict in Gaza"
+    },
+    {
+      start: 2015,
+      end: 2015,
+      event: "7.8-magnitude earthquake devastates Nepal, killing approximately 9,018 people"
+    },
+    {
+      start: 2015,
+      end: 2015,
+      event: "Iran reaches historic nuclear agreement with long-term limits in exchange for sanctions relief"
+    },
+    {
+      start: 2015,
+      end: 2015,
+      event: "Cuba and United States restore full diplomatic relations after 54 years"
+    },
+    {
+      start: 2015,
+      end: 2015,
+      event: "Charlie Hebdo shooting in Paris kills 12 people"
+    },
+    {
+      start: 2015,
+      end: 2015,
+      event: "Paris coordinated terror attacks kill 137 people"
+    },
+    {
+      start: 2015,
+      end: 2015,
+      event: "NASA's New Horizons spacecraft becomes first to visit Pluto"
+    },
+    {
+      start: 2015,
+      end: 2015,
+      event: "US Supreme Court rules in Obergefell v. Hodges that same-sex marriage is legal nationwide"
+    },
+    {
+      start: 2016,
+      end: 2016,
+      event: "UK votes to leave European Union, triggering Brexit"
+    },
+    {
+      start: 2016,
+      end: 2016,
+      event: "Donald Trump elected 45th U.S. President over Hillary Clinton"
+    },
+    {
+      start: 2016,
+      end: 2016,
+      event: "Pokémon Go released, breaking numerous records in sales and revenue"
+    },
+    {
+      start: 2016,
+      end: 2016,
+      event: "2016 Summer Olympics held in Rio de Janeiro, Brazil"
+    },
+    {
+      start: 2016,
+      end: 2016,
+      event: "Google DeepMind's AlphaGo defeats world Go champion Lee Sedol"
+    },
+    {
+      start: 2017,
+      end: 2017,
+      event: "UK initiates Article 50, formally beginning Brexit negotiations"
+    },
+    {
+      start: 2017,
+      end: 2017,
+      event: "Hurricanes Harvey, Irma, and Maria devastate Caribbean and US"
+    },
+    {
+      start: 2017,
+      end: 2017,
+      event: "Las Vegas shooting kills 60 people and injures 867, deadliest mass shooting by lone gunman in US history"
+    },
+    {
+      start: 2017,
+      end: 2017,
+      event: "SpaceX successfully reflights first orbital-class rocket"
+    },
+    {
+      start: 2017,
+      end: 2017,
+      event: "Fortnite battle royale game launches, becoming global phenomenon"
+    },
+    {
+      start: 2017,
+      end: 2017,
+      event: "Google Brain introduces transformer architecture in 'Attention Is All You Need,' enabling modern large language models"
+    },
+    {
+      start: 2017,
+      end: 2017,
+      event: "Donald Trump becomes president of US"
+    },
+    {
+      start: 2018,
+      end: 2018,
+      event: "Former Russian agent Sergei Skripal poisoned with Novichok nerve agent in England"
+    },
+    {
+      start: 2018,
+      end: 2018,
+      event: "Kim Jong Un crosses into South Korea, first North Korean leader to do so since 1953"
+    },
+    {
+      start: 2018,
+      end: 2018,
+      event: "SpaceX successfully launches Falcon Heavy rocket"
+    },
+    {
+      start: 2018,
+      end: 2018,
+      event: "2018 FIFA World Cup held in Russia, won by France"
+    },
+    {
+      start: 2018,
+      end: 2018,
+      event: "Great March of Return protests in Gaza"
+    },
+    {
+      start: 2018,
+      end: 2018,
+      event: "Eritrea and Ethiopia sign peace agreement"
+    },
+    {
+      start: 2018,
+      end: 2018,
+      event: "the \"Nation State Law\" / \"Basic Law\" is passed by Israel"
+    },
+    {
+      start: 2019,
+      end: 2019,
+      event: "Venezuelan presidential crisis as Juan Guaidó declares President Maduro illegitimate"
+    },
+    {
+      start: 2019,
+      end: 2019,
+      event: "Volodymyr Zelenskyy wins Ukraine's presidential election in landslide"
+    },
+    {
+      start: 2019,
+      end: 2019,
+      event: "Emperor Akihito abdicates from Japan's throne, first imperial abdication in nearly two centuries"
+    },
+    {
+      start: 2019,
+      end: 2019,
+      event: "Notre-Dame Cathedral in Paris suffers catastrophic fire during Holy Week"
+    },
+    {
+      start: 2019,
+      end: 2019,
+      event: "EventHorizon Telescope releases first-ever image of a black hole in galaxy M87"
+    },
+    {
+      start: 2019,
+      end: 2019,
+      event: "Cyclone Idai strikes Mozambique, causing over 1,000 deaths"
+    },
+    {
+      start: 2019,
+      end: 2019,
+      event: "First known COVID-19 case identified in Wuhan, China"
+    },
+    {
+      start: 2020,
+      end: 2020,
+      event: "U.S. drone strike kills Iranian general Qasem Soleimani at Baghdad airport"
+    },
+    {
+      start: 2020,
+      end: 2020,
+      event: "WHO declares COVID-19 a public health emergency of international concern"
+    },
+    {
+      start: 2020,
+      end: 2020,
+      event: "WHO declares COVID-19 a pandemic"
+    },
+    {
+      start: 2020,
+      end: 2020,
+      event: "United Kingdom formally departs from European Union"
+    },
+    {
+      start: 2020,
+      end: 2020,
+      event: "Kobe Bryant and daughter die in helicopter crash near Calabasas"
+    },
+    {
+      start: 2020,
+      end: 2020,
+      event: "2020 Summer Olympics postponed to 2021 due to COVID-19 pandemic"
+    },
+    {
+      start: 2020,
+      end: 2020,
+      event: "I start attending the Transition School program at the University of Washington"
+    },
+    {
+      start: 2020,
+      end: 2020,
+      event: "US Supreme Court rules in Bostock v. Clayton County that sexual orientation and gender identity discrimination violates Civil Rights Act of 1964"
+    },
+    {
+      start: 2020,
+      end: 2020,
+      event: "Israel establishes normalization agreements with Bahrain, UAE, Morocco"
+    },
+    {
+      start: 2020,
+      end: 2020,
+      event: "COVID-19 vaccines begin deployment to general public"
+    },
+    {
+      start: 2021,
+      end: 2021,
+      event: "Supporters of Donald Trump attack U.S. Capitol during election certification; 5 dead"
+    },
+    {
+      start: 2021,
+      end: 2021,
+      event: "Joseph Biden becomes president of US"
+    },
+    {
+      start: 2021,
+      end: 2021,
+      event: "Myanmar military stages coup removing Aung San Suu Kyi from power"
+    },
+    {
+      start: 2021,
+      end: 2021,
+      event: "NASA's Perseverance rover and Ingenuity helicopter land on Mars"
+    },
+    {
+      start: 2021,
+      end: 2021,
+      event: "Ingenuity helicopter performs first powered flight on another planet"
+    },
+    {
+      start: 2021,
+      end: 2021,
+      event: "James Webb Space Telescope launches"
+    },
+    {
+      start: 2021,
+      end: 2021,
+      event: "I start as a freshman at the University of Washington"
+    },
+    {
+      start: 2021,
+      end: 2021,
+      event: "Fourth Gaza War"
+    },
+    {
+      start: 2021,
+      end: 2021,
+      event: "Facebook rebrands as Meta Platforms Inc., pivoting toward 'metaverse'"
+    },
+    {
+      start: 2021,
+      end: 2021,
+      event: "Andy Jassy becomes CEO of Amazon, succeeding Jeff Bezos"
+    },
+    {
+      start: 2022,
+      end: 2022,
+      event: "Hunga Tonga volcanic eruption triggers Pacific tsunami warnings, most powerful eruption of 21st century"
+    },
+    {
+      start: 2022,
+      end: 2022,
+      event: "Russia launches full-scale invasion of Ukraine, displacing 15.7 million"
+    },
+    {
+      start: 2022,
+      end: 2022,
+      event: "First successful heart transplant from pig to human in Baltimore"
+    },
+    {
+      start: 2022,
+      end: 2022,
+      event: "2022 Winter Olympics in Beijing; first city hosting both Summer and Winter"
+    },
+    {
+      start: 2022,
+      end: 2022,
+      event: "2022 FIFA World Cup held in Qatar, won by Argentina"
+    },
+    {
+      start: 2022,
+      end: 2022,
+      event: "Queen Elizabeth II dies after 70 years as monarch"
+    },
+    {
+      start: 2022,
+      end: 2022,
+      event: "OpenAI releases ChatGPT, bringing large language models to widespread public adoption"
+    },
+    {
+      start: 2023,
+      end: 2023,
+      event: "Supporters of Jair Bolsonaro storm Brazilian government buildings following electoral defeat"
+    },
+    {
+      start: 2023,
+      end: 2023,
+      event: "7.8-magnitude earthquake devastates Turkey and Syria, killing over 59,000"
+    },
+    {
+      start: 2023,
+      end: 2023,
+      event: "ICC issues arrest warrant for Vladimir Putin, first against permanent UN Security Council member leader"
+    },
+    {
+      start: 2023,
+      end: 2023,
+      event: "Xi Jinping secures unprecedented third term as China's president"
+    },
+    {
+      start: 2023,
+      end: 2023,
+      event: "Silicon Valley Bank fails, largest bank failure since 2008"
+    },
+    {
+      start: 2023,
+      end: 2023,
+      event: "OpenAI unveils GPT-4, capable of processing images and up to 25,000 words"
+    },
+    {
+      start: 2023,
+      end: 2023,
+      event: "WHO declares end to COVID-19 public health emergency"
+    },
+    {
+      start: 2023,
+      end: 2023,
+      event: "October 7th Hamas attack on Israel kills 1,195 people; 251 taken hostage; deadliest day in Israeli history"
+    },
+    {
+      start: 2023,
+      end: 2025,
+      event: "Israel-Hamas war in Gaza; Israel's longest military conflict"
+    },
+    {
+      start: 2023,
+      end: 2023,
+      event: "Israel invades Gaza with stated goals of destroying Hamas and freeing hostages"
+    },
+    {
+      start: 2024,
+      end: 2024,
+      event: "7.5-magnitude earthquake strikes Japan's Noto Peninsula, killing 504 people"
+    },
+    {
+      start: 2024,
+      end: 2024,
+      event: "Lai Ching-te wins Taiwan's presidential election"
+    },
+    {
+      start: 2024,
+      end: 2024,
+      event: "Japan becomes fifth country to achieve soft lunar landing with SLIM mission"
+    },
+    {
+      start: 2024,
+      end: 2024,
+      event: "Intuitive Machines' Nova-C becomes first commercial vehicle to land on Moon"
+    },
+    {
+      start: 2024,
+      end: 2024,
+      event: "Donald Trump wins U.S. presidential election, first president elected to nonconsecutive second term since 1892"
+    },
+    {
+      start: 2024,
+      end: 2024,
+      event: "South Korean President Yoon Suk Yeol impeached after attempting to declare martial law"
+    },
+    {
+      start: 2024,
+      end: 2024,
+      event: "I turn 18 and come out to my parents"
+    },
+    {
+      start: 2024,
+      end: 2024,
+      event: "Rafah offensive begins in Gaza; Israeli military operations intensify across Gaza Strip"
+    },
+    {
+      start: 2024,
+      end: 2024,
+      event: "Fall of the Syrian Assad regime"
+    },
+    {
+      start: 2025,
+      end: 2025,
+      event: "Donald Trump becomes president of US again"
+    },
+    {
+      start: 2025,
+      end: 2025,
+      event: "I graduate from University of Washington and start my PhD at MIT"
+    },
+    {
+      start: 2025,
+      end: 2025,
+      event: "Third ceasefire in Israel-Hamas war begins under US-backed peace plan"
+    },
+    {
+      start: 2025,
+      end: 2025,
+      event: "US Supreme Court schedules consideration of Kim Davis case seeking to overturn Obergefell v. Hodges marriage equality ruling"
+    }
+  ]
