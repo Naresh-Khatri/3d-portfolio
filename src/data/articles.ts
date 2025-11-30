@@ -7,7 +7,44 @@ export type Article = {
   category: string;
   url?: string;
   thoughts?: string;
+  imageUrl?: string;
 };
+
+// Better Images of AI - Creative Commons BY 4.0
+// Source: https://betterimagesofai.org/images
+// Local images from /public/assets/betterimageofai/
+const BETTER_AI_IMAGES = [
+  "/assets/betterimageofai/the-horizon-ii_wesley-goatley_braid_3072x2048.jpg",
+  "/assets/betterimageofai/the-horizon-i_wesley-goatley_braid_3072x2048.jpg",
+  "/assets/betterimageofai/the-environmental-impact-of-data-centers-in-vulnerable-ecosystems_gloria-mendoza_3000x2000.jpg",
+  "/assets/betterimageofai/a-rising-tide-lifts-all-bots_rose-willis_kathryn-conrad_3000x1999-.png",
+  "/assets/betterimageofai/ada-jus%CC%8Cic%CC%81_new-and-unprecedented-is-it-_2560x1440.png",
+  "/assets/betterimageofai/beckett-leclair_sparkles_3648x3648.png",
+  "/assets/betterimageofai/data-worker_janet-turra_2828x2828.png",
+  "/assets/betterimageofai/brain-control_bart-fish_power-tools-of-ai_4218x5244.jpg",
+  "/assets/betterimageofai/behavior-power_bart-fish_power-tools-of-ai_4222x5444.jpg",
+  "/assets/betterimageofai/distorted-fish-school_lone-thomasky_bits-ba%CC%88ume_3113x4393.png",
+  "/assets/betterimageofai/distorted-lava-flow_lone-thomasky_bits-ba%CC%88ume_3113x4393.png",
+  "/assets/betterimageofai/distorted-lake-trees_lone-thomasky_bits-ba%CC%88ume_3113x4393.png",
+  "/assets/betterimageofai/distorted-sand-mine_lone-thomasky_bits-ba%CC%88ume_3113x4393.png",
+  "/assets/betterimageofai/distorted-forest-path_lone-thomasky_bits-ba%CC%88ume_3113x4393.png",
+  "/assets/betterimageofai/distorted-dandelions_lone-thomasky_bits-ba%CC%88ume_3113x4393.png",
+  "/assets/betterimageofai/digital-society-ball_lone-thomasky_bits-ba%CC%88ume_2943x2559.png",
+  "/assets/betterimageofai/connected-yet-disconnected_julieta-longo_digit_3185x4352.png",
+  "/assets/betterimageofai/digital-nomads-across-time_yutong-liu_digit_2560x1440.png",
+  "/assets/betterimageofai/digital-nomads-beyond-the-cubicle_yutong-liu_digit_2560x1440.png",
+  "/assets/betterimageofai/digital-nomads-digital-based-connection_yutong-liu_digit_2560x1440.png",
+];
+
+// Deterministically assign images to articles based on ID
+export function getArticleImage(articleId: string): string {
+  let hash = 0;
+  for (let i = 0; i < articleId.length; i++) {
+    hash = ((hash << 5) - hash) + articleId.charCodeAt(i);
+    hash = hash & hash;
+  }
+  return BETTER_AI_IMAGES[Math.abs(hash) % BETTER_AI_IMAGES.length];
+}
 
 export type Quote = {
   id: string;

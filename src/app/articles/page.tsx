@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import Link from "next/link";
-import { articles, shuffleArray, type Article } from "@/data/articles";
+import Image from "next/image";
+import { articles, shuffleArray, getArticleImage, type Article } from "@/data/articles";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BookOpen, ArrowLeft, ExternalLink } from "lucide-react";
@@ -10,6 +11,32 @@ import RevealAnimation from "@/components/reveal-animations";
 import { useInfiniteScroll } from "@/hooks/use-infinite-scroll";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+
+function ArticleImage({ src, alt }: { src: string; alt: string }) {
+  const [imageError, setImageError] = useState(false);
+  
+  if (imageError) {
+    return (
+      <div className="h-[200px] bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center">
+        <BookOpen className="w-16 h-16 text-purple-400/50" />
+      </div>
+    );
+  }
+  
+  return (
+    <div className="relative h-[200px] overflow-hidden">
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        className="object-cover"
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        onError={() => setImageError(true)}
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+    </div>
+  );
+}
 
 export default function ArticlesPage() {
   const shuffledArticles = useMemo(() => shuffleArray(articles), []);
@@ -45,7 +72,10 @@ export default function ArticlesPage() {
         </RevealAnimation>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {displayedItems.map((article, index) => (
+          {displayedItems.map((article, index) => {
+            const imageUrl = article.imageUrl || getArticleImage(article.id);
+            
+            return (
             <RevealAnimation key={article.id} delay={0}>
               <Card
                 className={cn(
@@ -53,10 +83,8 @@ export default function ArticlesPage() {
                   "bg-black/40 backdrop-blur-sm hover:border-purple-500/50 transition-all hover:scale-[1.02] hover:shadow-lg group"
                 )}
               >
-                {/* Article Preview Image */}
-                <div className="h-[200px] bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center">
-                  <BookOpen className="w-16 h-16 text-purple-400/50" />
-                </div>
+                {/* Article Preview Image from Better Images of AI */}
+                <ArticleImage src={imageUrl} alt={article.title} />
 
                 <CardHeader>
                   <div className="flex justify-between items-start mb-2">
@@ -100,7 +128,8 @@ export default function ArticlesPage() {
                 )}
               </Card>
             </RevealAnimation>
-          ))}
+            );
+          })}
         </div>
 
         {/* Load more trigger */}

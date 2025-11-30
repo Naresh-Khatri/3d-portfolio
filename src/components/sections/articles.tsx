@@ -2,9 +2,10 @@
 
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { BoxReveal } from "../reveal-animations";
-import { articles, quotes, shuffleArray, type Article, type Quote } from "@/data/articles";
+import { articles, quotes, shuffleArray, getArticleImage, type Article, type Quote } from "@/data/articles";
 import { ExternalLink, BookOpen, MessageSquareQuote } from "lucide-react";
 import {
   Card,
@@ -14,6 +15,32 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+
+function ArticleImage({ src, alt }: { src: string; alt: string }) {
+  const [imageError, setImageError] = useState(false);
+  
+  if (imageError) {
+    return (
+      <div className="h-[200px] bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center">
+        <BookOpen className="w-16 h-16 text-purple-400/50" />
+      </div>
+    );
+  }
+  
+  return (
+    <div className="relative h-[200px] overflow-hidden">
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        className="object-cover"
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        onError={() => setImageError(true)}
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+    </div>
+  );
+}
 
 const ArticlesSection = () => {
   // Shuffle articles and quotes deterministically (same order for same day on server and client)
@@ -136,7 +163,10 @@ const ArticlesSection = () => {
         </BoxReveal>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-          {shuffledArticles.slice(0, 2).map((article, index) => (
+          {shuffledArticles.slice(0, 2).map((article, index) => {
+            const imageUrl = article.imageUrl || getArticleImage(article.id);
+            
+            return (
             <BoxReveal key={article.id} delay={index * 0.1}>
               <div className="rounded-lg overflow-hidden">
                 <Card
@@ -145,6 +175,8 @@ const ArticlesSection = () => {
                     "bg-white/70 dark:bg-black/70 backdrop-blur-sm"
                   )}
                 >
+                {/* Article Preview Image from Better Images of AI */}
+                <ArticleImage src={imageUrl} alt={article.title} />
                 <CardHeader>
                   <div className="flex items-start justify-between gap-2">
                     <CardTitle className="text-lg font-semibold flex-1">
@@ -193,7 +225,8 @@ const ArticlesSection = () => {
                 </Card>
               </div>
             </BoxReveal>
-          ))}
+            );
+          })}
         </div>
         
         <BoxReveal width="100%">
