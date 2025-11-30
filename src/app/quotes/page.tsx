@@ -53,6 +53,15 @@ function distributeIntoColumns(quotesArray: Quote[]): ContentItem[][] {
     });
   }
 
+  // Balance columns BEFORE adding images to ensure consistent base
+  const maxQuotes = Math.max(...columns.map(col => col.length));
+  columns.forEach((col) => {
+    while (col.length < maxQuotes) {
+      const randomQuote = quotesArray[Math.floor(random() * quotesArray.length)];
+      col.push({ type: "quote", data: randomQuote });
+    }
+  });
+
   // Now strategically place images to avoid horizontal adjacency
   // Track image positions: Map<rowIndex, Set<columnIndex>>
   const imagePositions = new Map<number, Set<number>>();
@@ -62,26 +71,28 @@ function distributeIntoColumns(quotesArray: Quote[]): ContentItem[][] {
 
   for (let col = 0; col < NUM_COLUMNS; col++) {
     const targetImages = Math.min(imagesPerColumn, shuffledImages.length - imageIndex);
+    const columnLength = columns[col].length;
 
     for (let imgCount = 0; imgCount < targetImages && imageIndex < shuffledImages.length; imgCount++) {
-      const columnLength = columns[col].length;
-
       // Try to find a position that doesn't conflict with adjacent columns
       let insertPosition = -1;
-      const maxAttempts = columnLength;
+      const basePosition = Math.floor((columnLength / (targetImages + 1)) * (imgCount + 1));
 
-      for (let attempt = 0; attempt < maxAttempts; attempt++) {
-        // Calculate candidate position (spread images throughout the column)
-        const candidatePos = Math.floor((columnLength / (targetImages + 1)) * (imgCount + 1));
-        const actualPos = Math.min(candidatePos + attempt, columnLength);
+      // Search for a valid position within a range around the base position
+      const searchRange = Math.min(columnLength, Math.max(10, Math.floor(columnLength / targetImages)));
 
-        // Check if adjacent columns have images within ±1 position
+      for (let offset = 0; offset < searchRange; offset++) {
+        // Alternate between checking positions above and below the base
+        const delta = offset % 2 === 0 ? Math.floor(offset / 2) : -Math.ceil(offset / 2);
+        const candidatePos = Math.max(0, Math.min(columnLength, basePosition + delta));
+
+        // Check if adjacent columns have images within ±2 positions (increased buffer)
         let hasAdjacentImage = false;
 
-        for (let checkRow = actualPos - 1; checkRow <= actualPos + 1; checkRow++) {
+        for (let checkRow = candidatePos - 2; checkRow <= candidatePos + 2; checkRow++) {
           if (imagePositions.has(checkRow)) {
             const columnsAtRow = imagePositions.get(checkRow)!;
-            // Check if left or right column has an image at this row
+            // Check if any adjacent column has an image at this row
             if (columnsAtRow.has(col - 1) || columnsAtRow.has(col + 1)) {
               hasAdjacentImage = true;
               break;
@@ -90,14 +101,34 @@ function distributeIntoColumns(quotesArray: Quote[]): ContentItem[][] {
         }
 
         if (!hasAdjacentImage) {
-          insertPosition = actualPos;
+          insertPosition = candidatePos;
           break;
         }
       }
 
-      // If no good position found, just insert at calculated position
+      // If no good position found after extensive search, force a position far from others
       if (insertPosition === -1) {
-        insertPosition = Math.floor((columnLength / (targetImages + 1)) * (imgCount + 1));
+        // Find the position with maximum distance from existing images in adjacent columns
+        let maxMinDistance = -1;
+        let bestPosition = basePosition;
+
+        for (let pos = 0; pos <= columnLength; pos += Math.max(1, Math.floor(columnLength / 20))) {
+          let minDistance = Infinity;
+
+          // Check distance to images in adjacent columns
+          for (const [row, cols] of imagePositions) {
+            if (cols.has(col - 1) || cols.has(col + 1)) {
+              minDistance = Math.min(minDistance, Math.abs(pos - row));
+            }
+          }
+
+          if (minDistance > maxMinDistance) {
+            maxMinDistance = minDistance;
+            bestPosition = pos;
+          }
+        }
+
+        insertPosition = bestPosition;
       }
 
       // Insert image at the found position
@@ -118,23 +149,6 @@ function distributeIntoColumns(quotesArray: Quote[]): ContentItem[][] {
       imageIndex++;
     }
   }
-
-  // Balance columns to have equal number of items for consistent bottom alignment
-  const maxItems = Math.max(...columns.map(col => col.length));
-  columns.forEach((col, colIdx) => {
-    while (col.length < maxItems) {
-      // Add a filler quote from the column's own quotes to maintain consistency
-      const columnQuotes = col.filter(item => item.type === "quote");
-      if (columnQuotes.length > 0) {
-        const randomIdx = Math.floor(random() * columnQuotes.length);
-        col.push(columnQuotes[randomIdx]);
-      } else {
-        // Fallback to any quote
-        const randomQuote = quotesArray[Math.floor(random() * quotesArray.length)];
-        col.push({ type: "quote", data: randomQuote });
-      }
-    }
-  });
 
   return columns;
 }
