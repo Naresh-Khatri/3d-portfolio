@@ -20,6 +20,9 @@ export const metadata: Metadata = {
   description: config.description.long,
   keywords: config.keywords,
   authors: [{ name: config.author }],
+  icons: {
+    icon: '/favicon.ico',
+  },
   openGraph: {
     title: config.title,
     description: config.description.short,
