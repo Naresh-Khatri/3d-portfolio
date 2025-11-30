@@ -318,7 +318,7 @@ const projects: Project[] = [
     id: "llm-support-bot",
     category: "AI/ML - RAG System",
     title: "LLM-Powered Customer Support Bot",
-    src: "/assets/projects-screenshots/portfolio/landing.png",
+    src: "/assets/projects-screenshots/llm bot.jpg",
     screenshots: ["landing.png"],
     skills: {
       frontend: [PROJECT_SKILLS.python, PROJECT_SKILLS.streamlit],
@@ -359,13 +359,13 @@ const projects: Project[] = [
     id: "task-planner",
     category: "AI/ML - LLM Planner",
     title: "Task Planner",
-    src: "/assets/projects-screenshots/portfolio/landing.png",
+    src: "/assets/projects-screenshots/ai task.jpg",
     screenshots: ["landing.png"],
     skills: {
       frontend: [PROJECT_SKILLS.python, PROJECT_SKILLS.streamlit],
       backend: [PROJECT_SKILLS.python, PROJECT_SKILLS.pandas, PROJECT_SKILLS.numpy, PROJECT_SKILLS.langchain, PROJECT_SKILLS.langgraph],
     },
-    live: "#",
+    live: "https://z9svpxajzxrfgkuwcgbwaw.streamlit.app/",
     github: "https://github.com/gurusarank",
     get content() {
       return (
@@ -396,14 +396,14 @@ const projects: Project[] = [
     id: "traffic-signal",
     category: "AI/ML - Reinforcement Learning",
     title: "Intelligent Traffic Signal Network",
-    src: "/assets/projects-screenshots/portfolio/landing.png",
+    src: "/assets/projects-screenshots/rl traffic.jpg",
     screenshots: ["landing.png"],
     skills: {
       frontend: [PROJECT_SKILLS.python],
       backend: [PROJECT_SKILLS.python, PROJECT_SKILLS.pandas, PROJECT_SKILLS.numpy, PROJECT_SKILLS.openaiGym, PROJECT_SKILLS.unrealEngine],
     },
     live: "#",
-    github: "https://github.com/gurusarank",
+    github: "https://github.com/BigSmoKe07/Virtual-Traffic-Dynamics/",
     get content() {
       return (
         <div>
@@ -437,14 +437,14 @@ const projects: Project[] = [
     id: "pronunciation-training",
     category: "AI/ML - Speech Recognition",
     title: "AI-Driven Pronunciation Training",
-    src: "/assets/projects-screenshots/portfolio/landing.png",
+    src: "/assets/projects-screenshots/ai pro.jpg",
     screenshots: ["landing.png"],
     skills: {
       frontend: [PROJECT_SKILLS.python],
       backend: [PROJECT_SKILLS.python, PROJECT_SKILLS.tensorflow, PROJECT_SKILLS.pytorch],
     },
     live: "#",
-    github: "https://github.com/gurusarank",
+    github: "https://github.com/BigSmoKe07/pronunciation-analysis/tree/main",
     get content() {
       return (
         <div>
@@ -475,14 +475,14 @@ const projects: Project[] = [
     id: "toxic-comment-classification",
     category: "AI/ML - NLP",
     title: "Toxic Comment Classification",
-    src: "/assets/projects-screenshots/portfolio/landing.png",
+    src: "/assets/projects-screenshots/toxic.jpg",
     screenshots: ["landing.png"],
     skills: {
       frontend: [PROJECT_SKILLS.python, PROJECT_SKILLS.gradio],
       backend: [PROJECT_SKILLS.python, PROJECT_SKILLS.tensorflow, PROJECT_SKILLS.pandas],
     },
     live: "#",
-    github: "https://github.com/gurusarank",
+    github: "https://github.com/BigSmoKe07/CommentToxicity",
     get content() {
       return (
         <div>

@@ -38,7 +38,7 @@ const config = {
   },
   social: {
     linkedin: "https://www.linkedin.com/in/gurusarank",
-    github: "https://github.com/gurusarank",
+    github: "https://github.com/BigSmoKe07",
   },
 };
 export { config };
