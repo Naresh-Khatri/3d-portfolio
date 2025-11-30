@@ -3,7 +3,7 @@
 import React, { useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { quotes, shuffleArray, type Quote, getArticleImage } from "@/data/articles";
+import { quotes, shuffleArray, type Quote, getArticleImage, BETTER_AI_IMAGES } from "@/data/articles";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MessageSquareQuote, ArrowLeft } from "lucide-react";
@@ -25,32 +25,78 @@ type MixedContent =
   | { type: "quote"; data: Quote }
   | { type: "image"; data: { id: string; src: string } };
 
-// Function to interleave quotes with images
+// Function to interleave quotes with images - uses all available images
+// Ensures at least one quote between each image
 function interleaveQuotesWithImages(quotesArray: Quote[]): MixedContent[] {
   const today = new Date();
   const seed = today.getFullYear() * 10000 + today.getMonth() * 100 + today.getDate();
   const random = seededRandom(seed + 99999); // Different seed for image selection
   
+  // Use all images from BETTER_AI_IMAGES
+  const allImages = [...BETTER_AI_IMAGES];
+  
+  // Shuffle images deterministically
+  const shuffledImages = [...allImages];
+  for (let i = shuffledImages.length - 1; i > 0; i--) {
+    const j = Math.floor(random() * (i + 1));
+    [shuffledImages[i], shuffledImages[j]] = [shuffledImages[j], shuffledImages[i]];
+  }
+  
   const mixed: MixedContent[] = [];
-  let imageCounter = 0;
+  let imageIndex = 0;
+  
+  // Calculate how many quotes per image to distribute all images evenly
+  // Aim for roughly 1 image per 2-3 quotes to use all images
+  const quotesPerImage = Math.max(2, Math.floor(quotesArray.length / shuffledImages.length));
   
   quotesArray.forEach((quote, index) => {
-    // Add quote
+    // Always add quote first
     mixed.push({ type: "quote", data: quote });
     
-    // Add image every 3-5 quotes (randomly, with ~20% chance)
-    const shouldAddImage = index > 0 && (
-      index % Math.floor(random() * 3 + 3) === 0 || 
-      random() < 0.2
-    );
+    // Add image after quote, but only if:
+    // 1. We haven't reached the end of images
+    // 2. The last item in mixed array is a quote (ensures quote before image)
+    // 3. We're at the right interval
+    const lastItem = mixed[mixed.length - 1];
+    const shouldAddImage = imageIndex < shuffledImages.length && 
+                          lastItem?.type === "quote" &&
+                          index > 0 && (
+                            index % quotesPerImage === 0 || 
+                            (index % Math.max(1, Math.floor(quotesPerImage * 0.6)) === 0 && random() < 0.4)
+                          );
     
     if (shouldAddImage) {
-      // Use getArticleImage with a unique counter-based ID to get different images
-      const imageId = `quote-image-${imageCounter++}-${index}`;
-      const imageSrc = getArticleImage(imageId);
-      mixed.push({ type: "image", data: { id: imageId, src: imageSrc } });
+      mixed.push({ 
+        type: "image", 
+        data: { 
+          id: `quote-image-${imageIndex}`, 
+          src: shuffledImages[imageIndex] 
+        } 
+      });
+      imageIndex++;
     }
   });
+  
+  // Add remaining images at the end, ensuring quotes between them
+  while (imageIndex < shuffledImages.length) {
+    // Check if last item is an image - if so, add a quote first
+    const lastItem = mixed[mixed.length - 1];
+    if (lastItem?.type === "image" && quotesArray.length > 0) {
+      // Use a quote from the array (cycling if needed)
+      const quoteIndex = (quotesArray.length - 1 - (shuffledImages.length - imageIndex)) % quotesArray.length;
+      const quote = quotesArray[Math.max(0, Math.abs(quoteIndex))];
+      mixed.push({ type: "quote", data: quote });
+    }
+    
+    mixed.push({ 
+      type: "image", 
+      data: { 
+        id: `quote-image-${imageIndex}`, 
+        src: shuffledImages[imageIndex] 
+      } 
+    });
+    imageIndex++;
+  }
   
   return mixed;
 }
@@ -69,7 +115,7 @@ export default function QuotesPage() {
     }
   );
   
-  // Get two random quotes for the left side using deterministic selection
+  // Get more random quotes for the left side using deterministic selection
   const randomQuotes = useMemo(() => {
     const today = new Date();
     const seed = today.getFullYear() * 10000 + today.getMonth() * 100 + today.getDate();
@@ -79,7 +125,9 @@ export default function QuotesPage() {
     const quotesOnly = displayedItems.filter(item => item.type === "quote") as Array<{ type: "quote"; data: Quote }>;
     
     const indices = new Set<number>();
-    while (indices.size < 2 && indices.size < quotesOnly.length) {
+    // Get 5-6 quotes for the left sidebar
+    const numQuotes = Math.min(6, quotesOnly.length);
+    while (indices.size < numQuotes && indices.size < quotesOnly.length) {
       indices.add(Math.floor(random() * quotesOnly.length));
     }
     return Array.from(indices).map(i => quotesOnly[i].data);

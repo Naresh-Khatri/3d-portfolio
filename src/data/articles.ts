@@ -13,7 +13,7 @@ export type Article = {
 // Better Images of AI - Creative Commons BY 4.0
 // Source: https://betterimagesofai.org/images
 // Local images from /public/assets/betterimageofai/
-const BETTER_AI_IMAGES = [
+export const BETTER_AI_IMAGES = [
   "/assets/betterimageofai/Fritzchens-Fritz_GPU-shot-etched-2_4000x2250.jpg",
   "/assets/betterimageofai/Fritzchens-Fritz_GPU-shot-etched-5_4000x2667.jpg",
   "/assets/betterimageofai/HumansInTheLoop_Image3_3543x2362.jpg",
