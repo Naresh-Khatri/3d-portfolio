@@ -1,4 +1,4 @@
-[
+export default [
     {
       start: -3100,
       end: -1600,
