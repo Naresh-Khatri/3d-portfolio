@@ -2,14 +2,17 @@
 
 import React, { useState, useMemo, useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowLeft } from "lucide-react";
 import timelineData from "@/data/timeline";
+import { BETTER_AI_IMAGES } from "@/data/articles";
 import RevealAnimation from "@/components/reveal-animations";
 
 type TimelineEvent = {
   start: number;
   end: number;
   event: string;
+  image?: string;
 };
 
 export default function TimelinePage() {
@@ -110,6 +113,39 @@ export default function TimelinePage() {
     .map(Number)
     .sort((a, b) => b - a);
 
+  // Shuffle images once and track usage to avoid repeats
+  const shuffledImages = useMemo(() => {
+    const shuffled = [...BETTER_AI_IMAGES];
+    // Fisher-Yates shuffle
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  }, []);
+
+  // Track which images to show and their order
+  const imageAssignments = useMemo(() => {
+    const assignments: (string | null)[] = [];
+    let imageIndex = 0;
+
+    sortedYears.forEach((year, yearIndex) => {
+      // Show images between year groups (every 2-3 year groups)
+      if (yearIndex % 3 === 0 || Math.abs(year) % 500 === 0) {
+        if (yearIndex < sortedYears.length - 1 && imageIndex < shuffledImages.length) {
+          assignments[yearIndex] = shuffledImages[imageIndex];
+          imageIndex++;
+        } else {
+          assignments[yearIndex] = null;
+        }
+      } else {
+        assignments[yearIndex] = null;
+      }
+    });
+
+    return assignments;
+  }, [sortedYears, shuffledImages]);
+
   return (
     <div className="min-h-screen relative font-sans">
       <div className="container mx-auto px-4 py-24 max-w-7xl">
@@ -180,49 +216,69 @@ export default function TimelinePage() {
           <div ref={timelineRef} id="timeline-container" className="history-timeline relative max-w-5xl mx-auto">
             {sortedYears.length > 0 ? (
               <div className="timeline-axis relative">
+                {/* Vertical Line near Date */}
+                <div className="timeline-date-line absolute top-0 bottom-0 w-0.5 bg-violet-500/30 left-28"></div>
+
                 {/* Timeline Events */}
                 <div className="timeline-events space-y-12">
-                  {sortedYears.map((year) => {
+                  {sortedYears.map((year, yearIndex) => {
                     const events = eventsByYear[year];
+                    const yearImage = imageAssignments[yearIndex] || null;
                     return (
-                      <div
-                        key={year}
-                        className="timeline-year-group relative"
-                        data-year={year}
-                      >
-                        {/* Year Label on Left */}
-                        <div className="timeline-year-label absolute left-0 top-0 w-28 text-right">
-                          <div className="text-sm font-semibold text-violet-400 sticky top-1/2 -translate-y-1/2">
-                            {formatYear(year)}
+                      <React.Fragment key={year}>
+                        <div
+                          className="timeline-year-group relative"
+                          data-year={year}
+                        >
+                          {/* Year Label on Left */}
+                          <div className="timeline-year-label absolute left-0 top-0 w-28 text-right pr-4">
+                            <div className="text-sm font-semibold text-violet-400 sticky top-1/2 -translate-y-1/2">
+                              {formatYear(year)}
+                            </div>
+                          </div>
+
+                          {/* Events Container */}
+                          <div className="timeline-events-container ml-32 space-y-4">
+                            {events.map((event, index) => {
+                              const isSpanning = event.start !== event.end;
+                              return (
+                                <div
+                                  key={index}
+                                  className="timeline-event relative flex items-start"
+                                  data-year={year}
+                                  data-index={index}
+                                >
+                                  {/* Event Content */}
+                                  <div className="timeline-event-content w-full">
+                                    <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-4 hover:bg-zinc-800/50 transition-colors">
+                                      <p className="text-white text-sm">
+                                        {isSpanning
+                                          ? `${event.event} (${formatYear(event.start)} - ${formatYear(event.end)})`
+                                          : event.event}
+                                      </p>
+                                    </div>
+                                  </div>
+                                </div>
+                              );
+                            })}
                           </div>
                         </div>
 
-                        {/* Events Container */}
-                        <div className="timeline-events-container ml-32 space-y-4">
-                          {events.map((event, index) => {
-                            const isSpanning = event.start !== event.end;
-                            return (
-                              <div
-                                key={index}
-                                className="timeline-event relative flex items-start"
-                                data-year={year}
-                                data-index={index}
-                              >
-                                {/* Event Content */}
-                                <div className="timeline-event-content w-full">
-                                  <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-4 hover:bg-zinc-800/50 transition-colors">
-                                    <p className="text-white text-sm">
-                                      {isSpanning
-                                        ? `${event.event} (${formatYear(event.start)} - ${formatYear(event.end)})`
-                                        : event.event}
-                                    </p>
-                                  </div>
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </div>
+                        {/* Image between year groups */}
+                        {yearImage && yearIndex < sortedYears.length - 1 && (
+                          <div className="timeline-image-container my-8 ml-32">
+                            <div className="relative w-full max-w-md rounded-lg overflow-hidden border border-zinc-800">
+                              <Image
+                                src={yearImage}
+                                alt={`Historical period around ${formatYear(year)}`}
+                                width={400}
+                                height={250}
+                                className="w-full h-auto object-cover"
+                              />
+                            </div>
+                          </div>
+                        )}
+                      </React.Fragment>
                     );
                   })}
                 </div>
