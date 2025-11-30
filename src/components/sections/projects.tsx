@@ -30,8 +30,8 @@ const ProjectsSection = () => {
         </h2>
       </Link>
       <div className="grid grid-cols-1 md:grid-cols-3">
-        {projects.map((project, index) => (
-          <Modall key={project.src} project={project} />
+        {projects.map((project) => (
+          <Modall key={project.id} project={project} />
         ))}
       </div>
     </section>

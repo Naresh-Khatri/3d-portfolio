@@ -139,6 +139,12 @@ const AnimatedBackground = () => {
       gsap.set(kbd.position, quotesState.position);
       gsap.set(kbd.rotation, quotesState.rotation);
       setActiveSection("quotes");
+      // Start bongo cat for quotes page
+      setTimeout(() => {
+        if (bongoAnimationRef.current) {
+          bongoAnimationRef.current.start();
+        }
+      }, 800);
       return;
     }
 
@@ -411,12 +417,20 @@ const AnimatedBackground = () => {
       }
 
       // Handle Bongo Cat
-      if (activeSection === "projects") {
+      const shouldPlayBongo = activeSection === "projects" || 
+                              activeSection === "quotes" ||
+                              pathname === "/quotes" ||
+                              pathname === "/articles";
+      
+      if (shouldPlayBongo) {
         await sleep(300);
         bongoAnimationRef.current?.start();
       } else {
-        await sleep(200);
-        bongoAnimationRef.current?.stop();
+        // Only stop bongo cat if we're NOT on quotes/articles pages
+        if (pathname !== "/quotes" && pathname !== "/articles") {
+          await sleep(200);
+          bongoAnimationRef.current?.stop();
+        }
       }
 
       // Handle Contact Section Animations
@@ -437,7 +451,7 @@ const AnimatedBackground = () => {
       rotateKeyboard?.kill();
       teardownKeyboard?.kill();
     };
-  }, [activeSection, splineApp]);
+  }, [activeSection, splineApp, pathname]);
 
   // Reveal keyboard on load/route change
   useEffect(() => {
