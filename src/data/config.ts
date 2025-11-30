@@ -27,7 +27,7 @@ const config = {
   site: "https://gurusarank.site",
 
   // for github stars button
-  githubUsername: "gurusarank",
+  githubUsername: "bigsmoke07",
   githubRepo: "portfolio",
 
   // CV/Resume file path

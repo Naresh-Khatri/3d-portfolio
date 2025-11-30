@@ -1,4 +1,4 @@
-[
+const timeline = [
     {
       start: -3100,
       end: -1600,
@@ -4999,4 +4999,6 @@
       end: 2025,
       event: "US Supreme Court schedules consideration of Kim Davis case seeking to overturn Obergefell v. Hodges marriage equality ruling"
     }
-  ]
+  ];
+
+export default timeline;
