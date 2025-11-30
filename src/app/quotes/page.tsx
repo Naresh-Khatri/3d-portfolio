@@ -101,6 +101,19 @@ function interleaveQuotesWithImages(quotesArray: Quote[]): MixedContent[] {
   return mixed;
 }
 
+// Function to distribute items evenly across columns
+function distributeItemsAcrossColumns<T>(items: T[], numColumns: number): T[][] {
+  const columns: T[][] = Array.from({ length: numColumns }, () => []);
+  
+  // Distribute items sequentially using round-robin to ensure no repetition
+  items.forEach((item, index) => {
+    const columnIndex = index % numColumns;
+    columns[columnIndex].push(item);
+  });
+  
+  return columns;
+}
+
 export default function QuotesPage() {
   const shuffledQuotes = useMemo(() => shuffleArray(quotes), []);
   
@@ -110,28 +123,38 @@ export default function QuotesPage() {
   const { displayedItems, hasMore, loadMoreRef } = useInfiniteScroll(
     mixedContent,
     {
-      initialCount: 30, // Load initial batch
+      initialCount: 60, // Load more initial items for better column distribution
       loadMoreCount: 30, // Load more in batches
     }
   );
   
+  // Distribute items across 3 columns for even distribution
+  const columns = useMemo(() => {
+    const filteredItems = displayedItems.filter((item) => {
+      if (item.type === "quote") {
+        return item.data && item.data.text && item.data.text.trim().length > 0;
+      }
+      return true; // Keep all images
+    });
+    return distributeItemsAcrossColumns(filteredItems, 3);
+  }, [displayedItems]);
+  
   // Get more random quotes for the left side using deterministic selection
+  // Use the full shuffled quotes array, not just displayedItems
   const randomQuotes = useMemo(() => {
     const today = new Date();
     const seed = today.getFullYear() * 10000 + today.getMonth() * 100 + today.getDate();
     const random = seededRandom(seed + 12345); // Different seed for random selection
     
-    // Filter only quotes from displayedItems
-    const quotesOnly = displayedItems.filter(item => item.type === "quote") as Array<{ type: "quote"; data: Quote }>;
-    
+    // Use the full shuffled quotes array for left sidebar
     const indices = new Set<number>();
-    // Get 5-6 quotes for the left sidebar
-    const numQuotes = Math.min(6, quotesOnly.length);
-    while (indices.size < numQuotes && indices.size < quotesOnly.length) {
-      indices.add(Math.floor(random() * quotesOnly.length));
+    // Get 6-8 quotes for the left sidebar
+    const numQuotes = Math.min(8, shuffledQuotes.length);
+    while (indices.size < numQuotes && indices.size < shuffledQuotes.length) {
+      indices.add(Math.floor(random() * shuffledQuotes.length));
     }
-    return Array.from(indices).map(i => quotesOnly[i].data);
-  }, [displayedItems]);
+    return Array.from(indices).map(i => shuffledQuotes[i]);
+  }, [shuffledQuotes]);
 
   return (
     <div className="min-h-screen relative font-sans">
@@ -150,7 +173,7 @@ export default function QuotesPage() {
           </Link>
         </RevealAnimation>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Left Sidebar with Keyboard Animation and Random Quotes */}
           <div className="lg:col-span-1">
             <RevealAnimation>
@@ -166,9 +189,9 @@ export default function QuotesPage() {
                   An unorganized and continuously growing archive of quotes, ideas, and works that influence or represent my thought in some way across a wide range of topics.
                 </p>
 
-                {/* Two Random Quotes */}
+                {/* Random Quotes for Left Sidebar */}
                 {randomQuotes.map((quote, index) => (
-                  <RevealAnimation key={`random-${quote.id}`} delay={index * 0.1}>
+                  <RevealAnimation key={`random-${quote.id}-${index}`} delay={index * 0.1}>
                     <Card className="bg-black/40 border-zinc-800 backdrop-blur-sm hover:border-purple-500/50 transition-colors">
                       <CardHeader>
                         <CardTitle className="text-lg font-medium">
@@ -196,72 +219,69 @@ export default function QuotesPage() {
           </div>
 
           {/* Right Side - All Quotes Grid (Blog-style layout) */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-3">
             <RevealAnimation delay={0.1}>
               <p className="text-zinc-400 text-center mb-8 max-w-2xl mx-auto">
                 To maximize each item&apos;s exposure, the order of quotes is randomly reordered each day.
               </p>
             </RevealAnimation>
 
-            <div className="columns-1 md:columns-2 lg:columns-3 gap-6" style={{ columnFill: 'balance' }}>
-              {displayedItems
-                .filter((item) => {
-                  if (item.type === "quote") {
-                    return item.data && item.data.text && item.data.text.trim().length > 0;
-                  }
-                  return true; // Keep all images
-                })
-                .map((item, index) => {
-                  if (item.type === "image") {
-                    return (
-                      <div key={item.data.id} className="break-inside-avoid mb-6">
-                        <RevealAnimation delay={0}>
-                          <Card className="h-full bg-black/70 border-zinc-800 backdrop-blur-md hover:border-purple-500/50 transition-all hover:scale-[1.02] hover:shadow-lg group overflow-hidden">
-                            <div className="relative w-full aspect-video">
-                              <Image
-                                src={item.data.src}
-                                alt="AI Art"
-                                fill
-                                className="object-cover rounded-t-lg"
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                              />
-                            </div>
-                          </Card>
-                        </RevealAnimation>
-                      </div>
-                    );
-                  } else {
-                    const quote = item.data;
-                    return (
-                      <div key={quote.id} className="break-inside-avoid mb-6">
-                        <RevealAnimation delay={0}>
-                          <Card className="h-full bg-black/70 border-zinc-800 backdrop-blur-md hover:border-purple-500/50 transition-all hover:scale-[1.02] hover:shadow-lg group">
-                            <CardHeader>
-                              <CardTitle className="text-lg font-medium group-hover:text-purple-400 transition-colors">
-                                {quote.author || "Anonymous"}
-                              </CardTitle>
-                              {quote.category && (
-                                <CardDescription className="text-xs">
-                                  {quote.category}
-                                </CardDescription>
-                              )}
-                            </CardHeader>
-                            <CardContent>
-                              <p className="text-sm italic text-zinc-300 leading-relaxed">
-                                &ldquo;{quote.text}&rdquo;
-                              </p>
-                              {quote.source && (
-                                <p className="text-xs text-zinc-500 mt-3 italic">
-                                  {quote.source}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {columns.map((column, columnIndex) => (
+                <div key={columnIndex} className="flex flex-col gap-6">
+                  {column.map((item, itemIndex) => {
+                    if (item.type === "image") {
+                      return (
+                        <div key={`image-${item.data.id}-${columnIndex}-${itemIndex}`}>
+                          <RevealAnimation delay={0}>
+                            <Card className="h-full bg-black/70 border-zinc-800 backdrop-blur-md hover:border-purple-500/50 transition-all hover:scale-[1.02] hover:shadow-lg group overflow-hidden">
+                              <div className="relative w-full aspect-video">
+                                <Image
+                                  src={item.data.src}
+                                  alt="AI Art"
+                                  fill
+                                  className="object-cover rounded-t-lg"
+                                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                />
+                              </div>
+                            </Card>
+                          </RevealAnimation>
+                        </div>
+                      );
+                    } else {
+                      const quote = item.data;
+                      return (
+                        <div key={`quote-${quote.id}-${columnIndex}-${itemIndex}`}>
+                          <RevealAnimation delay={0}>
+                            <Card className="h-full bg-black/70 border-zinc-800 backdrop-blur-md hover:border-purple-500/50 transition-all hover:scale-[1.02] hover:shadow-lg group">
+                              <CardHeader>
+                                <CardTitle className="text-lg font-medium group-hover:text-purple-400 transition-colors">
+                                  {quote.author || "Anonymous"}
+                                </CardTitle>
+                                {quote.category && (
+                                  <CardDescription className="text-xs">
+                                    {quote.category}
+                                  </CardDescription>
+                                )}
+                              </CardHeader>
+                              <CardContent>
+                                <p className="text-sm italic text-zinc-300 leading-relaxed">
+                                  &ldquo;{quote.text}&rdquo;
                                 </p>
-                              )}
-                            </CardContent>
-                          </Card>
-                        </RevealAnimation>
-                      </div>
-                    );
-                  }
-                })}
+                                {quote.source && (
+                                  <p className="text-xs text-zinc-500 mt-3 italic">
+                                    {quote.source}
+                                  </p>
+                                )}
+                              </CardContent>
+                            </Card>
+                          </RevealAnimation>
+                        </div>
+                      );
+                    }
+                  })}
+                </div>
+              ))}
             </div>
 
             {/* Load more trigger */}
@@ -276,4 +296,3 @@ export default function QuotesPage() {
     </div>
   );
 }
-
