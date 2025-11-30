@@ -12,8 +12,8 @@ const footer: { title: string; href: string }[] = [
     href: "/quotes",
   },
   {
-    title: "Newsletter",
-    href: "/news",
+    title: "History",
+    href: "/timeline",
   },
 ];
 

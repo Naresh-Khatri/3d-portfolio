@@ -13,13 +13,13 @@ function Footer() {
         © {year} {config.author}. All rights reserved.
       </p>
       <SocialMediaButtons />
-      <nav className="flex gap-4 sm:gap-6 z-10">
+      <nav className="flex gap-4 sm:gap-6 z-10 visible">
         {footer.map((link, index) => {
           const { title, href } = link;
 
           return (
             <Link
-              className="text-xs underline-offset-4 hover:underline"
+              className="text-xs underline-offset-4 hover:underline text-gray-500 dark:text-gray-400"
               href={href}
               key={`l_${index}`}
             >
