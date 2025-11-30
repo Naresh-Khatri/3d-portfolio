@@ -39,57 +39,100 @@ function distributeIntoColumns(quotesArray: Quote[]): ContentItem[][] {
     [shuffledImages[i], shuffledImages[j]] = [shuffledImages[j], shuffledImages[i]];
   }
 
-  // Calculate items per column for equal distribution
+  // Distribute quotes evenly across columns first
   const quotesPerColumn = Math.ceil(quotesArray.length / NUM_COLUMNS);
-  const imagesPerColumn = Math.ceil(shuffledImages.length / NUM_COLUMNS);
 
-  let imageIndex = 0;
-
-  // Fill each column
   for (let col = 0; col < NUM_COLUMNS; col++) {
     const startQuoteIndex = col * quotesPerColumn;
     const endQuoteIndex = Math.min((col + 1) * quotesPerColumn, quotesArray.length);
     const columnQuotes = quotesArray.slice(startQuoteIndex, endQuoteIndex);
 
-    // Add quotes to column
-    columnQuotes.forEach((quote, idx) => {
+    // Add all quotes to this column
+    columnQuotes.forEach((quote) => {
       columns[col].push({ type: "quote", data: quote });
-
-      // Intersperse images every 3-4 quotes
-      if ((idx + 1) % 3 === 0 && imageIndex < shuffledImages.length) {
-        columns[col].push({
-          type: "image",
-          data: {
-            id: `img-${imageIndex}`,
-            src: shuffledImages[imageIndex]
-          }
-        });
-        imageIndex++;
-      }
     });
+  }
 
-    // Add remaining images to columns
-    const remainingImagesForColumn = imagesPerColumn - columns[col].filter(item => item.type === "image").length;
-    for (let i = 0; i < remainingImagesForColumn && imageIndex < shuffledImages.length; i++) {
-      columns[col].push({
+  // Now strategically place images to avoid horizontal adjacency
+  // Track image positions: Map<rowIndex, Set<columnIndex>>
+  const imagePositions = new Map<number, Set<number>>();
+
+  let imageIndex = 0;
+  const imagesPerColumn = Math.ceil(shuffledImages.length / NUM_COLUMNS);
+
+  for (let col = 0; col < NUM_COLUMNS; col++) {
+    const targetImages = Math.min(imagesPerColumn, shuffledImages.length - imageIndex);
+
+    for (let imgCount = 0; imgCount < targetImages && imageIndex < shuffledImages.length; imgCount++) {
+      const columnLength = columns[col].length;
+
+      // Try to find a position that doesn't conflict with adjacent columns
+      let insertPosition = -1;
+      const maxAttempts = columnLength;
+
+      for (let attempt = 0; attempt < maxAttempts; attempt++) {
+        // Calculate candidate position (spread images throughout the column)
+        const candidatePos = Math.floor((columnLength / (targetImages + 1)) * (imgCount + 1));
+        const actualPos = Math.min(candidatePos + attempt, columnLength);
+
+        // Check if adjacent columns have images within ±1 position
+        let hasAdjacentImage = false;
+
+        for (let checkRow = actualPos - 1; checkRow <= actualPos + 1; checkRow++) {
+          if (imagePositions.has(checkRow)) {
+            const columnsAtRow = imagePositions.get(checkRow)!;
+            // Check if left or right column has an image at this row
+            if (columnsAtRow.has(col - 1) || columnsAtRow.has(col + 1)) {
+              hasAdjacentImage = true;
+              break;
+            }
+          }
+        }
+
+        if (!hasAdjacentImage) {
+          insertPosition = actualPos;
+          break;
+        }
+      }
+
+      // If no good position found, just insert at calculated position
+      if (insertPosition === -1) {
+        insertPosition = Math.floor((columnLength / (targetImages + 1)) * (imgCount + 1));
+      }
+
+      // Insert image at the found position
+      columns[col].splice(insertPosition, 0, {
         type: "image",
         data: {
           id: `img-${imageIndex}`,
           src: shuffledImages[imageIndex]
         }
       });
+
+      // Track this image position
+      if (!imagePositions.has(insertPosition)) {
+        imagePositions.set(insertPosition, new Set());
+      }
+      imagePositions.get(insertPosition)!.add(col);
+
       imageIndex++;
     }
   }
 
-  // Balance column heights by moving items from longer columns to shorter ones
+  // Balance columns to have equal number of items for consistent bottom alignment
   const maxItems = Math.max(...columns.map(col => col.length));
-  columns.forEach(col => {
-    // Pad shorter columns to match the longest
+  columns.forEach((col, colIdx) => {
     while (col.length < maxItems) {
-      // Add a spacer or duplicate quote to maintain equal heights
-      const randomQuote = quotesArray[Math.floor(random() * quotesArray.length)];
-      col.push({ type: "quote", data: randomQuote });
+      // Add a filler quote from the column's own quotes to maintain consistency
+      const columnQuotes = col.filter(item => item.type === "quote");
+      if (columnQuotes.length > 0) {
+        const randomIdx = Math.floor(random() * columnQuotes.length);
+        col.push(columnQuotes[randomIdx]);
+      } else {
+        // Fallback to any quote
+        const randomQuote = quotesArray[Math.floor(random() * quotesArray.length)];
+        col.push({ type: "quote", data: randomQuote });
+      }
     }
   });
 
@@ -147,9 +190,9 @@ export default function QuotesPage() {
         </RevealAnimation>
 
         {/* 4-Column Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 items-start">
           {columns.map((column, colIndex) => (
-            <div key={colIndex} className="flex flex-col gap-6">
+            <div key={colIndex} className="flex flex-col gap-6 h-full">
               {column.map((item, itemIndex) => (
                 <RevealAnimation key={`${item.type}-${colIndex}-${itemIndex}`} delay={colIndex * 0.05}>
                   {item.type === "image" ? (
