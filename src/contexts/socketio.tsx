@@ -41,7 +41,9 @@ type SocketContextType = {
   users: User[];
   setUsers: Dispatch<SetStateAction<User[]>>;
   msgs: Message[];
-  isCurrentUser: boolean
+  isCurrentUser: boolean;
+  focusedCursorId: string | null;
+  setFocusedCursorId: Dispatch<SetStateAction<string | null>>;
 };
 
 const INITIAL_STATE: SocketContextType = {
@@ -49,7 +51,9 @@ const INITIAL_STATE: SocketContextType = {
   users: [],
   setUsers: () => { },
   msgs: [],
-  isCurrentUser: false
+  isCurrentUser: false,
+  focusedCursorId: null,
+  setFocusedCursorId: () => { },
 };
 
 export const SocketContext = createContext<SocketContextType>(INITIAL_STATE);
@@ -61,6 +65,7 @@ const SocketContextProvider = ({ children }: { children: ReactNode }) => {
   const [users, setUsers] = useState<User[]>([]);
   const [msgs, setMsgs] = useState<Message[]>([]);
   const [isCurrentUser, setIsCurrentUser] = useState(false);
+  const [focusedCursorId, setFocusedCursorId] = useState<string | null>(null);
   const { toast } = useToast();
 
   // SETUP SOCKET.IO
@@ -104,7 +109,7 @@ const SocketContextProvider = ({ children }: { children: ReactNode }) => {
   const currentUser = users.find(u => u.socketId === socket?.id);
 
   return (
-    <SocketContext.Provider value={{ socket: socket, users, setUsers, msgs, isCurrentUser }}>
+    <SocketContext.Provider value={{ socket: socket, users, setUsers, msgs, isCurrentUser, focusedCursorId, setFocusedCursorId }}>
       {children}
     </SocketContext.Provider>
   );

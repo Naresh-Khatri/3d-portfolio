@@ -152,6 +152,7 @@ const OnlineUsers = () => {
             THEME.text.primary
           )}
           side="top"
+          data-no-custom-cursor="true"
         >
           {/* Header */}
           <div className={cn("h-12 flex items-center justify-between px-4 shadow-sm border-b shrink-0", THEME.bg.secondary, THEME.border.primary)}>

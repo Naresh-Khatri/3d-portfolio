@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Users, Edit } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { User } from "@/contexts/socketio";
+import { SocketContext } from "@/contexts/socketio";
 import type { Socket } from "socket.io-client";
 import { THEME } from "../constants";
 import { getAvatarUrl } from "@/lib/avatar";
@@ -19,6 +20,7 @@ interface UserListProps {
 }
 
 export const UserList = ({ users, socket, updateProfile, showUserList, onClose, onEditProfile }: UserListProps) => {
+  const { setFocusedCursorId } = useContext(SocketContext);
   const sortedUsers = [...users].sort((a, b) => {
     if (a.socketId === socket?.id) return -1;
     if (b.socketId === socket?.id) return 1;
@@ -58,6 +60,7 @@ export const UserList = ({ users, socket, updateProfile, showUserList, onClose, 
                     user={user}
                     socket={socket}
                     onEditProfile={onEditProfile}
+                    onScrollToCursor={setFocusedCursorId}
                   />
                 ))}
               </div>
@@ -73,15 +76,28 @@ const UserItem = ({
   user,
   socket,
   onEditProfile,
+  onScrollToCursor,
 }: {
   user: User;
   socket: Socket | null;
   onEditProfile: () => void;
+  onScrollToCursor: (socketId: string) => void;
 }) => {
   const isMe = user.socketId === socket?.id;
 
   return (
-    <div className={cn("group flex flex-col p-2 rounded transition-colors relative", THEME.bg.itemHover)}>
+    <div
+      className={cn(
+        "group flex flex-col p-2 rounded transition-colors relative",
+        THEME.bg.itemHover,
+        !isMe && "cursor-pointer"
+      )}
+      onClick={() => {
+        if (!isMe) {
+          onScrollToCursor(user.socketId);
+        }
+      }}
+    >
       <div className="flex items-center gap-3 w-full">
         <div className="relative">
           <img
@@ -97,8 +113,10 @@ const UserItem = ({
           <div
             className={cn("flex items-center justify-between", isMe && "cursor-pointer")}
             onClick={(e) => {
-              e.stopPropagation();
-              if (isMe) onEditProfile();
+              if (isMe) {
+                e.stopPropagation();
+                onEditProfile();
+              }
             }}
           >
             <div className="flex gap-1 items-center">
@@ -110,10 +128,18 @@ const UserItem = ({
               </span>
               {isMe && <span className="bg-[#5865f2] text-white text-[10px] px-1 rounded font-bold">YOU</span>}
             </div>
-            {isMe && (
+            {isMe ? (
               <Button variant={'ghost'} size={'icon'} className="w-5 h-5">
                 <Edit className={cn("w-3 h-3 hover:text-[#060607] dark:hover:text-white", THEME.text.secondary)} />
               </Button>
+            ) : (
+              <motion.div
+                initial={{ opacity: 0, x: 5 }}
+                whileHover={{ opacity: 1, x: 0 }}
+                className="group-hover:opacity-100 opacity-0 transition-all"
+              >
+                <Users className={cn("w-3 h-3", THEME.text.secondary)} />
+              </motion.div>
             )}
           </div>
           <div className={cn("text-[10px] truncate space-x-1", THEME.text.secondary)}>

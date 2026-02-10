@@ -37,6 +37,8 @@ const EMPTY = {} as {
   rt?: Function;
   sx?: Function;
   sy?: Function;
+  opacity?: Function;
+  height?: Function;
 };
 function useInstance(value = {}) {
   const ref = useRef(EMPTY);
@@ -80,7 +82,9 @@ function ElasticCursor() {
 
   // React Refs for Jelly Blob and Text
   const jellyRef = useRef<HTMLDivElement>(null);
+  const dotRef = useRef<HTMLDivElement>(null);
   const [isHovering, setIsHovering] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
   const { x, y } = useMouse();
 
   // Save pos and velocity Objects
@@ -96,6 +100,8 @@ function ElasticCursor() {
     set.sx = gsap.quickSetter(jellyRef.current, "scaleX");
     set.sy = gsap.quickSetter(jellyRef.current, "scaleY");
     set.width = gsap.quickSetter(jellyRef.current, "width", "px");
+    set.height = gsap.quickSetter(jellyRef.current, "height", "px");
+    set.opacity = gsap.quickSetter([jellyRef.current, dotRef.current], "opacity");
   }, []);
 
   // Start Animation loop
@@ -116,7 +122,13 @@ function ElasticCursor() {
     } else {
       set.r(0);
     }
-  }, [isHovering, isLoading]);
+
+    if (isHidden) {
+      set.opacity?.(0);
+    } else {
+      set.opacity?.(1);
+    }
+  }, [isHovering, isLoading, isHidden]);
 
   const [cursorMoved, setCursorMoved] = useState(false);
   // Run on Mouse Move
@@ -156,6 +168,16 @@ function ElasticCursor() {
         });
         setIsHovering(false);
       }
+
+      // Check for hide flag
+      const shouldHide = !!el.closest('[data-no-custom-cursor="true"]');
+      setIsHidden(shouldHide);
+
+      // Update body cursor style to ensure default cursor shows up when custom is hidden
+      if (shouldHide) {
+        document.body.style.cursor = 'auto';
+      }
+
       // Mouse X and Y
       const x = e.clientX;
       const y = e.clientY;
@@ -210,11 +232,13 @@ function ElasticCursor() {
         }}
       ></div>
       <div
+        ref={dotRef}
         className="w-3 h-3 rounded-full fixed translate-x-[-50%] translate-y-[-50%] pointer-events-none transition-none duration-300"
         style={{
           top: y,
           left: x,
           backdropFilter: "invert(100%)",
+          zIndex: 101,
         }}
       ></div>
     </>

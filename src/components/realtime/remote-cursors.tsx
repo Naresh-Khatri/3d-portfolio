@@ -12,7 +12,7 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 // TODO: add clicking animation
 // TODO: listen to socket disconnect
 const RemoteCursors = () => {
-  const { socket, users: _users, setUsers } = useContext(SocketContext);
+  const { socket, users: _users, setUsers, focusedCursorId, setFocusedCursorId } = useContext(SocketContext);
   const isMobile = useMediaQuery("(max-width: 768px)");
   const { x, y } = useMouse({ allowPage: true });
   useEffect(() => {
@@ -49,7 +49,34 @@ const RemoteCursors = () => {
     if (isMobile) return;
     handleMouseMove(x, y);
   }, [x, y, isMobile]);
+
   const users = Array.from(_users.values());
+
+  // Handle scroll to focused cursor
+  useEffect(() => {
+    if (!focusedCursorId || isMobile) return;
+
+    const user = users.find(u => u.socketId === focusedCursorId);
+    if (!user) return;
+
+    const targetX = user.posX - window.innerWidth / 2;
+    const targetY = user.posY - window.innerHeight / 2;
+
+    window.scrollTo({
+      left: Math.max(0, targetX),
+      top: Math.max(0, targetY),
+      behavior: 'smooth'
+    });
+
+    // Clear focus after animation completes
+    const timeout = setTimeout(() => {
+      setFocusedCursorId(null);
+    }, 2000);
+
+    return () => clearTimeout(timeout);
+  }, [focusedCursorId, users, isMobile, setFocusedCursorId]);
+
+
   return (
     <div
       //  className="h-0 z-10 relative "
@@ -67,6 +94,7 @@ const RemoteCursors = () => {
             socketId={user.socketId}
             avatar={user.avatar}
             headerText={`${user.location} ${user.flag}`}
+            isFocused={focusedCursorId === user.socketId}
           />
         ))}
     </div>
@@ -80,6 +108,7 @@ const Cursor = ({
   headerText,
   socketId,
   avatar,
+  isFocused = false,
 }: {
   x: number;
   y: number;
@@ -87,6 +116,7 @@ const Cursor = ({
   headerText: string;
   socketId: string;
   avatar: string;
+  isFocused?: boolean;
 }) => {
   const [showText, setShowText] = useState(false);
   const [msgText, setMsgText] = useState("");
@@ -136,10 +166,42 @@ const Cursor = ({
       onMouseEnter={() => setShowText(true)}
       onMouseLeave={() => setShowText(false)}
     >
+      {/* Pulse Effect for Focus */}
+      <AnimatePresence>
+        {isFocused && (
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{
+              scale: [1, 1.5, 1.2],
+              opacity: [0.5, 0.2, 0],
+            }}
+            exit={{ opacity: 0 }}
+            transition={{
+              duration: 1.5,
+              repeat: Infinity,
+              ease: "easeOut"
+            }}
+            className="absolute inset-0 rounded-full"
+            style={{
+              backgroundColor: color,
+              filter: `blur(20px)`,
+              width: '40px',
+              height: '40px',
+              left: '-8px',
+              top: '-8px',
+              zIndex: -1
+            }}
+          />
+        )}
+      </AnimatePresence>
+
       {/* Cursor pointer */}
       <MousePointer2
         className="w-6 h-6 z-[9999999] absolute top-0 left-0"
-        style={{ color: color }}
+        style={{
+          color: color,
+          filter: isFocused ? `drop-shadow(0 0 8px ${color})` : undefined
+        }}
         strokeWidth={7.2}
       />
 
