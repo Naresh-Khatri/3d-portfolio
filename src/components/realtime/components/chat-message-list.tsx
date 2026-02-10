@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Users } from "lucide-react";
 import { differenceInMinutes, format } from "date-fns";
 import { ArrowDown, Hash } from "lucide-react";
 import { ScrollArea } from "../../ui/scroll-area";
@@ -7,6 +8,7 @@ import { cn } from "@/lib/utils";
 import type { Message, User } from "@/contexts/socketio";
 import { THEME } from "../constants";
 import { getAvatarUrl } from "@/lib/avatar";
+import { SocketContext } from "@/contexts/socketio";
 
 
 interface ChatMessageListProps {
@@ -34,6 +36,7 @@ export const ChatMessageList = ({
   typingUsers,
   getTypingText
 }: ChatMessageListProps) => {
+  const { setFocusedCursorId } = useContext(SocketContext);
   return (
     <div className="flex-1 relative overflow-hidden flex flex-col">
       <ScrollArea className="h-[400px]" data-lenis-prevent ref={chatContainerRef} type="always">
@@ -61,7 +64,17 @@ export const ChatMessageList = ({
             return (
               <div key={i} className={cn("group flex gap-3 pr-2", showHeader && i != 0 && "!mt-4")}>
                 {showHeader ? (
-                  <div className="relative w-10 h-10 flex-shrink-0 mt-0.5">
+                  <div
+                    className={cn(
+                      "relative w-10 h-10 flex-shrink-0 mt-0.5",
+                      !isMe && user?.socketId && "cursor-pointer"
+                    )}
+                    onClick={() => {
+                      if (!isMe && user?.socketId) {
+                        setFocusedCursorId(user.socketId);
+                      }
+                    }}
+                  >
                     <img
                       src={getAvatarUrl(user?.avatar || msg.avatar)}
                       alt={user?.name || msg.username}
@@ -81,12 +94,30 @@ export const ChatMessageList = ({
                 <div className="flex-1 min-w-0">
                   {showHeader && (
                     <div className="flex items-center gap-2">
-                      <span
-                        className={cn("font-medium hover:underline cursor-pointer", THEME.text.header)}
-                        style={{ color: user?.color || msg.color }}
+                      <div
+                        className={cn("flex items-center gap-2", !isMe && user?.socketId && "cursor-pointer group/name")}
+                        onClick={() => {
+                          if (!isMe && user?.socketId) {
+                            setFocusedCursorId(user.socketId);
+                          }
+                        }}
                       >
-                        {user?.name || msg.username}
-                      </span>
+                        <span
+                          className={cn("font-medium hover:underline", THEME.text.header)}
+                          style={{ color: user?.color || msg.color }}
+                        >
+                          {user?.name || msg.username}
+                        </span>
+                        {!isMe && user?.socketId && (
+                          <motion.div
+                            initial={{ opacity: 0, x: -5 }}
+                            whileHover={{ opacity: 1, x: 0 }}
+                            className="group-hover/name:opacity-100 opacity-0 transition-all flex items-center"
+                          >
+                            <Users className={cn("w-3 h-3", THEME.text.secondary)} />
+                          </motion.div>
+                        )}
+                      </div>
                       <span>
                         {msg.flag}
                       </span>
