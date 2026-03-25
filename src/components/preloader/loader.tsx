@@ -1,7 +1,7 @@
 "use client";
 import styles from "./style.module.scss";
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { opacity, slideUp } from "./anim";
 import { usePreloader } from ".";
 

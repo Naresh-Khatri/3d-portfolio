@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "motion/react";
 import { Users } from "lucide-react";
 import { differenceInMinutes, format } from "date-fns";
 import { ArrowDown, Hash } from "lucide-react";

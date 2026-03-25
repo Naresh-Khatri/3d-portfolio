@@ -1,6 +1,6 @@
 // @ts-ignore
 import { Splide, SplideSlide, SplideTrack } from "@splidejs/react-splide";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 import "@splidejs/react-splide/css";
 
@@ -15,7 +15,7 @@ import {
 } from "./ui/dialog";
 import { Button } from "./ui/button";
 import { useState } from "react";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "motion/react";
 
 const SlideShow = ({ images }: { images: string[] }) => {
   const [hovering, setHovering] = useState(false);

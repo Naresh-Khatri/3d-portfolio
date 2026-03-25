@@ -3,7 +3,7 @@ import { SectionHeader } from "./section-header";
 import { Badge } from "../ui/badge";
 import { cn } from "@/lib/utils";
 import SectionWrapper from "../ui/section-wrapper";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const ExperienceSection = () => {

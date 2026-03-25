@@ -6,7 +6,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 import { SocketContext } from "@/contexts/socketio";
 import { Users, Users2, Hash, Settings } from "lucide-react";

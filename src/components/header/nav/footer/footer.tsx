@@ -1,6 +1,6 @@
 import styles from './style.module.scss';
 import { translate } from '../../anim';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 
 export default function Footer() {
   return (

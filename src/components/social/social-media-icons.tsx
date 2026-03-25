@@ -1,6 +1,6 @@
 "use client";
 
-import { useInView } from "framer-motion";
+import { useInView } from "motion/react";
 import React, { useRef } from "react";
 import { Button } from "../ui/button";
 import { SiGithub, SiInstagram, SiLinkedin, SiX } from "react-icons/si";

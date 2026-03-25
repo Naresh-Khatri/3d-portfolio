@@ -6,7 +6,7 @@ import { getAvatarUrl } from "@/lib/avatar";
 import { MousePointer2 } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import { useMediaQuery } from "@/hooks/use-media-query";
 
 // TODO: add clicking animation

@@ -29,7 +29,6 @@
     "date-fns": "^4.1.0",
     "devtools-detector": "^2.0.22",
     "embla-carousel-react": "^8.1.8",
-    "framer-motion": "^11.3.17",
     "gray-matter": "^4.0.3",
     "gsap": "^3.12.5",
     "lenis": "^1.1.6",

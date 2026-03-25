@@ -7,7 +7,7 @@ import {
   useContext,
   useRef,
 } from "react";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "motion/react";
 
 import Loader from "./loader";
 import gsap from "gsap";
