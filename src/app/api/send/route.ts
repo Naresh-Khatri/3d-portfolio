@@ -13,7 +13,6 @@ const Email = z.object({
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    console.log(body);
     const {
       success: zodSuccess,
       data: zodData,
@@ -34,7 +33,7 @@ export async function POST(req: Request) {
     });
 
     if (resendError) {
-      return Response.json({ resendError }, { status: 500 });
+      return Response.json({ error: "Failed to send email" }, { status: 500 });
     }
 
     return Response.json(resendData);
