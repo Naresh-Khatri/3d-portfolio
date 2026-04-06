@@ -68,7 +68,11 @@ export const ModalBody = ({
   children: ReactNode;
   className?: string;
 }) => {
+  const modalRef = useRef(null);
+
   const { open } = useModal();
+  const { setOpen } = useModal();
+  useOutsideClick(modalRef, () => setOpen(false));
 
   useEffect(() => {
     const handleKeydown = (e: KeyboardEvent) => {
@@ -85,9 +89,6 @@ export const ModalBody = ({
     }
   }, [open]);
 
-  const modalRef = useRef(null);
-  const { setOpen } = useModal();
-  useOutsideClick(modalRef, () => setOpen(false));
 
   return (
     <AnimatePresence>
