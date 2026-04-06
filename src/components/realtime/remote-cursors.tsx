@@ -156,13 +156,15 @@ const Cursor = ({
   return (
     <motion.div
       animate={{
-        x: x,
-        y: y,
+        left: x,
+        top: y,
       }}
-      className="w-6 h-6 pointer-events-auto"
+      className="absolute w-6 h-6 pointer-events-auto"
       transition={{
-        duration: 0.2, // Adjust duration for smoothness
-        ease: "easeOut", // Choose an easing function
+        type: "spring",
+        damping: 30,
+        stiffness: 200,
+        mass: 0.5,
       }}
       onMouseEnter={() => setShowText(true)}
       onMouseLeave={() => setShowText(false)}
