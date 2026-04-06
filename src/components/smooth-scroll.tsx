@@ -14,11 +14,13 @@ function SmoothScroll({ children, isInsideModal = false }: LenisProps) {
   });
 
   useEffect(() => {
-    document.addEventListener("DOMContentLoaded", () => {
+    const handleReady = () => {
       lenis?.stop();
       lenis?.start();
-    });
-  }, []);
+    };
+    document.addEventListener("DOMContentLoaded", handleReady);
+    return () => document.removeEventListener("DOMContentLoaded", handleReady);
+  }, [lenis]);
 
   return (
     <ReactLenis

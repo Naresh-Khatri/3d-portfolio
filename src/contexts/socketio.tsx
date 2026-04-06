@@ -70,27 +70,26 @@ const SocketContextProvider = ({ children }: { children: ReactNode }) => {
 
   // SETUP SOCKET.IO
   useEffect(() => {
-    if (!process.env.NEXT_PUBLIC_WS_URL) return
-    const socket = io(process.env.NEXT_PUBLIC_WS_URL!, {
+    if (!process.env.NEXT_PUBLIC_WS_URL) return;
+    const newSocket = io(process.env.NEXT_PUBLIC_WS_URL!, {
       auth: {
-        sessionId: localStorage.getItem(SESSION_ID_KEY), // send on reconnect to restore session
+        sessionId: localStorage.getItem(SESSION_ID_KEY),
       },
     });
-    setSocket(socket);
-    socket.on("connect", () => { });
-    socket.on("msgs-receive-init", (msgs) => {
+    setSocket(newSocket);
+    newSocket.on("connect", () => { });
+    newSocket.on("msgs-receive-init", (msgs) => {
       setMsgs(msgs);
     });
-    socket.on("session", ({ sessionId }) => {
+    newSocket.on("session", ({ sessionId }) => {
       localStorage.setItem(SESSION_ID_KEY, (sessionId));
     });
 
-    socket.on("msg-receive", (msgs) => {
+    newSocket.on("msg-receive", (msgs) => {
       setMsgs((p) => [...p, msgs]);
     });
 
-    socket.on("warning", (data: { message: string }) => {
-      console.log(data)
+    newSocket.on("warning", (data: { message: string }) => {
       toast({
         variant: "destructive",
         title: "System Warning",
@@ -98,13 +97,13 @@ const SocketContextProvider = ({ children }: { children: ReactNode }) => {
       });
     });
 
-    socket.on("msg-delete", (data: { id: number }) => {
-      console.log(data)
+    newSocket.on("msg-delete", (data: { id: number }) => {
       setMsgs((prev) => prev.filter((m) => Number(m.id) !== data.id));
     });
     return () => {
-      socket.disconnect();
+      newSocket.disconnect();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const currentUser = users.find(u => u.socketId === socket?.id);
 
