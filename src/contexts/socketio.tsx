@@ -52,12 +52,15 @@ export type ChatItem = Message | SystemMessage;
 
 export type Reaction = { emoji: string; sessionIds: string[] };
 
+export type UserProfile = { name: string; avatar: string; color: string; isAdmin?: boolean };
+
 type SocketContextType = {
   socket: Socket | null;
   users: User[];
   setUsers: Dispatch<SetStateAction<User[]>>;
   msgs: ChatItem[];
   reactions: Map<string, Reaction[]>;
+  profileMap: Map<string, UserProfile>;
   focusedCursorId: string | null;
   setFocusedCursorId: Dispatch<SetStateAction<string | null>>;
 };
@@ -68,6 +71,7 @@ const INITIAL_STATE: SocketContextType = {
   setUsers: () => { },
   msgs: [],
   reactions: new Map(),
+  profileMap: new Map(),
   focusedCursorId: null,
   setFocusedCursorId: () => { },
 };
@@ -81,7 +85,20 @@ const SocketContextProvider = ({ children }: { children: ReactNode }) => {
   const [users, setUsers] = useState<User[]>([]);
   const [msgs, setMsgs] = useState<ChatItem[]>([]);
   const [reactions, setReactions] = useState<Map<string, Reaction[]>>(new Map());
+  const [profileMap, setProfileMap] = useState<Map<string, UserProfile>>(new Map());
   const [focusedCursorId, setFocusedCursorId] = useState<string | null>(null);
+
+  // Keep profileMap in sync — only adds/updates, never removes
+  useEffect(() => {
+    if (users.length === 0) return;
+    setProfileMap(prev => {
+      const next = new Map(prev);
+      for (const u of users) {
+        next.set(u.id, { name: u.name, avatar: u.avatar, color: u.color, isAdmin: u.isAdmin });
+      }
+      return next;
+    });
+  }, [users]);
   const { toast } = useToast();
 
   // SETUP SOCKET.IO
@@ -146,7 +163,7 @@ const SocketContextProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   return (
-    <SocketContext.Provider value={{ socket, users, setUsers, msgs, reactions, focusedCursorId, setFocusedCursorId }}>
+    <SocketContext.Provider value={{ socket, users, setUsers, msgs, reactions, profileMap, focusedCursorId, setFocusedCursorId }}>
       {children}
     </SocketContext.Provider>
   );

@@ -91,11 +91,10 @@ export const ChatMessageList = ({
   getTypingText,
   onReply,
 }: ChatMessageListProps) => {
-  const { setFocusedCursorId, socket, reactions } = useContext(SocketContext);
+  const { setFocusedCursorId, socket, reactions, profileMap } = useContext(SocketContext);
   const [pickerOpenFor, setPickerOpenFor] = useState<string | null>(null);
 
   const grouped = useMemo(() => groupChatItems(msgs), [msgs]);
-  const regularMsgs = useMemo(() => msgs.filter((m): m is Message => !isSystemMessage(m)), [msgs]);
 
   const handleReaction = (messageId: string, emoji: string) => {
     socket?.emit("reaction-toggle", { messageId, emoji });
@@ -111,8 +110,9 @@ export const ChatMessageList = ({
     }
   };
 
-  let regularIndex = -1;
   let lastRenderedDate: Date | null = null;
+  let prevRegularMsg: Message | null = null;
+  let hadNonMessageSincePrev = false;
 
   return (
     <div className="flex-1 relative overflow-hidden flex flex-col">
@@ -134,27 +134,35 @@ export const ChatMessageList = ({
           {grouped.map((item, groupIdx) => {
             // Grouped system messages
             if ("_grouped" in item) {
+              hadNonMessageSincePrev = true;
               return <SystemMessageRow key={`sys-${groupIdx}`} users={item.users} />;
             }
 
             // Single system message
             if (isSystemMessage(item)) {
+              hadNonMessageSincePrev = true;
               return <SystemMessageRow key={item.id} users={[{ username: item.username, flag: item.flag }]} />;
             }
 
             // Regular message
             const msg = item;
-            regularIndex++;
-            const prevMsg = regularIndex > 0 ? regularMsgs[regularIndex - 1] : null;
+            const profile = profileMap.get(msg.sessionId);
             const user = users.find((u) => u.id === msg.sessionId);
+            const displayName = profile?.name ?? msg.username;
+            const displayAvatar = profile?.avatar ?? msg.avatar;
+            const displayColor = profile?.color ?? msg.color ?? '#60a5fa';
             const isMe = msg.sessionId === currentUser?.id;
             const msgDate = new Date(msg.createdAt);
 
+            const isFirstMsg = !prevRegularMsg;
             const showHeader =
-              regularIndex === 0 ||
-              !prevMsg ||
-              prevMsg.sessionId !== msg.sessionId ||
-              differenceInMinutes(msg.createdAt, prevMsg.createdAt) > 3;
+              isFirstMsg ||
+              hadNonMessageSincePrev ||
+              prevRegularMsg!.sessionId !== msg.sessionId ||
+              differenceInMinutes(msg.createdAt, prevRegularMsg!.createdAt) > 3;
+
+            prevRegularMsg = msg;
+            hadNonMessageSincePrev = false;
 
             // Day separator
             let daySeparator: React.ReactNode = null;
@@ -179,7 +187,7 @@ export const ChatMessageList = ({
                   className={cn(
                     "group relative flex gap-3 pr-2 py-0.5 -mx-2 px-2 rounded transition-colors",
                     "hover:bg-black/[0.03] dark:hover:bg-white/[0.03]",
-                    showHeader && regularIndex !== 0 && "!mt-4"
+                    showHeader && !isFirstMsg && "!mt-4"
                   )}
                 >
                   {showHeader ? (
@@ -195,10 +203,10 @@ export const ChatMessageList = ({
                       }}
                     >
                       <img
-                        src={getAvatarUrl(user?.avatar || msg.avatar)}
-                        alt={user?.name || msg.username}
+                        src={getAvatarUrl(displayAvatar)}
+                        alt={displayName}
                         className="w-10 h-10 rounded-full"
-                        style={{ backgroundColor: user?.color || msg.color || '#60a5fa' }}
+                        style={{ backgroundColor: displayColor }}
                       />
                       {user?.isOnline && (
                         <div className={cn("absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2", THEME.border.status)} />
@@ -225,22 +233,22 @@ export const ChatMessageList = ({
                         >
                           <span
                             className={cn("font-medium hover:underline", THEME.text.header)}
-                            style={{ color: user?.color || msg.color }}
+                            style={{ color: displayColor }}
                           >
-                            {user?.name || msg.username}
+                            {displayName}
                           </span>
-                          {!isMe && user?.socketId && (
-                            <motion.div
-                              initial={{ opacity: 0, x: -5 }}
-                              whileHover={{ opacity: 1, x: 0 }}
-                              className="group-hover/name:opacity-100 opacity-0 transition-all flex items-center"
-                            >
-                              <Users className={cn("w-3 h-3", THEME.text.secondary)} />
-                            </motion.div>
-                          )}
+                          {/* {!isMe && user?.socketId && ( */}
+                          {/*   <motion.div */}
+                          {/*     initial={{ opacity: 0, x: -5 }} */}
+                          {/*     whileHover={{ opacity: 1, x: 0 }} */}
+                          {/*     className="group-hover/name:opacity-100 opacity-0 transition-all flex items-center" */}
+                          {/*   > */}
+                          {/*     <Users className={cn("w-3 h-3", THEME.text.secondary)} /> */}
+                          {/*   </motion.div> */}
+                          {/* )} */}
                         </div>
                         <span>{msg.flag}</span>
-                        {user?.isAdmin && <AdminBadge />}
+                        {profile?.isAdmin && <AdminBadge />}
                         {isMe && (
                           <span className="bg-[#5865f2] text-white text-[10px] px-1 rounded font-bold">YOU</span>
                         )}
@@ -254,21 +262,14 @@ export const ChatMessageList = ({
                       <QuotedMessage
                         username={msg.replyTo.username}
                         content={msg.replyTo.content}
-                        avatar={
-                          // Try to find the reply author's current avatar
-                          (() => {
-                            const replyMsg = regularMsgs.find(m => m.id === msg.replyTo!.id);
-                            const replyUser = replyMsg ? users.find(u => u.id === replyMsg.sessionId) : undefined;
-                            return replyUser?.avatar || replyMsg?.avatar;
-                          })()
-                        }
-                        color={
-                          (() => {
-                            const replyMsg = regularMsgs.find(m => m.id === msg.replyTo!.id);
-                            const replyUser = replyMsg ? users.find(u => u.id === replyMsg.sessionId) : undefined;
-                            return replyUser?.color || replyMsg?.color;
-                          })()
-                        }
+                        avatar={(() => {
+                          const orig = msgs.find(m => !isSystemMessage(m) && m.id === msg.replyTo!.id) as Message | undefined;
+                          return orig?.avatar;
+                        })()}
+                        color={(() => {
+                          const orig = msgs.find(m => !isSystemMessage(m) && m.id === msg.replyTo!.id) as Message | undefined;
+                          return orig?.color;
+                        })()}
                         onClickQuote={() => scrollToMessage(msg.replyTo!.id)}
                       />
                     )}
