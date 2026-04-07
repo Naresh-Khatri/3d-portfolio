@@ -17,16 +17,29 @@ interface ChatInputProps {
   onCancelReply?: () => void;
   editTarget?: Message | null;
   onCancelEdit?: () => void;
+  rateLimitedUntil?: number | null;
 }
 
 const MAX_LENGTH = 500;
 const MAX_ROWS = 5;
 
-export const ChatInput = ({ onSendMessage, onTyping, placeholder = "Message", replyTarget, onCancelReply, editTarget, onCancelEdit }: ChatInputProps) => {
+export const ChatInput = ({ onSendMessage, onTyping, placeholder = "Message", replyTarget, onCancelReply, editTarget, onCancelEdit, rateLimitedUntil }: ChatInputProps) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [showCommands, setShowCommands] = useState(false);
   const [commandQuery, setCommandQuery] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [rateLimitSeconds, setRateLimitSeconds] = useState(0);
+
+  useEffect(() => {
+    if (!rateLimitedUntil) { setRateLimitSeconds(0); return; }
+    const tick = () => {
+      const remaining = Math.ceil((rateLimitedUntil - Date.now()) / 1000);
+      setRateLimitSeconds(remaining > 0 ? remaining : 0);
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, [rateLimitedUntil]);
 
   useEffect(() => {
     if (replyTarget) textareaRef.current?.focus();
@@ -45,6 +58,7 @@ export const ChatInput = ({ onSendMessage, onTyping, placeholder = "Message", re
   const resizeTextarea = useCallback(() => {
     const el = textareaRef.current;
     if (!el) return;
+    // Reset to 0 first so scrollHeight recalculates from content, not the previous height
     el.style.height = "0";
     const lineHeight = parseFloat(getComputedStyle(el).lineHeight) || 20;
     const maxHeight = lineHeight * MAX_ROWS;
@@ -162,6 +176,14 @@ export const ChatInput = ({ onSendMessage, onTyping, placeholder = "Message", re
           onCancel={onCancelReply}
         />
       )}
+      {rateLimitSeconds > 0 && !editTarget && (
+        <div className={cn(
+          "flex items-center gap-2 px-3 py-2 rounded-t-lg text-xs font-medium",
+          "bg-red-500/10 text-red-500 dark:text-red-400",
+        )}>
+          <span>Slow down — you can send again in {rateLimitSeconds}s</span>
+        </div>
+      )}
       {editTarget && (
         <div className={cn(
           "flex items-center gap-2 px-3 py-2 rounded-t-lg text-xs font-medium",
@@ -173,7 +195,7 @@ export const ChatInput = ({ onSendMessage, onTyping, placeholder = "Message", re
           </span>
         </div>
       )}
-      <div className={cn("relative rounded-lg p-2.5 flex items-center gap-2", THEME.bg.tertiary, (replyTarget || editTarget) && "rounded-t-none")}>
+      <div className={cn("relative rounded-lg p-2.5 flex items-center gap-2", THEME.bg.tertiary, (replyTarget || editTarget || rateLimitSeconds > 0) && "rounded-t-none")}>
         {showCommands && !editTarget && (
           <SlashCommandMenu
             query={commandQuery}

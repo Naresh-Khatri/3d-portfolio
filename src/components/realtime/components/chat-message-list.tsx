@@ -1,6 +1,6 @@
 import React, { useContext, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Users, Reply, Pencil } from "lucide-react";
+import { Users, Reply, Pencil, Loader2 } from "lucide-react";
 import { differenceInMinutes, format, isToday, isYesterday } from "date-fns";
 import { ArrowDown, Hash } from "lucide-react";
 import { ScrollArea } from "../../ui/scroll-area";
@@ -77,6 +77,9 @@ interface ChatMessageListProps {
   getTypingText: () => string | null;
   onReply: (msg: Message) => void;
   onEdit: (msg: Message) => void;
+  hasMoreMessages: boolean;
+  loadingHistory: boolean;
+  onLoadMore: () => void;
 }
 
 export const ChatMessageList = ({
@@ -92,6 +95,9 @@ export const ChatMessageList = ({
   getTypingText,
   onReply,
   onEdit,
+  hasMoreMessages,
+  loadingHistory,
+  onLoadMore,
 }: ChatMessageListProps) => {
   const { setFocusedCursorId, socket, reactions, profileMap } = useContext(SocketContext);
   const [pickerOpenFor, setPickerOpenFor] = useState<string | null>(null);
@@ -120,6 +126,31 @@ export const ChatMessageList = ({
     <div className="flex-1 relative overflow-hidden flex flex-col">
       <ScrollArea className="h-[400px]" data-lenis-prevent ref={chatContainerRef} type="always">
         <div className="p-4 space-y-0">
+          {msgs.length > 0 && hasMoreMessages && (
+            <div className="flex justify-center pb-3">
+              <button
+                type="button"
+                onClick={onLoadMore}
+                disabled={loadingHistory}
+                className={cn(
+                  "flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium transition-colors",
+                  "bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10",
+                  THEME.text.secondary,
+                  loadingHistory && "opacity-50 cursor-not-allowed"
+                )}
+              >
+                {loadingHistory ? (
+                  <>
+                    <Loader2 className="w-3 h-3 animate-spin" />
+                    Loading...
+                  </>
+                ) : (
+                  "Load older messages"
+                )}
+              </button>
+            </div>
+          )}
+
           {msgs.length === 0 && (
             <div className="h-full flex flex-col items-center justify-center text-center space-y-3 opacity-70 mt-10">
               <div className={cn("w-16 h-16 rounded-full flex items-center justify-center mb-2", THEME.bg.welcome)}>

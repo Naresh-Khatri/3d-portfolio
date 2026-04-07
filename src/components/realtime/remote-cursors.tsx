@@ -1,5 +1,5 @@
 "use client";
-import { SocketContext, type User } from "@/contexts/socketio";
+import { SocketContext } from "@/contexts/socketio";
 import { useMouse } from "@/hooks/use-mouse";
 import { useThrottle } from "@/hooks/use-throttle";
 import { getAvatarUrl } from "@/lib/avatar";
@@ -12,33 +12,9 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 // TODO: add clicking animation
 // TODO: listen to socket disconnect
 const RemoteCursors = () => {
-  const { socket, users: _users, setUsers, focusedCursorId, setFocusedCursorId } = useContext(SocketContext);
+  const { socket, users: _users, cursorPositions, focusedCursorId, setFocusedCursorId } = useContext(SocketContext);
   const isMobile = useMediaQuery("(max-width: 768px)");
   const { x, y } = useMouse({ allowPage: true });
-  useEffect(() => {
-    if (typeof window === "undefined" || !socket || isMobile) return;
-    socket.on("cursor-changed", (data) => {
-      setUsers((prev: User[]) => {
-        const newUsers = [...prev]
-        const user = newUsers.find(u => u.socketId === data.socketId)
-        if (user) {
-          user.posX = data.pos.x;
-          user.posY = data.pos.y
-        } else {
-          newUsers.push({
-            ...data,
-          });
-        }
-        return newUsers;
-      });
-    });
-    socket.on("users-updated", (data: User[]) => {
-      setUsers(data);
-    });
-    return () => {
-      socket.off("cursor-changed");
-    };
-  }, [socket, isMobile]);
   const handleMouseMove = useThrottle((x, y) => {
     socket?.emit("cursor-change", {
       pos: { x, y },
@@ -56,11 +32,11 @@ const RemoteCursors = () => {
   useEffect(() => {
     if (!focusedCursorId || isMobile) return;
 
-    const user = users.find(u => u.socketId === focusedCursorId);
-    if (!user) return;
+    const pos = cursorPositions.get(focusedCursorId);
+    if (!pos) return;
 
-    const targetX = user.posX - window.innerWidth / 2;
-    const targetY = user.posY - window.innerHeight / 2;
+    const targetX = pos.x - window.innerWidth / 2;
+    const targetY = pos.y - window.innerHeight / 2;
 
     window.scrollTo({
       left: Math.max(0, targetX),
@@ -74,7 +50,7 @@ const RemoteCursors = () => {
     }, 2000);
 
     return () => clearTimeout(timeout);
-  }, [focusedCursorId, users, isMobile, setFocusedCursorId]);
+  }, [focusedCursorId, cursorPositions, isMobile, setFocusedCursorId]);
 
 
   return (
@@ -84,19 +60,22 @@ const RemoteCursors = () => {
       style={{ minHeight: '100vh' }}
     >
       {users
-        .filter((user) => user.socketId !== socket?.id)
-        .map((user) => (
-          <Cursor
-            key={user.socketId}
-            x={user.posX}
-            y={user.posY}
-            color={user.color}
-            socketId={user.socketId}
-            avatar={user.avatar}
-            headerText={`${user.location} ${user.flag}`}
-            isFocused={focusedCursorId === user.socketId}
-          />
-        ))}
+        .filter((user) => user.socketId !== socket?.id && cursorPositions.has(user.socketId))
+        .map((user) => {
+          const pos = cursorPositions.get(user.socketId)!;
+          return (
+            <Cursor
+              key={user.socketId}
+              x={pos.x}
+              y={pos.y}
+              color={user.color}
+              socketId={user.socketId}
+              avatar={user.avatar}
+              headerText={`${user.location} ${user.flag}`}
+              isFocused={focusedCursorId === user.socketId}
+            />
+          );
+        })}
     </div>
   );
 };

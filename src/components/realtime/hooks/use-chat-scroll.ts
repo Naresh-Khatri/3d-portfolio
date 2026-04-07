@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-export const useChatScroll = (isOpen: boolean, msgsLength: number, currentUserId?: string, lastMsgSessionId?: string) => {
+export const useChatScroll = (isOpen: boolean, msgsLength: number, currentUserId?: string, lastMsgSessionId?: string, firstMsgId?: string) => {
   const chatContainer = useRef<HTMLDivElement>(null);
   const [isAtBottom, setIsAtBottom] = useState(true);
   const [showScrollButton, setShowScrollButton] = useState(false);
@@ -9,6 +9,27 @@ export const useChatScroll = (isOpen: boolean, msgsLength: number, currentUserId
   // Use ref to track isAtBottom for the effect without adding it to deps
   const isAtBottomRef = useRef(isAtBottom);
   useEffect(() => { isAtBottomRef.current = isAtBottom; }, [isAtBottom]);
+
+  // Preserve scroll position when older messages are prepended
+  const prevFirstMsgId = useRef(firstMsgId);
+  useEffect(() => {
+    if (prevFirstMsgId.current && firstMsgId !== prevFirstMsgId.current) {
+      // The first message changed — messages were prepended
+      const container = chatContainer.current;
+      if (!container) { prevFirstMsgId.current = firstMsgId; return; }
+      const viewport = container.querySelector('[data-radix-scroll-area-viewport]') as HTMLElement;
+      if (!viewport) { prevFirstMsgId.current = firstMsgId; return; }
+
+      const prevEl = document.getElementById(`msg-${prevFirstMsgId.current}`);
+      if (prevEl) {
+        // Use requestAnimationFrame to wait for DOM to update
+        requestAnimationFrame(() => {
+          prevEl.scrollIntoView({ behavior: 'auto', block: 'start' });
+        });
+      }
+    }
+    prevFirstMsgId.current = firstMsgId;
+  }, [firstMsgId]);
 
   const scrollToBottom = (smooth = true) => {
     if (!chatContainer.current) return;

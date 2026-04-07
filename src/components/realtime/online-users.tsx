@@ -33,7 +33,7 @@ import { THEME } from "./constants";
 import { getAvatarUrl } from "@/lib/avatar";
 
 const OnlineUsers = () => {
-  const { socket, users: _users, msgs } = useContext(SocketContext);
+  const { socket, users: _users, msgs, hasMoreMessages, loadingHistory, fetchOlderMessages } = useContext(SocketContext);
   const users = Array.from(_users.values());
   const [showUserList, setShowUserList] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -48,9 +48,25 @@ const OnlineUsers = () => {
   const connectionStatus = useConnectionStatus(socket);
   const prevMsgsLength = useRef(msgs.length);
 
+  // Driven by the server's "warning" event when msg-send is rate limited
+  const [rateLimitedUntil, setRateLimitedUntil] = useState<number | null>(null);
+
+  // Listen for server rate limit warnings and show the cooldown banner
+  useEffect(() => {
+    if (!socket) return;
+    const onWarning = (data: { message: string }) => {
+      if (data.message.includes("msg-send")) {
+        setRateLimitedUntil(Date.now() + 10_000);
+      }
+    };
+    socket.on("warning", onWarning);
+    return () => { socket.off("warning", onWarning); };
+  }, [socket]);
+
   // Play send/receive sounds for regular messages
   useEffect(() => {
     if (msgs.length > prevMsgsLength.current) {
+      // Skip sounds when receiving initial message history (large batch on connect)
       const isSmallBatch = msgs.length - prevMsgsLength.current <= 2;
       const lastMsg = msgs[msgs.length - 1];
       const isSystem = lastMsg && "type" in lastMsg && lastMsg.type === "system";
@@ -81,7 +97,8 @@ const OnlineUsers = () => {
     isOpen,
     msgs.length,
     currentUser?.id,
-    msgs[msgs.length - 1]?.sessionId
+    msgs[msgs.length - 1]?.sessionId,
+    msgs[0]?.id ? String(msgs[0].id) : undefined
   );
 
   const {
@@ -105,6 +122,7 @@ const OnlineUsers = () => {
       setEditTarget(null);
       return;
     }
+
     socket?.emit("msg-send", {
       content: cmd.content,
       ...(replyTarget && { replyTo: replyTarget.id }),
@@ -151,6 +169,7 @@ const OnlineUsers = () => {
       <Popover
         open={isOpen}
         onOpenChange={(newOpen) => {
+          // Prevent popover from closing while the profile modal is open (clicks outside)
           if (!newOpen && isEditingProfile) return;
           setIsOpen(newOpen);
           if (!newOpen) setShowUserList(false)
@@ -312,6 +331,9 @@ const OnlineUsers = () => {
               getTypingText={getTypingText}
               onReply={setReplyTarget}
               onEdit={setEditTarget}
+              hasMoreMessages={hasMoreMessages}
+              loadingHistory={loadingHistory}
+              onLoadMore={fetchOlderMessages}
             />
 
             <ChatInput
@@ -322,6 +344,7 @@ const OnlineUsers = () => {
               onCancelReply={() => setReplyTarget(null)}
               editTarget={editTarget}
               onCancelEdit={() => setEditTarget(null)}
+              rateLimitedUntil={rateLimitedUntil}
             />
 
             <UserList
