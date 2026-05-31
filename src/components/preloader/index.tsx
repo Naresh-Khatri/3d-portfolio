@@ -8,6 +8,7 @@ import {
   useRef,
 } from "react";
 import { AnimatePresence } from "motion/react";
+import { usePathname } from "next/navigation";
 
 import Loader from "./loader";
 import gsap from "gsap";
@@ -38,8 +39,12 @@ export const usePreloader = () => {
 };
 const LOADING_TIME = 2.5;
 function Preloader({ children, disabled = false }: PreloaderProps) {
-  const [isLoading, setIsLoading] = useState(true);
-  const [loadingPercent, setLoadingPercent] = useState(0);
+  const pathname = usePathname();
+  // Skip the loading splash for the résumé route (and anywhere it's disabled).
+  const skip = disabled || pathname?.startsWith("/resume");
+
+  const [isLoading, setIsLoading] = useState(!skip);
+  const [loadingPercent, setLoadingPercent] = useState(skip ? 100 : 0);
   const loadingTween = useRef<gsap.core.Tween>(null);
 
   const bypassLoading = () => {
@@ -49,6 +54,7 @@ function Preloader({ children, disabled = false }: PreloaderProps) {
   };
   const loadingPercentRef = useRef<{ value: number }>({ value: 0 });
   useEffect(() => {
+    if (skip) return;
     loadingTween.current = gsap.to(loadingPercentRef.current, {
       value: 100,
       duration: LOADING_TIME,
@@ -60,7 +66,10 @@ function Preloader({ children, disabled = false }: PreloaderProps) {
         setIsLoading(false);
       },
     });
-  }, []);
+    return () => {
+      loadingTween.current?.kill();
+    };
+  }, [skip]);
 
   return (
     <preloaderContext.Provider
