@@ -69,7 +69,7 @@ export default function Body({
           >
             <motion.p
               className={cn(
-                "rounded-lg",
+                "font-display rounded-lg",
                 currentHref !== href ? "text-muted-foreground" : "underline"
               )}
               onClick={() => setIsActive(false)}
