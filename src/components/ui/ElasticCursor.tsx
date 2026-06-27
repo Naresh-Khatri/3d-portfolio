@@ -92,8 +92,11 @@ function ElasticCursor() {
   const vel = useInstance(() => ({ x: 0, y: 0 }));
   const set = useInstance();
 
-  // Set GSAP quick setter Values on useLayoutEffect Update
+  // Re-bind quick setters on every remount (isMobile/isBlogPost toggle `return
+  // null`, swapping in fresh DOM nodes). Without this they write to the old
+  // detached elements and the cursor appears frozen.
   useLayoutEffect(() => {
+    if (!jellyRef.current || !dotRef.current) return;
     set.x = gsap.quickSetter(jellyRef.current, "x", "px");
     set.y = gsap.quickSetter(jellyRef.current, "y", "px");
     set.r = gsap.quickSetter(jellyRef.current, "rotate", "deg");
@@ -102,7 +105,7 @@ function ElasticCursor() {
     set.width = gsap.quickSetter(jellyRef.current, "width", "px");
     set.height = gsap.quickSetter(jellyRef.current, "height", "px");
     set.opacity = gsap.quickSetter([jellyRef.current, dotRef.current], "opacity");
-  }, []);
+  }, [isMobile, isBlogPost]);
 
   // Start Animation loop
   const loop = useCallback(() => {
@@ -133,7 +136,7 @@ function ElasticCursor() {
   const [cursorMoved, setCursorMoved] = useState(false);
   // Run on Mouse Move
   useLayoutEffect(() => {
-    if (isMobile) return;
+    if (isMobile || isBlogPost) return;
     // Caluclate Everything Function
     const setFromEvent = (e: MouseEvent) => {
       if (!jellyRef.current) return;
@@ -201,9 +204,9 @@ function ElasticCursor() {
 
     if (!isLoading) window.addEventListener("mousemove", setFromEvent);
     return () => {
-      if (!isLoading) window.removeEventListener("mousemove", setFromEvent);
+      window.removeEventListener("mousemove", setFromEvent);
     };
-  }, [isLoading]);
+  }, [isLoading, isMobile, isBlogPost]);
 
   useEffect(() => {
     if (!jellyRef.current) return;
@@ -212,7 +215,7 @@ function ElasticCursor() {
     jellyRef.current.style.width = loadingPercent * 2 + "vw";
   }, [loadingPercent]);
 
-  useTicker(loop, isLoading || !cursorMoved || isMobile);
+  useTicker(loop, isLoading || !cursorMoved || isMobile || isBlogPost);
   if (isMobile || isBlogPost) return null;
 
   // Return UI
