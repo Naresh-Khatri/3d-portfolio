@@ -34,3 +34,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+src/app/(components)
+
+# raw screenshot dump — source images; optimized versions live in each project dir
+public/assets/projects-screenshots/raw/
