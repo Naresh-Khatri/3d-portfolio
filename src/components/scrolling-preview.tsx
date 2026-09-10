@@ -3,10 +3,8 @@
 import { motion, useReducedMotion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
-// Pan speed (CSS px/sec). Duration is derived from this so every card scrolls
-// at the same visual speed — longer pages just take proportionally longer.
-const PAN_SPEED = 70;
-const PAUSE = 1.2; // seconds held at top and bottom
+// Pan speed (CSS px/sec). Higher value = faster scroll.
+const PAN_SPEED = 120;
 
 // A page only pans if it overflows the frame by at least this fraction of the
 // frame height. Anything shorter (landscape/square screenshots) is shown
@@ -19,24 +17,19 @@ const FALLBACK_BG = "linear-gradient(135deg, #1e293b, #0f172a)";
 
 /**
  * Card preview: a screenshot floating over a wallpaper. Tall landing pages pan
- * top → bottom → back like a scroll-through recording; normal (landscape/square)
- * screenshots are shown "cover", centered. Detection is automatic from the
- * image's natural ratio — drop in any image and it just works.
- *
- * `bg` (the wallpaper) is optional; omit it for a neutral gradient.
- *
- * Layout/backgrounds are inline-styled because this project's Tailwind config
- * can't emit opacity-modified theme colors or arbitrary `bg-[length:…]` — those
- * utilities silently no-op.
+ * on hover and smoothly return to top on mouse leave; normal (landscape/square)
+ * screenshots are shown "cover", centered.
  */
 const ScrollingPreview = ({
   src,
   alt,
   bg,
+  isHovered = false,
 }: {
   src: string;
   alt: string;
   bg?: string;
+  isHovered?: boolean;
 }) => {
   const reduceMotion = useReducedMotion();
   const viewportRef = useRef<HTMLDivElement>(null);
@@ -86,14 +79,6 @@ const ScrollingPreview = ({
   const animate = !reduceMotion && scrolls;
 
   const pan = scrollPx / PAN_SPEED;
-  const total = pan * 2 + PAUSE * 2;
-  const times = [
-    0,
-    pan / total,
-    (pan + PAUSE) / total,
-    (pan * 2 + PAUSE) / total,
-    1,
-  ];
 
   return (
     <div
@@ -143,19 +128,18 @@ const ScrollingPreview = ({
           animate={
             animate
               ? {
-                backgroundPosition: [
-                  "50% 0%",
-                  "50% 100%",
-                  "50% 100%",
-                  "50% 0%",
-                  "50% 0%",
-                ],
-              }
+                  backgroundPosition: isHovered ? "50% 100%" : "50% 0%",
+                }
               : undefined
           }
           transition={
             animate
-              ? { duration: total, ease: "easeInOut", repeat: Infinity, times }
+              ? {
+                  duration: isHovered
+                    ? pan
+                    : Math.min(Math.max(pan * 0.35, 0.4), 0.75),
+                  ease: isHovered ? "linear" : [0.25, 1, 0.5, 1],
+                }
               : undefined
           }
         />

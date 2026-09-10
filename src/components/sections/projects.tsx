@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   ResponsiveDialog,
   ResponsiveDialogContent,
@@ -31,6 +31,8 @@ const ProjectsSection = () => {
 };
 
 const ProjectCard = ({ project }: { project: Project }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
     <div className="flex items-center justify-center">
       <ResponsiveDialog>
@@ -38,6 +40,10 @@ const ProjectCard = ({ project }: { project: Project }) => {
           <div
             className="group relative w-full max-w-[400px] h-auto rounded-lg overflow-hidden ring-1 ring-white/5"
             style={{ aspectRatio: "3/2" }}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            onFocus={() => setIsHovered(true)}
+            onBlur={() => setIsHovered(false)}
           >
             {/* `src` can be any aspect ratio (tall pages pan, normal ones fit);
                 the wallpaper is an optional /assets/backgrounds/<id>.jpg. */}
@@ -45,6 +51,7 @@ const ProjectCard = ({ project }: { project: Project }) => {
               src={project.src}
               alt={project.title}
               bg={`/assets/backgrounds/${project.id}.jpg`}
+              isHovered={isHovered}
             />
             <div className="absolute w-full h-24 bottom-0 left-0 bg-gradient-to-t from-background via-background/80 to-transparent pointer-events-none z-10">
               <div className="flex flex-col h-full items-start justify-end p-4">
