@@ -22,7 +22,7 @@ A jaw-dropping developer portfolio packed with interactive 3D animations, butter
 
 | Layer | Technologies |
 |---|---|
-| **Framework** | Next.js 14, React 18, TypeScript |
+| **Framework** | Next.js 16.2.2, React 19.2.4, TypeScript |
 | **Styling** | Tailwind CSS, Shadcn UI, Aceternity UI |
 | **Animation** | GSAP, Framer Motion |
 | **3D** | Spline Runtime |
@@ -35,8 +35,8 @@ A jaw-dropping developer portfolio packed with interactive 3D animations, butter
 
 ### Prerequisites
 
-- Node.js (v18+)
-- pnpm (recommended), npm, or yarn
+- Node.js 20.9+ for Next.js 16; use a current LTS release with pnpm 11
+- pnpm 11.20.0
 
 ### Installation
 
@@ -75,6 +75,23 @@ A jaw-dropping developer portfolio packed with interactive 3D animations, butter
     ```
 
 5. Open [http://localhost:3000](http://localhost:3000) and see the magic ✨
+
+---
+
+## Code checks
+
+Run these before opening a pull request:
+
+```bash
+pnpm lint
+pnpm typecheck
+```
+
+Next.js 16 no longer runs lint during builds. The ESLint CLI uses `eslint.config.mjs`. New React Compiler diagnostics for refs, immutability, effect state updates, and manual memoization report warnings while existing animation and realtime components are migrated. Hook ordering violations remain errors.
+
+Blog frontmatter requires a title, summary, and `publishedAt` date in `YYYY-MM-DD` format. Optional fields are `image`, `author`, and a list of `tags`. Invalid frontmatter raises a content error; unknown blog slugs return a 404.
+
+Files under `public/assets` can be replaced at the same URL and cache for one hour before revalidation. Next.js content-hashed static assets retain immutable caching.
 
 ---
 
