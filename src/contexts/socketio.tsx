@@ -11,6 +11,7 @@ import React, {
 } from "react";
 import { io, Socket } from "socket.io-client";
 import { useToast } from "@/components/ui/use-toast";
+import { createCursorStore, CursorStoreContext } from "@/contexts/cursor-positions";
 
 export type User = {
   id: string;
@@ -55,8 +56,6 @@ export type Reaction = { emoji: string; sessionIds: string[] };
 
 export type UserProfile = { name: string; avatar: string; color: string; isAdmin?: boolean };
 
-export type CursorPosition = { x: number; y: number };
-
 type SocketContextType = {
   socket: Socket | null;
   users: User[];
@@ -64,7 +63,6 @@ type SocketContextType = {
   msgs: ChatItem[];
   reactions: Map<string, Reaction[]>;
   profileMap: Map<string, UserProfile>;
-  cursorPositions: Map<string, CursorPosition>;
   followingId: string | null;
   setFollowingId: Dispatch<SetStateAction<string | null>>;
   hasMoreMessages: boolean;
@@ -81,7 +79,6 @@ const INITIAL_STATE: SocketContextType = {
   msgs: [],
   reactions: new Map(),
   profileMap: new Map(),
-  cursorPositions: new Map(),
   followingId: null,
   setFollowingId: () => { },
   hasMoreMessages: true,
@@ -101,7 +98,7 @@ const SocketContextProvider = ({ children }: { children: ReactNode }) => {
   const [msgs, setMsgs] = useState<ChatItem[]>([]);
   const [reactions, setReactions] = useState<Map<string, Reaction[]>>(new Map());
   const [profileMap, setProfileMap] = useState<Map<string, UserProfile>>(new Map());
-  const [cursorPositions, setCursorPositions] = useState<Map<string, CursorPosition>>(new Map());
+  const [cursorStore] = useState(createCursorStore);
   const [followingId, setFollowingId] = useState<string | null>(null);
   const [hasMoreMessages, setHasMoreMessages] = useState(true);
   const [loadingHistory, setLoadingHistory] = useState(false);
@@ -167,20 +164,22 @@ const SocketContextProvider = ({ children }: { children: ReactNode }) => {
       console.error("Socket connection error:", err.message);
     });
     newSocket.on("disconnect", (reason) => {
+      cursorStore.reset();
+      setFollowingId(null);
+      setUsers([]);
       // Transport drops auto-reconnect; only a server disconnect needs a manual nudge
       if (reason === "io server disconnect") {
         newSocket.connect();
       }
     });
     newSocket.on("users-updated", (data: User[]) => {
+      const onlineIds = new Set(data.filter((user) => user.isOnline).map((user) => user.socketId));
+      cursorStore.retain(onlineIds);
+      setFollowingId((current) => current && !onlineIds.has(current) ? null : current);
       setUsers(data);
     });
     newSocket.on("cursor-changed", (data: { pos: { x: number; y: number }; socketId: string }) => {
-      setCursorPositions(prev => {
-        const next = new Map(prev);
-        next.set(data.socketId, data.pos);
-        return next;
-      });
+      cursorStore.update(data.socketId, data.pos);
     });
     newSocket.on("msgs-receive-init", (msgs) => {
       setMsgs(msgs);
@@ -261,15 +260,17 @@ const SocketContextProvider = ({ children }: { children: ReactNode }) => {
       document.removeEventListener("visibilitychange", onVisible);
       window.removeEventListener("online", ensureConnected);
       window.removeEventListener("focus", ensureConnected);
+      newSocket.removeAllListeners();
       newSocket.disconnect();
+      cursorStore.reset();
       socketRef.current = null;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <SocketContext.Provider value={{ socket, users, setUsers, msgs, reactions, profileMap, cursorPositions, followingId, setFollowingId, hasMoreMessages, loadingHistory, fetchOlderMessages, initStatus, fetchInitialMessages }}>
-      {children}
+    <SocketContext.Provider value={{ socket, users, setUsers, msgs, reactions, profileMap, followingId, setFollowingId, hasMoreMessages, loadingHistory, fetchOlderMessages, initStatus, fetchInitialMessages }}>
+      <CursorStoreContext.Provider value={cursorStore}>{children}</CursorStoreContext.Provider>
     </SocketContext.Provider>
   );
 };

@@ -1,24 +1,27 @@
 "use client";
 import { SocketContext } from "@/contexts/socketio";
+import { useCursorPositions } from "@/contexts/cursor-positions";
 import { useMouse } from "@/hooks/use-mouse";
 import { useThrottle } from "@/hooks/use-throttle";
 import { getAvatarUrl } from "@/lib/avatar";
 import { MousePointer2, X } from "lucide-react";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useRef, useState } from "react";
 
 import { AnimatePresence, motion } from "motion/react";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { useLenis } from "@/lib/lenis";
+import { usePerfProfile } from "@/hooks/use-perf-profile";
 
 // TODO: add clicking animation
-// TODO: listen to socket disconnect
 
 // Space (px) to keep clear at the right edge so a clamped cursor's pointer
 // glyph and avatar pill (which extend right of x) stay on-screen.
 const CURSOR_EDGE_RESERVE = 56;
 
 const RemoteCursors = () => {
-  const { socket, users: _users, cursorPositions, followingId, setFollowingId } = useContext(SocketContext);
+  const { socket, users: _users, followingId, setFollowingId } = useContext(SocketContext);
+  const cursorPositions = useCursorPositions();
+  const { reducedMotion } = usePerfProfile();
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   // Track viewport width so we can clamp incoming (desktop-coordinate) cursor
@@ -36,47 +39,44 @@ const RemoteCursors = () => {
   // of window.scrollTo keeps both on the same RAF loop, so it doesn't stutter.
   const lenis = useLenis();
   const { x, y } = useMouse({ allowPage: true });
-  const handleMouseMove = useThrottle((x, y) => {
+  const emitCursor = useCallback((x: number, y: number) => {
+    if (!socket?.connected) return;
     socket?.emit("cursor-change", {
       pos: { x, y },
       socketId: socket.id,
     });
-  }, 200);
+  }, [socket]);
+  const handleMouseMove = useThrottle(emitCursor, 200);
   useEffect(() => {
     if (isMobile) return;
     handleMouseMove(x, y);
-  }, [x, y, isMobile]);
+  }, [x, y, isMobile, handleMouseMove]);
 
-  const users = Array.from(_users.values());
+  const users = _users.filter((user) => user.isOnline);
   const followedUser = followingId ? users.find((u) => u.socketId === followingId) : null;
 
-  // Figma-style follow: continuously keep the followed cursor centered as it moves.
-  // Re-runs on every cursor update because cursorPositions is a fresh Map each time.
-  // Each call retargets Lenis' in-flight tween, producing a smooth chase rather
-  // than the jerky restart you get from firing native `scrollTo({behavior:'smooth'})`
-  // every ~200ms while Lenis is also animating the same scroll position.
+  const followedPosition = followingId ? cursorPositions.get(followingId) : undefined;
+
+  // Retarget the scroll only when the followed cursor moves.
   useEffect(() => {
-    if (!followingId || isMobile) return;
+    if (!followedPosition || !followedUser || isMobile) return;
 
-    const pos = cursorPositions.get(followingId);
-    if (!pos) return;
-
-    const top = Math.max(0, pos.y - window.innerHeight / 2);
+    const top = Math.max(0, followedPosition.y - window.innerHeight / 2);
     if (lenis) {
       // force: true so it still scrolls while Lenis is stopped (see effect below).
-      lenis.scrollTo(top, { duration: 1, force: true });
+      lenis.scrollTo(top, { duration: reducedMotion ? 0 : 1, immediate: reducedMotion, force: true });
     } else {
-      window.scrollTo({ top, behavior: 'smooth' });
+      window.scrollTo({ top, behavior: reducedMotion ? 'instant' : 'smooth' });
     }
-  }, [followingId, cursorPositions, isMobile, lenis]);
+  }, [followedPosition, followedUser, isMobile, lenis, reducedMotion]);
 
   // Stop Lenis while following so its inertia/virtual-scroll doesn't fight our
   // programmatic follow. We're the sole scroll driver here; Lenis resumes on exit.
   useEffect(() => {
-    if (!lenis || !followingId || isMobile) return;
+    if (!lenis || !followedUser || isMobile) return;
     lenis.stop();
     return () => lenis.start();
-  }, [lenis, followingId, isMobile]);
+  }, [lenis, followedUser, isMobile]);
 
   // Exit follow mode on any manual navigation (wheel / touch / Escape).
   // Programmatic scrollTo above doesn't emit wheel/touch events, so this only
@@ -97,10 +97,10 @@ const RemoteCursors = () => {
 
   // Stop following if the target leaves the room.
   useEffect(() => {
-    if (followingId && !cursorPositions.has(followingId) && !users.some((u) => u.socketId === followingId)) {
+    if (followingId && (!followedUser || isMobile)) {
       setFollowingId(null);
     }
-  }, [followingId, users, cursorPositions, setFollowingId]);
+  }, [followingId, followedUser, isMobile, setFollowingId]);
 
   const followColor = followedUser?.color || "#60a5fa";
 
@@ -156,9 +156,9 @@ const RemoteCursors = () => {
             <motion.button
               type="button"
               onClick={() => setFollowingId(null)}
-              initial={{ x: "-50%", y: 16, opacity: 0 }}
+              initial={{ x: "-50%", y: reducedMotion ? 0 : 16, opacity: 0 }}
               animate={{ x: "-50%", y: 0, opacity: 1 }}
-              exit={{ x: "-50%", y: 16, opacity: 0 }}
+              exit={{ x: "-50%", y: reducedMotion ? 0 : 16, opacity: 0 }}
               transition={{ type: "spring", bounce: 0.3, duration: 0.4 }}
               className="pointer-events-auto absolute bottom-4 left-1/2 flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-full shadow-lg text-white text-sm font-medium group"
               style={{ backgroundColor: followColor }}
@@ -202,7 +202,10 @@ const Cursor = ({
 }) => {
   const [showText, setShowText] = useState(false);
   const [msgText, setMsgText] = useState("");
+  const messageTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { msgs, users } = useContext(SocketContext);
+  const { reducedMotion } = usePerfProfile();
+  const cursorUserId = users.find(u => u.socketId === socketId)?.id;
 
   useEffect(() => {
     setShowText(true);
@@ -219,21 +222,22 @@ const Cursor = ({
   useEffect(() => {
     const lastMsg = msgs.at(-1);
     const lastMsgSessionId = lastMsg?.sessionId;
-    const cursorUserId = users.find(u => u.socketId === socketId)?.id;
     if (lastMsgSessionId === cursorUserId && lastMsg && "content" in lastMsg) {
       const lastMsgContent = lastMsg.content || "";
       const textSlice =
         lastMsgContent.slice(0, 30) + (lastMsgContent.length > 30 ? "..." : "");
       const timeToRead = Math.max(4000, Math.max(textSlice.length * 100, 1000));
       setMsgText(textSlice);
-      // setShowText(true);
-      const t = setTimeout(() => {
+      if (messageTimeout.current) clearTimeout(messageTimeout.current);
+      messageTimeout.current = setTimeout(() => {
         setMsgText("");
-        clearTimeout(t);
-        // setShowText(false);
       }, timeToRead);
     }
-  }, [msgs]);
+  }, [msgs, cursorUserId]);
+
+  useEffect(() => () => {
+    if (messageTimeout.current) clearTimeout(messageTimeout.current);
+  }, []);
 
   return (
     <motion.div
@@ -242,7 +246,7 @@ const Cursor = ({
         top: y,
       }}
       className="absolute w-6 h-6 pointer-events-auto"
-      transition={{
+      transition={reducedMotion ? { duration: 0 } : {
         type: "spring",
         damping: 30,
         stiffness: 200,
@@ -253,7 +257,7 @@ const Cursor = ({
     >
       {/* Pulse Effect for Focus */}
       <AnimatePresence>
-        {isFocused && (
+        {isFocused && !reducedMotion && (
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{
@@ -302,7 +306,7 @@ const Cursor = ({
           width: showText && headerText ? 'auto' : 40,
         }}
         transition={{
-          duration: 0.3,
+          duration: reducedMotion ? 0 : 0.3,
           ease: 'easeOut',
         }}
       >
@@ -320,7 +324,7 @@ const Cursor = ({
               initial={{ opacity: 0, width: 0 }}
               animate={{ opacity: 1, width: 'auto' }}
               exit={{ opacity: 0, width: 0 }}
-              transition={{ duration: 0.3, ease: 'easeOut' }}
+              transition={{ duration: reducedMotion ? 0 : 0.3, ease: 'easeOut' }}
               className="flex flex-col justify-center pl-2 pr-3 py-1 whitespace-nowrap"
             >
               <div className="text-xs font-medium text-white">{headerText}</div>
