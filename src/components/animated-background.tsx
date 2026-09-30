@@ -1,9 +1,9 @@
 "use client";
 import React, { Suspense, useEffect, useRef, useState } from "react";
-import { Application, SPEObject, SplineEvent } from "@splinetool/runtime";
+import type { Application, SPEObject, SplineEvent } from "@splinetool/runtime";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-const Spline = React.lazy(() => import("@splinetool/react-spline"));
+import Spline from "./safe-spline";
 import { Skill, SkillNames, SKILLS } from "@/data/constants";
 import { sleep } from "@/lib/utils";
 import { useMediaQuery } from "@/hooks/use-media-query";
@@ -510,6 +510,10 @@ const KeyboardScene = ({ maxDpr }: { maxDpr: number }) => {
           bypassLoading();
         }}
         scene="/assets/skills-keyboard.spline"
+        onError={() => {
+          setSceneStatus("failed");
+          bypassLoading();
+        }}
       />
     </Suspense>
   );
