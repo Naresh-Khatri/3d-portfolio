@@ -228,14 +228,22 @@ body > canvas {
   }
 }
 
-/* Accessibility + low-end escape hatch: when the OS requests reduced motion,
-   neutralize CSS animations/transitions globally. The heavy JS/WebGL effects
-   (Spline scene, particle canvas, elastic cursor) are gated separately in
-   use-perf-profile.ts; this covers the long tail of decorative CSS motion. */
+html[data-motion="off"],
+html[data-motion="off"] *,
+html[data-motion="off"] *::before,
+html[data-motion="off"] *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* Follow the OS before preference detection; an explicit choice takes priority. */
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  html:not([data-motion="on"]),
+  html:not([data-motion="on"]) *,
+  html:not([data-motion="on"]) *::before,
+  html:not([data-motion="on"]) *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;

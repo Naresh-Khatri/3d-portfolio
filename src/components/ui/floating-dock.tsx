@@ -5,6 +5,7 @@
  **/
 
 import { cn } from "@/lib/utils";
+import { usePerfProfile } from "@/hooks/use-perf-profile";
 import {
   AnimatePresence,
   MotionValue,
@@ -87,12 +88,13 @@ const FloatingDockDesktop = ({
   items: { title: string; icon: React.ReactNode }[];
   className?: string;
 }) => {
+  const { reducedMotion } = usePerfProfile();
   let mouseX = useMotionValue(Infinity);
   const [showHint, setShowHint] = useState(true);
   const timer = useRef<NodeJS.Timeout>(null);
   const controls = useAnimation();
   useEffect(() => {
-    if (showHint) {
+    if (showHint && !reducedMotion) {
       controls.start({
         opacity: [0, 1, 1, 0],
         x: [-50, -50, 50, 50],
@@ -112,12 +114,12 @@ const FloatingDockDesktop = ({
       controls.stop();
       if (timer.current) clearInterval(timer.current);
     };
-  }, [showHint]);
+  }, [showHint, reducedMotion, controls]);
   return (
     <div className="relative h-fit flex items-center justify-center pointer-events-auto">
       <motion.div
         onMouseMove={(e) => {
-          mouseX.set(e.pageX);
+          mouseX.set(reducedMotion ? Infinity : e.clientX);
           setShowHint(false);
         }}
         onMouseLeave={() => mouseX.set(Infinity)}
@@ -131,7 +133,7 @@ const FloatingDockDesktop = ({
           <IconContainer mouseX={mouseX} key={item.title} {...item} />
         ))}
       </motion.div>
-      {showHint && (
+      {showHint && !reducedMotion && (
         <div
           className="z-10 absolute t-0 w-full h-full pointer-events-none"
           onMouseEnter={() => setShowHint(false)}
@@ -163,6 +165,7 @@ function IconContainer({
   title: string;
   icon: React.ReactNode;
 }) {
+  const { reducedMotion } = usePerfProfile();
   let ref = useRef<HTMLDivElement>(null);
 
   let distance = useTransform(mouseX, (val) => {
@@ -208,7 +211,7 @@ function IconContainer({
   return (
     <motion.div
       ref={ref}
-      style={{ width, height }}
+      style={{ width: reducedMotion ? 40 : width, height: reducedMotion ? 40 : height }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       className="aspect-square rounded-full bg-secondary/30 flex items-center justify-center relative"
@@ -226,7 +229,7 @@ function IconContainer({
         )}
       </AnimatePresence>
       <motion.div
-        style={{ width: widthIcon, height: heightIcon }}
+        style={{ width: reducedMotion ? 20 : widthIcon, height: reducedMotion ? 20 : heightIcon }}
         className="flex items-center justify-center"
       >
         {icon}

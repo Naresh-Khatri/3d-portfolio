@@ -29,7 +29,7 @@ export default function AppOverlays() {
         />
       )}
       {isHome && <RemoteCursors />}
-      <EasterEggs />
+      {!disableDecorative && <EasterEggs />}
       {!isResume && !disableDecorative && <ElasticCursor />}
       {isHome && <RadialMenu />}
       {isHome && <MotionNudge />}

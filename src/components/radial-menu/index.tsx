@@ -8,6 +8,7 @@ import { MenuItem, Position } from './types';
 import { SocketContext } from '@/contexts/socketio';
 import { useSounds } from '@/components/realtime/hooks/use-sounds';
 import { RightClickHint } from './right-click-hint';
+import { usePerfProfile } from '@/hooks/use-perf-profile';
 
 // Define our menu items
 const MENU_ITEMS: MenuItem[] = [
@@ -27,6 +28,7 @@ const COOLDOWN_THRESHOLD = 0.7; // only trigger cooldown above this intensity
 const INTERACTIVE_SELECTOR = 'a, button, input, textarea, select, [contenteditable], img, video, audio, [data-radix-popper-content-wrapper], [data-radix-popper-content-wrapper] *';
 
 export default function RadialMenu() {
+  const { reducedMotion } = usePerfProfile();
   const { socket } = useContext(SocketContext);
   const { playConfettiSound, startChargeTone, updateChargeTone, stopChargeTone } = useSounds();
   const [isOpen, setIsOpen] = useState(false);
@@ -63,6 +65,7 @@ export default function RadialMenu() {
 
   // Handle Confetti — intensity scales everything
   const fireConfetti = useCallback((pageX: number, pageY: number, emoji: string, int: number) => {
+    if (reducedMotion) return;
     const normalizedX = (pageX - window.scrollX) / window.innerWidth;
     const normalizedY = (pageY - window.scrollY) / window.innerHeight;
 
@@ -79,22 +82,27 @@ export default function RadialMenu() {
         origin: { x: normalizedX, y: normalizedY },
         shapes: [emojiShape],
         scalar,
-        disableForReducedMotion: true,
+        disableForReducedMotion: false,
         zIndex: 9999,
         startVelocity: 15 + int * 30 + Math.random() * 10,
         gravity: 0.6 + Math.random() * 0.4,
         drift: (Math.random() - 0.5) * (0.3 + int * 0.7),
       });
     }
-  }, []);
+  }, [reducedMotion]);
 
   const spawnShockwave = useCallback((clientX: number, clientY: number, color: string, emoji: string, int: number) => {
+    if (reducedMotion) return;
     const id = `${Date.now()}-${Math.random()}`;
     setShockwaves(prev => [...prev, { id, x: clientX, y: clientY, color, emoji, intensity: int }]);
     setTimeout(() => {
       setShockwaves(prev => prev.filter(s => s.id !== id));
     }, 1600);
-  }, []);
+  }, [reducedMotion]);
+
+  useEffect(() => {
+    if (reducedMotion) confetti.reset();
+  }, [reducedMotion]);
 
   const triggerConfetti = (x: number, y: number, item: MenuItem, int: number) => {
     playConfettiSound(int);
@@ -268,7 +276,7 @@ export default function RadialMenu() {
         intensityRef={intensityRef}
         cooldownEndRef={cooldownEndRef}
       />
-      {shockwaves.map(sw => (
+      {!reducedMotion && shockwaves.map(sw => (
         <Shockwave key={sw.id} data={sw} />
       ))}
       <RightClickHint dismissed={isOpen} />

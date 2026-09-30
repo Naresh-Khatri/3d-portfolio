@@ -3,6 +3,7 @@
 import { motion, useAnimation, useInView } from "motion/react";
 
 import { cn } from "@/lib/utils";
+import { usePerfProfile } from "@/hooks/use-perf-profile";
 import { ReactNode, useEffect, useRef } from "react";
 
 interface BlurIntProps {
@@ -22,17 +23,20 @@ export const BlurIn = ({
   delay = 0,
   duration = 1,
 }: BlurIntProps) => {
+  const { reducedMotion } = usePerfProfile();
   const defaultVariants = {
     hidden: { filter: "blur(10px)", opacity: 0 },
     visible: { filter: "blur(0px)", opacity: 1 },
   };
-  const combinedVariants = variant || defaultVariants;
+  const combinedVariants = reducedMotion
+    ? { hidden: { filter: "none", opacity: 1 }, visible: { filter: "none", opacity: 1 } }
+    : variant || defaultVariants;
 
   return (
     <motion.div
       initial="hidden"
-      animate="visible"
-      transition={{ duration, delay }}
+      animate={reducedMotion ? { filter: "none", opacity: 1 } : "visible"}
+      transition={{ duration: reducedMotion ? 0 : duration, delay: reducedMotion ? 0 : delay }}
       variants={combinedVariants}
       className={cn(
         className
@@ -60,6 +64,7 @@ export const BoxReveal = ({
   delay,
   once = true,
 }: BoxRevealProps) => {
+  const { reducedMotion } = usePerfProfile();
   const mainControls = useAnimation();
   const slideControls = useAnimation();
 
@@ -67,25 +72,30 @@ export const BoxReveal = ({
   const isInView = useInView(ref, { once });
 
   useEffect(() => {
-    if (isInView) {
+    if (reducedMotion) {
+      slideControls.stop();
+      mainControls.stop();
+      slideControls.set("visible");
+      mainControls.set("visible");
+    } else if (isInView) {
       slideControls.start("visible");
       mainControls.start("visible");
     } else {
       slideControls.start("hidden");
       mainControls.start("hidden");
     }
-  }, [isInView, mainControls, slideControls]);
+  }, [isInView, mainControls, slideControls, reducedMotion]);
 
   return (
     <div ref={ref} style={{ position: "relative", width, overflow: "hidden" }}>
       <motion.div
         variants={{
-          hidden: { opacity: 0, y: 75 },
+          hidden: { opacity: reducedMotion ? 1 : 0, y: reducedMotion ? 0 : 75 },
           visible: { opacity: 1, y: 0 },
         }}
-        initial="hidden"
+        initial={reducedMotion ? "visible" : "hidden"}
         animate={mainControls}
-        transition={{ duration: duration ? duration : 0.5, delay }}
+        transition={{ duration: reducedMotion ? 0 : duration ?? 0.5, delay }}
       >
         {children}
       </motion.div>
@@ -95,10 +105,10 @@ export const BoxReveal = ({
           hidden: { left: 0 },
           visible: { left: "100%" },
         }}
-        initial="hidden"
+        initial={reducedMotion ? "visible" : "hidden"}
         animate={slideControls}
         transition={{
-          duration: duration ? duration : 0.5,
+          duration: reducedMotion ? 0 : duration ?? 0.5,
           ease: "easeIn",
           delay,
         }}
@@ -129,12 +139,14 @@ export default function RevealAnimation({
   duration = 0.5,
   className,
 }: RevealAnimationProps) {
+  const { reducedMotion } = usePerfProfile();
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={reducedMotion ? false : { opacity: 0, y: 20 }}
+      animate={reducedMotion ? { opacity: 1, y: 0 } : undefined}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration, delay }}
+      transition={{ duration: reducedMotion ? 0 : duration, delay: reducedMotion ? 0 : delay }}
       className={className}
     >
       {children}

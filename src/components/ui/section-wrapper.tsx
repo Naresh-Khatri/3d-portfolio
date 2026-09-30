@@ -3,12 +3,14 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { cn } from "@/lib/utils";
+import { usePerfProfile } from "@/hooks/use-perf-profile";
 
 interface SectionWrapperProps extends React.HTMLAttributes<HTMLElement> {
   children: React.ReactNode;
 }
 
 const SectionWrapper = ({ id, className, children, ...props }: SectionWrapperProps) => {
+  const { reducedMotion } = usePerfProfile();
   const containerRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -26,7 +28,7 @@ const SectionWrapper = ({ id, className, children, ...props }: SectionWrapperPro
       {...props}
     >
       <motion.div
-        style={{ opacity, scale }}
+        style={{ opacity: reducedMotion ? 1 : opacity, scale: reducedMotion ? 1 : scale }}
         className="w-full h-full"
       >
         {children}

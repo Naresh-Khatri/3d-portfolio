@@ -12,6 +12,7 @@ import { useTheme } from "next-themes";
 import { Section, getKeyboardState } from "./animated-background-config";
 import { useSounds } from "./realtime/hooks/use-sounds";
 import { usePerfProfile } from "@/hooks/use-perf-profile";
+import { setSceneStatus, useSceneStatus } from "@/lib/scene-health";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -21,6 +22,12 @@ const KeyboardScene = ({ maxDpr }: { maxDpr: number }) => {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const splineContainer = useRef<HTMLDivElement>(null);
   const [splineApp, setSplineApp] = useState<Application>();
+  const sceneAlive = useRef(true);
+
+  useEffect(() => {
+    sceneAlive.current = true;
+    return () => { sceneAlive.current = false; };
+  }, []);
   const selectedSkillRef = useRef<Skill | null>(null);
 
   const { playPressSound, playReleaseSound } = useSounds();
@@ -73,13 +80,13 @@ const KeyboardScene = ({ maxDpr }: { maxDpr: number }) => {
       );
     };
 
-    splineApp.addEventListener("keyUp", () => {
+    const onKeyUp = () => {
       if (!splineApp || isInputFocused()) return;
       playReleaseSound();
       splineApp.setVariable("heading", "");
       splineApp.setVariable("desc", "");
-    });
-    splineApp.addEventListener("keyDown", (e) => {
+    };
+    const onKeyDown = (e: SplineEvent) => {
       if (!splineApp || isInputFocused()) return;
       const skill = SKILLS[e.target.name as SkillNames];
       if (skill) {
@@ -89,8 +96,15 @@ const KeyboardScene = ({ maxDpr }: { maxDpr: number }) => {
         splineApp.setVariable("heading", skill.label);
         splineApp.setVariable("desc", skill.shortDescription);
       }
-    });
+    };
+    splineApp.addEventListener("keyUp", onKeyUp);
+    splineApp.addEventListener("keyDown", onKeyDown);
     splineApp.addEventListener("mouseHover", handleMouseHover);
+    return () => {
+      splineApp.removeEventListener("keyUp", onKeyUp);
+      splineApp.removeEventListener("keyDown", onKeyDown);
+      splineApp.removeEventListener("mouseHover", handleMouseHover);
+    };
   };
 
   // --- Animation Setup Helpers ---
@@ -242,6 +256,7 @@ const KeyboardScene = ({ maxDpr }: { maxDpr: number }) => {
 
     kbd.visible = false;
     await sleep(400);
+    if (!sceneAlive.current) return;
     kbd.visible = true;
     setKeyboardRevealed(true);
 
@@ -260,6 +275,7 @@ const KeyboardScene = ({ maxDpr }: { maxDpr: number }) => {
     const keycaps = allObjects.filter((obj) => obj.name === "keycap");
 
     await sleep(900);
+    if (!sceneAlive.current) return;
 
     if (isMobile) {
       const mobileKeyCaps = allObjects.filter((obj) => obj.name === "keycap-mobile");
@@ -268,6 +284,7 @@ const KeyboardScene = ({ maxDpr }: { maxDpr: number }) => {
       const desktopKeyCaps = allObjects.filter((obj) => obj.name === "keycap-desktop");
       desktopKeyCaps.forEach(async (keycap, idx) => {
         await sleep(idx * 70);
+        if (!sceneAlive.current) return;
         keycap.visible = true;
       });
     }
@@ -275,6 +292,7 @@ const KeyboardScene = ({ maxDpr }: { maxDpr: number }) => {
     keycaps.forEach(async (keycap, idx) => {
       keycap.visible = false;
       await sleep(idx * 70);
+      if (!sceneAlive.current) return;
       keycap.visible = true;
       gsap.fromTo(
         keycap.position,
@@ -289,11 +307,12 @@ const KeyboardScene = ({ maxDpr }: { maxDpr: number }) => {
   // Initialize GSAP and Spline interactions
   useEffect(() => {
     if (!splineApp) return;
-    handleSplineInteractions();
+    const disposeInteractions = handleSplineInteractions();
     const timelines = setupScrollAnimations();
     bongoAnimationRef.current = getBongoAnimation();
     keycapAnimationsRef.current = getKeycapsAnimation();
     return () => {
+      disposeInteractions?.();
       bongoAnimationRef.current?.stop()
       keycapAnimationsRef.current?.stop()
       // Kill the section ScrollTriggers so they don't orphan when the scene
@@ -485,6 +504,8 @@ const KeyboardScene = ({ maxDpr }: { maxDpr: number }) => {
         className="w-full h-full fixed"
         ref={splineContainer}
         onLoad={(app: Application) => {
+          if (!sceneAlive.current) return;
+          setSceneStatus("ready");
           setSplineApp(app);
           bypassLoading();
         }}
@@ -508,10 +529,69 @@ const KeyboardScene = ({ maxDpr }: { maxDpr: number }) => {
  * runtime chunk + scene before detection has run; the Preloader bypasses its
  * splash when 3D is disabled.
  */
+class SceneErrorBoundary extends React.Component<
+  { children: React.ReactNode },
+  { failed: boolean }
+> {
+  state = { failed: false };
+
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+
+  componentDidCatch() {
+    setSceneStatus("failed");
+  }
+
+  render() {
+    return this.state.failed ? null : this.props.children;
+  }
+}
+
+function SceneSession({ maxDpr }: { maxDpr: number }) {
+  const status = useSceneStatus();
+  const { bypassLoading } = usePreloader();
+
+  useEffect(() => {
+    let context: WebGLRenderingContext | WebGL2RenderingContext | null = null;
+    try {
+      const canvas = document.createElement("canvas");
+      context = canvas.getContext("webgl2") || canvas.getContext("webgl");
+    } catch {
+      // Browser policy or driver failures can throw instead of returning null.
+    }
+    if (!context) {
+      setSceneStatus("failed");
+      return () => setSceneStatus("idle");
+    }
+    context.getExtension("WEBGL_lose_context")?.loseContext();
+    setSceneStatus("loading");
+    return () => setSceneStatus("idle");
+  }, []);
+
+  useEffect(() => {
+    if (status === "failed") bypassLoading();
+  }, [status, bypassLoading]);
+
+  // A ready scene must not be failed by its loading deadline.
+  useEffect(() => {
+    if (status !== "loading") return;
+    const timeout = window.setTimeout(() => setSceneStatus("failed"), 20_000);
+    return () => window.clearTimeout(timeout);
+  }, [status]);
+
+  if (status === "idle" || status === "failed") return null;
+  return (
+    <SceneErrorBoundary>
+      <KeyboardScene maxDpr={maxDpr} />
+    </SceneErrorBoundary>
+  );
+}
+
 const AnimatedBackground = () => {
   const { disable3D, maxDpr, ready } = usePerfProfile();
   if (!ready || disable3D) return null;
-  return <KeyboardScene maxDpr={maxDpr} />;
+  return <SceneSession maxDpr={maxDpr} />;
 };
 
 /**

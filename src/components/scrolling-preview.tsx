@@ -1,7 +1,8 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
+import { usePerfProfile } from "@/hooks/use-perf-profile";
 
 // Pan speed (CSS px/sec). Higher value = faster scroll.
 const PAN_SPEED = 120;
@@ -31,7 +32,7 @@ const ScrollingPreview = ({
   bg?: string;
   isHovered?: boolean;
 }) => {
-  const reduceMotion = useReducedMotion();
+  const { reducedMotion: reduceMotion } = usePerfProfile();
   const viewportRef = useRef<HTMLDivElement>(null);
   const [scrollPx, setScrollPx] = useState(0);
   const [bgReady, setBgReady] = useState(false);
@@ -130,7 +131,7 @@ const ScrollingPreview = ({
               ? {
                   backgroundPosition: isHovered ? "50% 100%" : "50% 0%",
                 }
-              : undefined
+              : { backgroundPosition: scrolls ? "50% 0%" : "center" }
           }
           transition={
             animate
@@ -140,7 +141,7 @@ const ScrollingPreview = ({
                     : Math.min(Math.max(pan * 0.35, 0.4), 0.75),
                   ease: isHovered ? "linear" : [0.25, 1, 0.5, 1],
                 }
-              : undefined
+              : { duration: 0 }
           }
         />
       </div>

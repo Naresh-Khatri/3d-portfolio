@@ -145,7 +145,7 @@ export function usePerfProfile(): PerfProfile {
   return React.useMemo<PerfProfile>(() => {
     // Explicit preference wins; otherwise follow the OS.
     const reducedMotion =
-      motionPref === "on" ? false : motionPref === "off" ? true : rawReducedMotion;
+      !ready || (motionPref === "on" ? false : motionPref === "off" ? true : rawReducedMotion);
     const motionEnabled = motionPref === "on";
     // Only explicit, reliable intent disables the 3D scene: reduced-motion or
     // Data Saver. Viewport size (a real media query) just scales quality down;

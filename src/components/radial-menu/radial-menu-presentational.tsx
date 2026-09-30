@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, MutableRefObject } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { MenuItem, Position } from './types';
+import { usePerfProfile } from '@/hooks/use-perf-profile';
 
 interface RadialMenuPresentationalProps {
   isOpen: boolean;
@@ -186,6 +187,7 @@ export const RadialMenuPresentational = ({
   intensityRef,
   cooldownEndRef,
 }: RadialMenuPresentationalProps) => {
+  const { reducedMotion } = usePerfProfile();
   const radius = 100;
 
   return (
@@ -201,7 +203,7 @@ export const RadialMenuPresentational = ({
               pointerEvents: 'none',
             }}
           >
-            {!disabled && <IntensityIndicator intensityRef={intensityRef} />}
+            {!disabled && !reducedMotion && <IntensityIndicator intensityRef={intensityRef} />}
 
             {disabled && (
               <motion.div
@@ -242,7 +244,7 @@ export const RadialMenuPresentational = ({
                     y,
                   }}
                   exit={{ opacity: 0, scale: 0, x: -itemSize / 2, y: -itemSize / 2 }}
-                  transition={{
+                  transition={reducedMotion ? { duration: 0 } : {
                     type: "spring",
                     stiffness: 300,
                     damping: 20

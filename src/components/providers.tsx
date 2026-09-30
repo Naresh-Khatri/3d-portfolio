@@ -4,6 +4,7 @@ import { ThemeProvider } from "./theme-provider";
 import { Toaster } from "./ui/toaster";
 
 import { TooltipProvider } from "./ui/tooltip";
+import MotionPreferences from "./motion-preferences";
 
 export const Providers = ({ children }: { children: React.ReactNode }) => {
   return <ThemeProvider
@@ -11,13 +12,15 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
     defaultTheme="dark"
     disableTransitionOnChange
   >
-    <Preloader>
-      <SocketContextProvider>
-        <TooltipProvider>
-          {children}
-        </TooltipProvider>
-        <Toaster />
-      </SocketContextProvider>
-    </Preloader>
+    <MotionPreferences>
+      <Preloader>
+        <SocketContextProvider>
+          <TooltipProvider>
+            {children}
+          </TooltipProvider>
+          <Toaster />
+        </SocketContextProvider>
+      </Preloader>
+    </MotionPreferences>
   </ThemeProvider>;
 };

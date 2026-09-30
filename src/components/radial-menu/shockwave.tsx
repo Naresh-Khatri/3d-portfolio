@@ -12,6 +12,8 @@ export interface ShockwaveData {
 
 function cameraShake(intensity: number) {
   const el = document.body;
+  const marginLeft = el.style.marginLeft;
+  const marginTop = el.style.marginTop;
   const m = 0.5 + intensity * 2; // multiplier: 0.5x at min, 2.5x at max
   const steps = [
     { x: 1.2 * m, y: -0.75 * m },
@@ -20,16 +22,21 @@ function cameraShake(intensity: number) {
     { x: 0, y: 0 },
   ];
   const interval = 90;
-  steps.forEach(({ x, y }, i) => {
+  const timers = steps.map(({ x, y }, i) =>
     setTimeout(() => {
       el.style.marginLeft = `${x}px`;
       el.style.marginTop = `${y}px`;
       if (i === steps.length - 1) {
-        el.style.marginLeft = '';
-        el.style.marginTop = '';
+        el.style.marginLeft = marginLeft;
+        el.style.marginTop = marginTop;
       }
-    }, i * interval);
-  });
+    }, i * interval)
+  );
+  return () => {
+    timers.forEach(clearTimeout);
+    el.style.marginLeft = marginLeft;
+    el.style.marginTop = marginTop;
+  };
 }
 
 export function Shockwave({ data }: { data: ShockwaveData }) {
@@ -37,8 +44,8 @@ export function Shockwave({ data }: { data: ShockwaveData }) {
   const s = 0.4 + int * 0.8; // size scale: 0.4x–1.2x
 
   useEffect(() => {
-    cameraShake(int);
-  }, []);
+    return cameraShake(int);
+  }, [int]);
 
   return (
     <div
