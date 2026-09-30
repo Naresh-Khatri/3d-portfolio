@@ -3,6 +3,7 @@ import { getBlogPost, getBlogPosts } from "@/lib/mdx";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import ScrollProgress from "@/components/ui/scroll-progress";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { ArrowLeft, CalendarDays, Clock, User } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import RevealAnimation from "@/components/reveal-animations";
@@ -17,6 +18,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const post = getBlogPost(slug);
+  if (!post) notFound();
   return {
     title: `${post.metadata.title} | Portfolio`,
     description: post.metadata.summary,
@@ -113,6 +115,7 @@ const components = {
 export default async function BlogPost({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const post = getBlogPost(slug);
+  if (!post) notFound();
   const readTime = estimateReadTime(post.content);
 
   return (
