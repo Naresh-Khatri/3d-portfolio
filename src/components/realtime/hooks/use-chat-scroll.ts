@@ -9,6 +9,15 @@ const pinToBottom = (vp: HTMLElement) => {
   vp.scrollTop = vp.scrollHeight;
 };
 
+const scrollByPx = (vp: HTMLElement, dy: number) => {
+  vp.scrollTop += dy;
+};
+
+const isNearBottom = (vp: HTMLElement) =>
+  vp.scrollHeight - vp.scrollTop - vp.clientHeight < BOTTOM_THRESHOLD;
+
+export const UNREAD_DIVIDER_ATTR = "data-unread-divider";
+
 export const useChatScroll = (
   firstMsgId?: string,
   lastMsgId?: string,
@@ -19,13 +28,20 @@ export const useChatScroll = (
   const viewportRef = useRef<HTMLElement | null>(null);
   const [showScrollButton, setShowScrollButton] = useState(false);
   const [unreads, setUnreads] = useState(0);
+  // last msg the user actually saw; divider goes after it on reopen
+  const lastSeenId = useRef<string | undefined>(undefined);
+  const lastMsgIdRef = useRef(lastMsgId);
+  const [unreadAfterId, setUnreadAfterId] = useState<string | null>(null);
   const chatContainer = useCallback((node: HTMLDivElement | null) => {
     const vp = getViewport(node);
     viewportRef.current = vp;
     setViewport(vp);
-    // (re)open lands at bottom -> nothing unread
     if (vp) {
-      setUnreads(0);
+      const seen = lastSeenId.current;
+      const hasUnread = !!seen && seen !== lastMsgIdRef.current;
+      setUnreadAfterId(hasUnread ? seen! : null);
+      // no unread -> lands at bottom; else count stays for the jump button
+      if (!hasUnread) setUnreads(0);
       setShowScrollButton(false);
     }
   }, []);
@@ -42,6 +58,7 @@ export const useChatScroll = (
   const scrollToBottom = useCallback((smooth = true) => {
     const vp = viewportRef.current;
     isAtBottomRef.current = true;
+    lastSeenId.current = lastMsgIdRef.current;
     setUnreads(0);
     setShowScrollButton(false);
     if (!vp) return;
@@ -51,20 +68,36 @@ export const useChatScroll = (
   // before paint -> no flash of the top of the list on open
   useLayoutEffect(() => {
     if (!viewport) return;
-    isAtBottomRef.current = true;
-    pinToBottom(viewport);
+    const divider = viewport.querySelector<HTMLElement>(`[${UNREAD_DIVIDER_ATTR}]`);
+    if (divider) {
+      // open at first unread, a bit of context above it
+      const top = divider.getBoundingClientRect().top - viewport.getBoundingClientRect().top;
+      scrollByPx(viewport, top - 48);
+      isAtBottomRef.current = isNearBottom(viewport);
+    } else {
+      isAtBottomRef.current = true;
+      pinToBottom(viewport);
+    }
+    if (isAtBottomRef.current) {
+      lastSeenId.current = lastMsgIdRef.current;
+      setUnreads(0);
+    }
+    setShowScrollButton(!isAtBottomRef.current);
     takeSnapshot(viewport);
-  }, [viewport]);
+    // unreadAfterId: divider renders in the same commit as the viewport
+  }, [viewport, unreadAfterId]);
 
   useEffect(() => {
     if (!viewport) return;
 
     const handleScroll = () => {
-      const { scrollTop, scrollHeight, clientHeight } = viewport;
-      const atBottom = scrollHeight - scrollTop - clientHeight < BOTTOM_THRESHOLD;
-      if (atBottom) isAtBottomRef.current = true;
+      const atBottom = isNearBottom(viewport);
+      if (atBottom) {
+        isAtBottomRef.current = true;
+        lastSeenId.current = lastMsgIdRef.current;
+      }
       // direction check: smooth scroll-to-bottom passes through "not at bottom" frames
-      else if (scrollTop < snapshot.current.scrollTop) isAtBottomRef.current = false;
+      else if (viewport.scrollTop < snapshot.current.scrollTop) isAtBottomRef.current = false;
       takeSnapshot(viewport);
 
       setShowScrollButton(!isAtBottomRef.current);
@@ -102,17 +135,22 @@ export const useChatScroll = (
   useEffect(() => {
     const prev = prevLastMsgId.current;
     prevLastMsgId.current = lastMsgId;
-    if (!prev || !lastMsgId || prev === lastMsgId) return;
+    lastMsgIdRef.current = lastMsgId;
+    if (!lastMsgId || prev === lastMsgId) return;
+    // closed popover counts as not reading
+    const reading = !!viewportRef.current && isAtBottomRef.current;
+    if (!prev || lastMsgIsMine || reading) lastSeenId.current = lastMsgId;
+    if (!prev) return;
 
     if (lastMsgIsMine) scrollToBottom(true);
-    // closed popover counts as not reading
-    else if (!viewportRef.current || !isAtBottomRef.current) setUnreads(n => n + 1);
+    else if (!reading) setUnreads(n => n + 1);
   }, [lastMsgId, lastMsgIsMine, scrollToBottom]);
 
   return {
     chatContainer,
     showScrollButton,
     unreads,
+    unreadAfterId,
     scrollToBottom,
   };
 };

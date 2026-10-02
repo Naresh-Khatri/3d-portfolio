@@ -33,7 +33,7 @@ import { THEME } from "./constants";
 import { getAvatarUrl } from "@/lib/avatar";
 
 const OnlineUsers = () => {
-  const { socket, users: _users, msgs, hasMoreMessages, loadingHistory, fetchOlderMessages, initStatus, fetchInitialMessages } = useContext(SocketContext);
+  const { socket, users: _users, msgs, hasMoreMessages, loadingHistory, fetchOlderMessages, initStatus, fetchInitialMessages, sendMessage, resendMessage, discardMessage } = useContext(SocketContext);
   const users = Array.from(_users.values());
   const [showUserList, setShowUserList] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -79,14 +79,15 @@ const OnlineUsers = () => {
         if (Date.now() - msgTime > 10000) isRecent = false;
       }
 
-      if (isNew && isSmallBatch && isRecent && lastMsg && !isSystem) {
-        if (lastMsg.username === currentUser?.name) playSendSound();
-        else playReceiveSound();
+      // own sends play on submit, not on pending/echo
+      const isMine = lastMsg && !isSystem && (lastMsg as Message).sessionId === currentUser?.id;
+      if (isNew && isSmallBatch && isRecent && lastMsg && !isSystem && !isMine) {
+        playReceiveSound();
       }
     }
     prevMsgsLength.current = msgs.length;
     prevLastMsgId.current = msgs[msgs.length - 1]?.id;
-  }, [msgs, playSendSound, playReceiveSound, currentUser]);
+  }, [msgs, playReceiveSound, currentUser]);
 
 
 
@@ -95,6 +96,7 @@ const OnlineUsers = () => {
     chatContainer,
     showScrollButton,
     unreads,
+    unreadAfterId,
     scrollToBottom,
   } = useChatScroll(
     msgs[0]?.id ? String(msgs[0].id) : undefined,
@@ -115,7 +117,7 @@ const OnlineUsers = () => {
       const item = msgs[i];
       if ("type" in item && item.type === "system") continue;
       const msg = item as Message;
-      if (msg.sessionId !== currentUser.id) continue;
+      if (msg.sessionId !== currentUser.id || msg.status) continue;
       if (new Date(msg.createdAt).getTime() < fiveMinAgo) break;
       setEditTarget(msg);
       return;
@@ -133,10 +135,9 @@ const OnlineUsers = () => {
       return;
     }
 
-    socket?.emit("msg-send", {
-      content: cmd.content,
-      ...(replyTarget && { replyTo: replyTarget.id }),
-    });
+    if (!currentUser) return;
+    sendMessage(cmd.content, currentUser, replyTarget);
+    playSendSound();
     setReplyTarget(null);
   };
 
@@ -355,6 +356,7 @@ const OnlineUsers = () => {
               loadingHistory={loadingHistory}
               onLoadMore={fetchOlderMessages}
               initStatus={initStatus}
+              unreadAfterId={unreadAfterId}
             />
 
             <ChatInput

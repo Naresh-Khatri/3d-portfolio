@@ -38,6 +38,8 @@ export type Message = {
   createdAt: string | Date;
   editedAt?: string | Date;
   replyTo?: { id: string; username: string; content: string };
+  // client-only: optimistic send not yet echoed back
+  status?: "pending" | "failed";
 };
 
 export type SystemMessage = {
@@ -51,6 +53,10 @@ export type SystemMessage = {
 };
 
 export type ChatItem = Message | SystemMessage;
+
+const LOCAL_ID_PREFIX = "local-";
+const SEND_TIMEOUT_MS = 8000;
+export const isLocalMsg = (m: ChatItem): m is Message => String(m.id).startsWith(LOCAL_ID_PREFIX);
 
 export type Reaction = { emoji: string; sessionIds: string[] };
 
@@ -70,6 +76,9 @@ type SocketContextType = {
   fetchOlderMessages: () => void;
   initStatus: "idle" | "loading" | "loaded";
   fetchInitialMessages: () => void;
+  sendMessage: (content: string, me: User, replyTo?: Message | null) => void;
+  resendMessage: (localId: string, me: User) => void;
+  discardMessage: (localId: string) => void;
 };
 
 const INITIAL_STATE: SocketContextType = {
@@ -86,6 +95,9 @@ const INITIAL_STATE: SocketContextType = {
   fetchOlderMessages: () => { },
   initStatus: "idle",
   fetchInitialMessages: () => { },
+  sendMessage: () => { },
+  resendMessage: () => { },
+  discardMessage: () => { },
 };
 
 export const SocketContext = createContext<SocketContextType>(INITIAL_STATE);
@@ -128,6 +140,43 @@ const SocketContextProvider = ({ children }: { children: ReactNode }) => {
     setLoadingHistory(true);
     s.emit("msgs-fetch-history", { before: oldestId });
   }, [hasMoreMessages]);
+
+  const localSeq = useRef(0);
+  const sendMessage = useCallback((content: string, me: User, replyTo?: Message | null) => {
+    const s = socketRef.current;
+    if (!s) return;
+    const id = `${LOCAL_ID_PREFIX}${++localSeq.current}`;
+    const pending: Message = {
+      id,
+      sessionId: me.id,
+      flag: me.flag,
+      country: me.location,
+      username: me.name,
+      avatar: me.avatar,
+      color: me.color,
+      content,
+      createdAt: new Date(),
+      replyTo: replyTo ? { id: replyTo.id, username: replyTo.username, content: replyTo.content } : undefined,
+      status: "pending",
+    };
+    setMsgs(p => [...p, pending]);
+    s.emit("msg-send", { content, ...(replyTo && { replyTo: replyTo.id }) });
+    setTimeout(() => {
+      setMsgs(p => p.map(m => m.id === id && (m as Message).status === "pending" ? { ...m, status: "failed" } : m));
+    }, SEND_TIMEOUT_MS);
+  }, []);
+
+  const discardMessage = useCallback((localId: string) => {
+    setMsgs(p => p.filter(m => m.id !== localId));
+  }, []);
+
+  const resendMessage = useCallback((localId: string, me: User) => {
+    const failed = msgsRef.current.find(m => m.id === localId) as Message | undefined;
+    if (!failed) return;
+    discardMessage(localId);
+    const replyTo = failed.replyTo ? ({ ...failed.replyTo } as Message) : null;
+    sendMessage(failed.content, me, replyTo);
+  }, [discardMessage, sendMessage]);
 
   // Keep profileMap in sync — only adds/updates, never removes
   useEffect(() => {
@@ -182,8 +231,9 @@ const SocketContextProvider = ({ children }: { children: ReactNode }) => {
     newSocket.on("cursor-changed", (data: { pos: { x: number; y: number }; socketId: string }) => {
       cursorStore.update(data.socketId, data.pos);
     });
-    newSocket.on("msgs-receive-init", (msgs) => {
-      setMsgs(msgs);
+    newSocket.on("msgs-receive-init", (msgs: ChatItem[]) => {
+      // unconfirmed sends survive a resync
+      setMsgs(prev => [...msgs, ...prev.filter(isLocalMsg)]);
       setHasMoreMessages(true);
       // re-init after reconnect -> any in-flight history reply is gone
       loadingHistoryRef.current = false;
@@ -215,10 +265,27 @@ const SocketContextProvider = ({ children }: { children: ReactNode }) => {
       // Drop live messages until the popover is opened and init has been fetched.
       // The init fetch returns the latest 50 user messages anyway, so nothing is lost.
       if (initStatusRef.current !== "loaded") return;
-      setMsgs((p) => [...p, msgs]);
+      setMsgs((p) => {
+        const incoming = msgs as ChatItem;
+        // own echo confirms a pending send: same content first (server may rewrite it), else oldest
+        const mine = (m: ChatItem) =>
+          isLocalMsg(m) && m.status === "pending" && m.sessionId === incoming.sessionId;
+        let i = p.findIndex(m => mine(m) && (m as Message).content === (incoming as Message).content);
+        if (i < 0) i = p.findIndex(mine);
+        const rest = i < 0 ? p : p.filter((_, k) => k !== i);
+        // locals stay last so server order holds for confirmed messages
+        return [...rest.filter(m => !isLocalMsg(m)), incoming, ...rest.filter(isLocalMsg)];
+      });
     });
 
     newSocket.on("warning", (data: { message: string }) => {
+      if (data.message.includes("msg-send")) {
+        // rate-limited send is dropped server-side -> newest pending failed
+        setMsgs(p => {
+          const i = p.findLastIndex(m => isLocalMsg(m) && m.status === "pending");
+          return i < 0 ? p : p.map((m, k) => (k === i ? { ...m, status: "failed" as const } : m));
+        });
+      }
       toast({
         variant: "destructive",
         title: "System Warning",
@@ -274,7 +341,7 @@ const SocketContextProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   return (
-    <SocketContext.Provider value={{ socket, users, setUsers, msgs, reactions, profileMap, followingId, setFollowingId, hasMoreMessages, loadingHistory, fetchOlderMessages, initStatus, fetchInitialMessages }}>
+    <SocketContext.Provider value={{ socket, users, setUsers, msgs, reactions, profileMap, followingId, setFollowingId, hasMoreMessages, loadingHistory, fetchOlderMessages, initStatus, fetchInitialMessages, sendMessage, resendMessage, discardMessage }}>
       <CursorStoreContext.Provider value={cursorStore}>{children}</CursorStoreContext.Provider>
     </SocketContext.Provider>
   );
