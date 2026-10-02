@@ -1,4 +1,3 @@
-"use server";
 
 import { cacheLife } from "next/cache";
 import { config } from "@/data/config";

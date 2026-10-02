@@ -11,7 +11,6 @@ import {
 } from 'motion/react';
 
 import { cn } from '@/lib/utils';
-import { getGithubStars } from '@/actions/github-stars';
 import { SlidingNumber } from '../sliding-number';
 import { Fragment, useCallback, useEffect, useMemo, useReducer, useRef, useState } from 'react';
 
@@ -39,6 +38,7 @@ function formatNumber(num: number, formatted: boolean): FormatNumberResult {
 type GitHubStarsButtonProps = Omit<HTMLMotionProps<'a'>, 'ref'> & {
   username: string;
   repo: string;
+  stars: number;
   transition?: SpringOptions;
   formatted?: boolean;
 };
@@ -46,6 +46,7 @@ type GitHubStarsButtonProps = Omit<HTMLMotionProps<'a'>, 'ref'> & {
 function GitHubStarsButton({
   username,
   repo,
+  stars,
   transition = { stiffness: 90, damping: 50 },
   formatted = false,
   className,
@@ -56,22 +57,13 @@ function GitHubStarsButton({
   const motionNumberRef = useRef(0);
   const isCompletedRef = useRef(false);
   const [, forceRender] = useReducer((x) => x + 1, 0);
-  const [stars, setStars] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
   const [displayParticles, setDisplayParticles] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
 
   const repoUrl = useMemo(
     () => `https://github.com/${username}/${repo}`,
     [username, repo],
   );
-
-  useEffect(() => {
-    getGithubStars()
-      .then((count) => setStars(count))
-      .catch(console.error)
-      .finally(() => setIsLoading(false));
-  }, []);
 
   const handleDisplayParticles = useCallback(() => {
     setDisplayParticles(true);
@@ -133,8 +125,6 @@ function GitHubStarsButton({
     },
     [handleDisplayParticles, repoUrl],
   );
-
-  if (isLoading) return null;
 
   return (
     <motion.a
