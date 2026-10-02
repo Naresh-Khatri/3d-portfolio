@@ -96,12 +96,16 @@ const SocketContextProvider = ({ children }: { children: ReactNode }) => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [users, setUsers] = useState<User[]>([]);
   const [msgs, setMsgs] = useState<ChatItem[]>([]);
+  const msgsRef = useRef(msgs);
+  msgsRef.current = msgs;
   const [reactions, setReactions] = useState<Map<string, Reaction[]>>(new Map());
   const [profileMap, setProfileMap] = useState<Map<string, UserProfile>>(new Map());
   const [cursorStore] = useState(createCursorStore);
   const [followingId, setFollowingId] = useState<string | null>(null);
   const [hasMoreMessages, setHasMoreMessages] = useState(true);
   const [loadingHistory, setLoadingHistory] = useState(false);
+  // sync guard: state lags a render, so rapid triggers could double-fetch
+  const loadingHistoryRef = useRef(false);
   const [initStatus, setInitStatus] = useState<"idle" | "loading" | "loaded">("idle");
   const socketRef = useRef<Socket | null>(null);
   const initStatusRef = useRef<"idle" | "loading" | "loaded">("idle");
@@ -117,16 +121,13 @@ const SocketContextProvider = ({ children }: { children: ReactNode }) => {
 
   const fetchOlderMessages = useCallback(() => {
     const s = socketRef.current;
-    if (!s || loadingHistory || !hasMoreMessages) return;
-    setMsgs(current => {
-      if (current.length === 0) return current;
-      const oldestId = Number(current[0].id);
-      if (!oldestId) return current;
-      setLoadingHistory(true);
-      s.emit("msgs-fetch-history", { before: oldestId });
-      return current;
-    });
-  }, [loadingHistory, hasMoreMessages]);
+    if (!s || loadingHistoryRef.current || !hasMoreMessages) return;
+    const oldestId = Number(msgsRef.current[0]?.id);
+    if (!oldestId) return;
+    loadingHistoryRef.current = true;
+    setLoadingHistory(true);
+    s.emit("msgs-fetch-history", { before: oldestId });
+  }, [hasMoreMessages]);
 
   // Keep profileMap in sync — only adds/updates, never removes
   useEffect(() => {
@@ -184,12 +185,16 @@ const SocketContextProvider = ({ children }: { children: ReactNode }) => {
     newSocket.on("msgs-receive-init", (msgs) => {
       setMsgs(msgs);
       setHasMoreMessages(true);
+      // re-init after reconnect -> any in-flight history reply is gone
+      loadingHistoryRef.current = false;
+      setLoadingHistory(false);
       initStatusRef.current = "loaded";
       setInitStatus("loaded");
     });
     newSocket.on("msgs-receive-history", (data: { messages: ChatItem[]; hasMore: boolean; reactions: Record<string, Reaction[]> }) => {
       setMsgs(prev => [...data.messages, ...prev]);
       setHasMoreMessages(data.hasMore);
+      loadingHistoryRef.current = false;
       setLoadingHistory(false);
       if (data.reactions) {
         setReactions(prev => {

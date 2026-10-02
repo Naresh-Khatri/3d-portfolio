@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Users, Reply, Pencil, Loader2 } from "lucide-react";
 import { differenceInMinutes, format, isToday, isYesterday } from "date-fns";
@@ -31,7 +31,7 @@ function formatDaySeparator(date: Date): string {
   return format(date, "MMMM d, yyyy");
 }
 
-type GroupedSystemItem = { _grouped: true; users: { username: string; flag: string }[] };
+type GroupedSystemItem = { _grouped: true; id: string; users: { username: string; flag: string }[] };
 type GroupedItem = ChatItem | GroupedSystemItem;
 
 function groupChatItems(items: ChatItem[]): GroupedItem[] {
@@ -50,7 +50,7 @@ function groupChatItems(items: ChatItem[]): GroupedItem[] {
         }
         i++;
       }
-      result.push({ _grouped: true, users });
+      result.push({ _grouped: true, id: item.id, users });
     } else {
       result.push(item);
       i++;
@@ -68,7 +68,7 @@ interface ChatMessageListProps {
   msgs: ChatItem[];
   users: User[];
   currentUser: User | undefined;
-  chatContainerRef: React.RefObject<HTMLDivElement | null>;
+  chatContainerRef: React.Ref<HTMLDivElement>;
   showScrollButton: boolean;
   unreads: number;
   scrollToBottom: (smooth?: boolean) => void;
@@ -135,6 +135,23 @@ export const ChatMessageList = ({
 }: ChatMessageListProps) => {
   const { setFollowingId, socket, reactions, profileMap } = useContext(SocketContext);
   const [pickerOpenFor, setPickerOpenFor] = useState<string | null>(null);
+  // touch has no hover -> tap a message to reveal its actions
+  const [activeMsgId, setActiveMsgId] = useState<string | null>(null);
+
+  // auto-load older history when the top comes into view
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+  const firstMsgId = msgs[0]?.id;
+  useEffect(() => {
+    const el = loadMoreRef.current;
+    if (!el || !hasMoreMessages) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) onLoadMore(); },
+      { root: el.closest("[data-radix-scroll-area-viewport]"), rootMargin: "200px 0px 0px 0px" },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+    // firstMsgId: re-observe after each page so a still-visible sentinel keeps loading
+  }, [hasMoreMessages, onLoadMore, firstMsgId]);
 
   const grouped = useMemo(() => groupChatItems(msgs), [msgs]);
 
@@ -161,7 +178,7 @@ export const ChatMessageList = ({
       <ScrollArea className="h-[400px] chat-scroll-area" data-lenis-prevent ref={chatContainerRef} type="always">
         <div className="p-4 space-y-0">
           {msgs.length > 0 && hasMoreMessages && (
-            <div className="flex justify-center pb-3">
+            <div ref={loadMoreRef} className="flex justify-center pb-3">
               <button
                 type="button"
                 onClick={onLoadMore}
@@ -202,11 +219,11 @@ export const ChatMessageList = ({
             </div>
           )}
 
-          {grouped.map((item, groupIdx) => {
+          {grouped.map((item) => {
             // Grouped system messages
             if ("_grouped" in item) {
               hadNonMessageSincePrev = true;
-              return <SystemMessageRow key={`sys-${groupIdx}`} users={item.users} />;
+              return <SystemMessageRow key={`sys-${item.id}`} users={item.users} />;
             }
 
             // Single system message
@@ -255,9 +272,14 @@ export const ChatMessageList = ({
                 {daySeparator}
                 <div
                   id={`msg-${msg.id}`}
+                  onPointerUp={(e) => {
+                    if (e.pointerType === "mouse") return;
+                    setActiveMsgId(id => (id === msg.id ? null : msg.id));
+                  }}
                   className={cn(
                     "group relative flex gap-3 pr-2 py-0.5 -mx-2 px-2 rounded transition-colors",
                     "hover:bg-black/[0.03] dark:hover:bg-white/[0.03]",
+                    activeMsgId === msg.id && "bg-black/[0.03] dark:bg-white/[0.03]",
                     showHeader && !isFirstMsg && "!mt-4"
                   )}
                 >
@@ -361,8 +383,12 @@ export const ChatMessageList = ({
                   </div>
 
                   {/* Hover actions */}
-                  <div className={cn(
-                    "absolute -top-3 right-3 flex items-center rounded-md border shadow-sm opacity-0 group-hover:opacity-100 transition-opacity z-10",
+                  <div
+                    onPointerUp={(e) => e.stopPropagation()}
+                    className={cn(
+                    "absolute -top-3 right-3 flex items-center rounded-md border shadow-sm opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity z-10",
+                    // open picker lives inside the toolbar -> keep it visible off-hover
+                    (activeMsgId === msg.id || pickerOpenFor === msg.id) && "opacity-100",
                     THEME.bg.secondary, THEME.border.primary
                   )}>
                     <ReactionPicker
@@ -374,10 +400,10 @@ export const ChatMessageList = ({
                       <button
                         type="button"
                         className={cn("p-1.5 rounded transition-colors", THEME.bg.hover, THEME.text.secondary)}
-                        onMouseDown={(e) => {
-                          e.preventDefault();
-                          onEdit(msg);
-                        }}
+                        aria-label="Edit message"
+                        title="Edit"
+                        onMouseDown={(e) => e.preventDefault()}
+                        onClick={() => onEdit(msg)}
                       >
                         <Pencil className="w-4 h-4" />
                       </button>
@@ -385,10 +411,10 @@ export const ChatMessageList = ({
                     <button
                       type="button"
                       className={cn("p-1.5 rounded transition-colors", THEME.bg.hover, THEME.text.secondary)}
-                      onMouseDown={(e) => {
-                        e.preventDefault();
-                        onReply(msg);
-                      }}
+                      aria-label="Reply"
+                      title="Reply"
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={() => onReply(msg)}
                     >
                       <Reply className="w-4 h-4" />
                     </button>
@@ -400,26 +426,28 @@ export const ChatMessageList = ({
         </div>
       </ScrollArea>
 
-      {/* Typing Indicator */}
-      {typingUsers.size > 0 && (
-        <div className={cn("h-6 px-4 flex items-center", THEME.bg.primary)}>
-          <motion.div
-            initial={{ opacity: 0, y: 5 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 5 }}
-            className="flex items-center gap-2"
-          >
-            <div className="flex items-center gap-0.5 mt-1">
-              <span className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
-              <span className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
-              <span className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce"></span>
-            </div>
-            <span className={cn("text-xs font-bold", THEME.text.secondary)}>
-              {getTypingText()}
-            </span>
-          </motion.div>
-        </div>
-      )}
+      {/* row always reserved: popover opens upward, so a mounting row would shove the whole panel */}
+      <div className={cn("h-6 px-4 flex items-center", THEME.bg.primary)} aria-live="polite">
+        <AnimatePresence>
+          {typingUsers.size > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 5 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 5 }}
+              className="flex items-center gap-2 min-w-0"
+            >
+              <div className="flex items-center gap-0.5 mt-1" aria-hidden="true">
+                <span className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+                <span className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
+                <span className="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce"></span>
+              </div>
+              <span className={cn("text-xs font-bold truncate", THEME.text.secondary)}>
+                {getTypingText()}
+              </span>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
 
       {/* New Message / Scroll Button */}
       <AnimatePresence>

@@ -21,14 +21,15 @@ export const ReactionPicker = ({ onReact, open: controlledOpen, onOpenChange }: 
       <button
         type="button"
         className={cn(
-          "p-1.5 rounded opacity-0 group-hover:opacity-100 transition-opacity",
+          "p-1.5 rounded transition-colors",
           THEME.bg.hover,
           THEME.text.secondary
         )}
-        onMouseDown={(e) => {
-          e.preventDefault();
-          setOpen(!isOpen);
-        }}
+        aria-label="Add reaction"
+        aria-expanded={isOpen}
+        title="Add reaction"
+        onMouseDown={(e) => e.preventDefault()}
+        onClick={() => setOpen(!isOpen)}
       >
         <SmilePlus className="w-4 h-4" />
       </button>
@@ -46,8 +47,9 @@ export const ReactionPicker = ({ onReact, open: controlledOpen, onOpenChange }: 
               key={emoji}
               type="button"
               className="text-lg hover:scale-125 transition-transform px-0.5 leading-none"
-              onMouseDown={(e) => {
-                e.preventDefault();
+              aria-label={`React with ${emoji}`}
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={() => {
                 onReact(emoji);
                 setOpen(false);
               }}

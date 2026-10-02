@@ -47,6 +47,7 @@ const OnlineUsers = () => {
   const { playSendSound, playReceiveSound } = useSounds();
   const connectionStatus = useConnectionStatus(socket);
   const prevMsgsLength = useRef(msgs.length);
+  const prevLastMsgId = useRef(msgs[msgs.length - 1]?.id);
 
   // Driven by the server's "warning" event when msg-send is rate limited
   const [rateLimitedUntil, setRateLimitedUntil] = useState<number | null>(null);
@@ -69,6 +70,8 @@ const OnlineUsers = () => {
       // Skip sounds when receiving initial message history (large batch on connect)
       const isSmallBatch = msgs.length - prevMsgsLength.current <= 2;
       const lastMsg = msgs[msgs.length - 1];
+      // same last msg = history prepend, not a new arrival
+      const isNew = lastMsg?.id !== prevLastMsgId.current;
       const isSystem = lastMsg && "type" in lastMsg && lastMsg.type === "system";
       let isRecent = true;
       if (lastMsg?.createdAt) {
@@ -76,41 +79,34 @@ const OnlineUsers = () => {
         if (Date.now() - msgTime > 10000) isRecent = false;
       }
 
-      if (isSmallBatch && isRecent && lastMsg && !isSystem) {
+      if (isNew && isSmallBatch && isRecent && lastMsg && !isSystem) {
         if (lastMsg.username === currentUser?.name) playSendSound();
         else playReceiveSound();
       }
     }
     prevMsgsLength.current = msgs.length;
+    prevLastMsgId.current = msgs[msgs.length - 1]?.id;
   }, [msgs, playSendSound, playReceiveSound, currentUser]);
 
 
 
-  // Use custom hooks
+  const lastMsg = msgs[msgs.length - 1];
   const {
     chatContainer,
     showScrollButton,
     unreads,
     scrollToBottom,
-    isAtBottomRef
   } = useChatScroll(
-    isOpen,
-    msgs.length,
-    currentUser?.id,
-    msgs[msgs.length - 1]?.sessionId,
-    msgs[0]?.id ? String(msgs[0].id) : undefined
+    msgs[0]?.id ? String(msgs[0].id) : undefined,
+    lastMsg?.id ? String(lastMsg.id) : undefined,
+    !!currentUser && lastMsg?.sessionId === currentUser.id
   );
 
   const {
     typingUsers,
     handleTyping,
     getTypingText
-  } = useTyping(
-    socket,
-    currentUser,
-    scrollToBottom,
-    isAtBottomRef
-  );
+  } = useTyping(socket, currentUser);
 
   const handleEditLastMessage = useCallback(() => {
     if (!currentUser) return;
@@ -217,21 +213,24 @@ const OnlineUsers = () => {
                       "bg-background/20 hover:bg-background/80 backdrop-blur-sm border-2 border-white/30 rounded-lg",
                       !isOpen && unreads > 0 && "animate-pulse border-green-500/50"
                     )}
+                    aria-label={unreads > 0 ? `Open chat, ${unreads} unread` : `Open chat, ${users.length} online`}
                   >
                     <div className="relative flex items-center justify-center w-full h-full">
                       <div className="relative">
-                        <motion.div
-                          initial={{ scale: 0.5, opacity: 1 }}
-                          animate={{ scale: [0.1, 2], opacity: [1, 0] }}
-                          transition={{
-                            duration: .4,
-                            delay: 0,
-                            ease: "easeOut",
-                            repeat: Infinity,
-                            repeatDelay: 2,
-                          }}
-                          className={cn("absolute -inset-1 rounded-full", unreads > 0 ? "bg-green-500/40" : "bg-transparent")}
-                        />
+                        {unreads > 0 && (
+                          <motion.div
+                            initial={{ scale: 0.5, opacity: 1 }}
+                            animate={{ scale: [0.1, 2], opacity: [1, 0] }}
+                            transition={{
+                              duration: .4,
+                              delay: 0,
+                              ease: "easeOut",
+                              repeat: Infinity,
+                              repeatDelay: 2,
+                            }}
+                            className="absolute -inset-1 rounded-full bg-green-500/40"
+                          />
+                        )}
                         <Users2 className="w-6 h-6" />
                       </div>
 
@@ -295,10 +294,12 @@ const OnlineUsers = () => {
                   )}
                   onClick={() => setIsEditingProfile(true)}
                   title="Edit Profile"
+                  aria-label="Edit profile"
                 >
                   <div className="relative w-8 h-8">
                     <img
                       src={getAvatarUrl(currentUser.avatar)}
+                      alt=""
                       className="w-full h-full rounded-full ring-1 ring-black/10 dark:ring-white/10"
                       style={{ backgroundColor: currentUser.color || '#60a5fa' }}
                     />
@@ -322,6 +323,8 @@ const OnlineUsers = () => {
                   showUserList && cn(THEME.text.header, THEME.bg.active)
                 )}
                 onClick={() => setShowUserList(!showUserList)}
+                aria-label={`${users.length} online, show user list`}
+                aria-pressed={showUserList}
               >
                 <div className="flex items-center gap-1">
                   <div className="w-2 h-2 bg-green-500 rounded-full" aria-label="Online" role="status" />

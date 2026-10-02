@@ -238,6 +238,7 @@ export const ChatInput = ({ onSendMessage, onTyping, placeholder = "Message", re
               className={cn("h-7 w-7 shrink-0", THEME.text.secondary, THEME.bg.itemHover)}
               onClick={cancelEdit}
               title="Cancel edit"
+              aria-label="Cancel edit"
             >
               <X className="w-4 h-4" />
             </Button>
@@ -247,6 +248,7 @@ export const ChatInput = ({ onSendMessage, onTyping, placeholder = "Message", re
               className="h-7 w-7 shrink-0 text-[#5865f2] hover:bg-[#5865f2]/10"
               onClick={handleSend}
               title="Save edit"
+              aria-label="Save edit"
             >
               <Check className="w-4 h-4" />
             </Button>
@@ -257,6 +259,7 @@ export const ChatInput = ({ onSendMessage, onTyping, placeholder = "Message", re
             variant="ghost"
             className={cn("h-8 w-8 shrink-0", THEME.text.secondary, THEME.bg.itemHover)}
             onClick={handleSend}
+            aria-label="Send message"
           >
             <Send className="w-4 h-4" />
           </Button>

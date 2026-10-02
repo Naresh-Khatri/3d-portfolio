@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState, type RefObject } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { Socket } from 'socket.io-client';
 
-export const useTyping = (socket: Socket | null, currentUser: { name: string } | undefined, scrollToBottom: (smooth: boolean) => void, isAtBottomRef: RefObject<boolean>) => {
+export const useTyping = (socket: Socket | null, currentUser: { name: string } | undefined) => {
   const [typingUsers, setTypingUsers] = useState<Map<string, { username: string, timeout: NodeJS.Timeout }>>(new Map());
   const typingUsersRef = useRef(typingUsers);
   typingUsersRef.current = typingUsers;
@@ -47,11 +47,6 @@ export const useTyping = (socket: Socket | null, currentUser: { name: string } |
         newMap.set(data.socketId, { username: data.username, timeout });
         return newMap;
       });
-
-      // If we are at bottom, keep at bottom when typing indicator appears/re-renders
-      if (isAtBottomRef.current) {
-        scrollToBottom(true);
-      }
     };
 
     socket.on("typing-receive", handleTypingReceive);
@@ -61,7 +56,7 @@ export const useTyping = (socket: Socket | null, currentUser: { name: string } |
       // Clear all pending timeouts to prevent state updates after unmount
       typingUsersRef.current.forEach(({ timeout }) => clearTimeout(timeout));
     };
-  }, [socket, isAtBottomRef, scrollToBottom]);
+  }, [socket]);
 
   const handleTyping = () => {
     if (!socket || !currentUser) return;

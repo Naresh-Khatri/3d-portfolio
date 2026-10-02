@@ -44,10 +44,10 @@ export const MessageReactions = ({ reactions, currentSessionId, onToggle, onPick
                       ? "border-[#5865f2]/60 bg-[#5865f2]/15"
                       : cn("border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5", THEME.bg.itemHover),
                   )}
-                  onMouseDown={(e) => {
-                    e.preventDefault();
-                    onToggle(r.emoji);
-                  }}
+                  aria-label={`${r.emoji} ${r.sessionIds.length}: ${tooltipText}`}
+                  aria-pressed={isMine}
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={() => onToggle(r.emoji)}
                 >
                   <span className="text-sm leading-none">{r.emoji}</span>
                   <span className={cn("text-[11px] font-medium leading-none", isMine ? "text-[#5865f2]" : THEME.text.secondary)}>
