@@ -208,7 +208,15 @@ export const ChatInput = ({ onSendMessage, onTyping, placeholder = "Message", re
           </span>
         </div>
       )}
-      <div className={cn("relative rounded-lg p-2.5 flex items-center gap-2", THEME.bg.tertiary, (replyTarget || editTarget || rateLimitSeconds > 0) && "rounded-t-none")}>
+      <div
+        className={cn("relative rounded-lg p-2.5 flex items-center gap-2 cursor-text", THEME.bg.tertiary, (replyTarget || editTarget || rateLimitSeconds > 0) && "rounded-t-none")}
+        // textarea is one line tall -> padding clicks focus it too
+        onMouseDown={(e) => {
+          if (e.target !== e.currentTarget) return;
+          e.preventDefault();
+          textareaRef.current?.focus();
+        }}
+      >
         {showCommands && !editTarget && (
           <SlashCommandMenu
             query={commandQuery}
