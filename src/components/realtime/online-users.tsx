@@ -108,7 +108,7 @@ const OnlineUsers = () => {
     typingUsers,
     handleTyping,
     getTypingText
-  } = useTyping(socket, currentUser);
+  } = useTyping(socket, currentUser, _users);
 
   const handleEditLastMessage = useCallback(() => {
     if (!currentUser) return;

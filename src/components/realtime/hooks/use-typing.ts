@@ -1,62 +1,54 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type { Socket } from 'socket.io-client';
+import type { User } from '@/contexts/socketio';
 
-export const useTyping = (socket: Socket | null, currentUser: { name: string } | undefined) => {
-  const [typingUsers, setTypingUsers] = useState<Map<string, { username: string, timeout: NodeJS.Timeout }>>(new Map());
-  const typingUsersRef = useRef(typingUsers);
-  typingUsersRef.current = typingUsers;
+const TYPING_TTL_MS = 3000;
+
+type Typer = { username: string; expiresAt: number };
+
+export const useTyping = (socket: Socket | null, currentUser: { name: string } | undefined, users: User[]) => {
+  const [typers, setTypers] = useState<Map<string, Typer>>(new Map());
   const lastTypingSent = useRef<number>(0);
 
-  // Handle typing events
   useEffect(() => {
     if (!socket) return;
 
     const handleTypingReceive = (data: { socketId: string, username: string, isTyping: boolean }) => {
-      // Don't show typing for self
       if (data.socketId === socket.id) return;
-
-      if (!data.isTyping) {
-        setTypingUsers(prev => {
-          const newMap = new Map(prev);
-          if (newMap.has(data.socketId)) {
-            clearTimeout(newMap.get(data.socketId)!.timeout);
-            newMap.delete(data.socketId);
-          }
-          return newMap;
-        });
-        return;
-      }
-
-      setTypingUsers(prev => {
-        const newMap = new Map(prev);
-
-        // Clear existing timeout if any
-        if (newMap.has(data.socketId)) {
-          clearTimeout(newMap.get(data.socketId)!.timeout);
-        }
-
-        // Set new timeout to clear typing status after 3 seconds
-        const timeout = setTimeout(() => {
-          setTypingUsers(current => {
-            const updated = new Map(current);
-            updated.delete(data.socketId);
-            return updated;
-          });
-        }, 3000);
-
-        newMap.set(data.socketId, { username: data.username, timeout });
-        return newMap;
+      setTypers(prev => {
+        const next = new Map(prev);
+        if (data.isTyping) next.set(data.socketId, { username: data.username, expiresAt: Date.now() + TYPING_TTL_MS });
+        else next.delete(data.socketId);
+        return next;
       });
     };
+    const handleDisconnect = () => setTypers(new Map());
 
     socket.on("typing-receive", handleTypingReceive);
-
+    socket.on("disconnect", handleDisconnect);
     return () => {
       socket.off("typing-receive", handleTypingReceive);
-      // Clear all pending timeouts to prevent state updates after unmount
-      typingUsersRef.current.forEach(({ timeout }) => clearTimeout(timeout));
+      socket.off("disconnect", handleDisconnect);
     };
   }, [socket]);
+
+  // expiry timer derived from state (not created in updaters) -> remount/HMR can't orphan an entry
+  useEffect(() => {
+    if (typers.size === 0) return;
+    const soonest = Math.min(...Array.from(typers.values(), t => t.expiresAt));
+    const id = setTimeout(() => {
+      const now = Date.now();
+      // always a new map: a timer firing a hair early still re-schedules instead of stalling
+      setTypers(prev => new Map([...prev].filter(([, t]) => t.expiresAt > now)));
+    }, Math.max(0, soonest - Date.now()));
+    return () => clearTimeout(id);
+  }, [typers]);
+
+  // closed tab/disconnect -> drop right away instead of waiting out the ttl
+  const typingUsers = useMemo(() => {
+    const online = new Set(users.filter(u => u.isOnline).map(u => u.socketId));
+    return new Map([...typers].filter(([socketId]) => online.has(socketId)));
+  }, [typers, users]);
 
   const handleTyping = () => {
     if (!socket || !currentUser) return;
