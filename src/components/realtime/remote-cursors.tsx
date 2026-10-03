@@ -57,26 +57,25 @@ const RemoteCursors = () => {
 
   const followedPosition = followingId ? cursorPositions.get(followingId) : undefined;
 
-  // Retarget the scroll only when the followed cursor moves.
-  useEffect(() => {
-    if (!followedPosition || !followedUser || isMobile) return;
-
-    const top = Math.max(0, followedPosition.y - window.innerHeight / 2);
-    if (lenis) {
-      // force: true so it still scrolls while Lenis is stopped (see effect below).
-      lenis.scrollTo(top, { duration: reducedMotion ? 0 : 1, immediate: reducedMotion, force: true });
-    } else {
-      window.scrollTo({ top, behavior: reducedMotion ? 'instant' : 'smooth' });
-    }
-  }, [followedPosition, followedUser, isMobile, lenis, reducedMotion]);
-
-  // Stop Lenis while following so its inertia/virtual-scroll doesn't fight our
-  // programmatic follow. We're the sole scroll driver here; Lenis resumes on exit.
+  // Stop Lenis before scrolling: stop() cancels any running scroll animation.
   useEffect(() => {
     if (!lenis || !followedUser || isMobile) return;
     lenis.stop();
     return () => lenis.start();
   }, [lenis, followedUser, isMobile]);
+
+  // Scroll to the saved position on follow, then retarget as the cursor moves.
+  useEffect(() => {
+    if (!followedPosition || !followedUser || isMobile) return;
+
+    const top = Math.max(0, followedPosition.y - window.innerHeight / 2);
+    if (lenis) {
+      // force: true allows scrolling while Lenis is stopped.
+      lenis.scrollTo(top, { duration: reducedMotion ? 0 : 1, immediate: reducedMotion, force: true });
+    } else {
+      window.scrollTo({ top, behavior: reducedMotion ? 'instant' : 'smooth' });
+    }
+  }, [followedPosition, followedUser, isMobile, lenis, reducedMotion]);
 
   // Exit follow mode on any manual navigation (wheel / touch / Escape).
   // Programmatic scrollTo above doesn't emit wheel/touch events, so this only
