@@ -58,7 +58,8 @@ const LOCAL_ID_PREFIX = "local-";
 const SEND_TIMEOUT_MS = 8000;
 export const isLocalMsg = (m: ChatItem): m is Message => String(m.id).startsWith(LOCAL_ID_PREFIX);
 
-export type Reaction = { emoji: string; sessionIds: string[] };
+// names aligned w/ sessionIds; optional -> older backend omits it
+export type Reaction = { emoji: string; sessionIds: string[]; names?: string[] };
 
 export type UserProfile = { name: string; avatar: string; color: string; isAdmin?: boolean };
 

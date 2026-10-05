@@ -28,8 +28,9 @@ export const MessageReactions = ({ reactions, currentSessionId, onToggle, onPick
       <div className="flex flex-wrap items-center gap-1 mt-1">
         {reactions.map(r => {
           const isMine = currentSessionId ? r.sessionIds.includes(currentSessionId) : false;
-          const names = r.sessionIds.map(id =>
-            id === currentSessionId ? "You" : (profileMap.get(id)?.name ?? "Unknown")
+          // live profile first -> picks up renames of online users
+          const names = r.sessionIds.map((id, i) =>
+            id === currentSessionId ? "You" : (profileMap.get(id)?.name ?? r.names?.[i] ?? "Unknown")
           );
           const tooltipText = names.join(", ");
 
