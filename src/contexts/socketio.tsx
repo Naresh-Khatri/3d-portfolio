@@ -61,7 +61,7 @@ export const isLocalMsg = (m: ChatItem): m is Message => String(m.id).startsWith
 // names aligned w/ sessionIds; optional -> older backend omits it
 export type Reaction = { emoji: string; sessionIds: string[]; names?: string[] };
 
-export type UserProfile = { name: string; avatar: string; color: string; isAdmin?: boolean };
+export type UserProfile = { name: string; avatar: string; color: string; flag?: string; isAdmin?: boolean };
 
 type SocketContextType = {
   socket: Socket | null;
@@ -185,7 +185,8 @@ const SocketContextProvider = ({ children }: { children: ReactNode }) => {
     setProfileMap(prev => {
       const next = new Map(prev);
       for (const u of users) {
-        next.set(u.id, { name: u.name, avatar: u.avatar, color: u.color, isAdmin: u.isAdmin });
+        const flag = u.flag && u.flag !== "??" ? u.flag : prev.get(u.id)?.flag;
+        next.set(u.id, { name: u.name, avatar: u.avatar, color: u.color, flag, isAdmin: u.isAdmin });
       }
       return next;
     });

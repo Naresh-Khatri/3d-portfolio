@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import type { Message, User, ChatItem, Reaction } from "@/contexts/socketio";
 import { THEME } from "../constants";
 import { getAvatarUrl } from "@/lib/avatar";
+import { resolveMessageFlag } from "@/lib/message-flag";
 import { SocketContext, isLocalMsg } from "@/contexts/socketio";
 import { UNREAD_DIVIDER_ATTR } from "../hooks/use-chat-scroll";
 import { useToast } from "@/components/ui/use-toast";
@@ -129,6 +130,7 @@ interface MessageRowProps {
   displayName: string;
   displayAvatar: string;
   displayColor: string;
+  displayFlag: string;
   isAdmin: boolean;
   isMe: boolean;
   isOnline: boolean;
@@ -158,6 +160,7 @@ const MessageRow = memo(function MessageRow({
   displayName,
   displayAvatar,
   displayColor,
+  displayFlag,
   isAdmin,
   isMe,
   isOnline,
@@ -244,7 +247,7 @@ const MessageRow = memo(function MessageRow({
                   {displayName}
                 </span>
               </div>
-              <span>{msg.flag}</span>
+              <span>{displayFlag}</span>
               {isAdmin && <AdminBadge />}
               {isMe && (
                 <span className="bg-[#5865f2] text-white text-[10px] px-1 rounded font-bold">YOU</span>
@@ -552,6 +555,7 @@ export const ChatMessageList = ({
                 displayName={profile?.name ?? msg.username}
                 displayAvatar={profile?.avatar ?? msg.avatar}
                 displayColor={profile?.color ?? msg.color ?? "#60a5fa"}
+                displayFlag={resolveMessageFlag(msg, profile?.flag)}
                 isAdmin={!!profile?.isAdmin}
                 isMe={isMe}
                 isOnline={!!user?.isOnline}
