@@ -9,6 +9,7 @@ import type { Message, User, ChatItem, Reaction } from "@/contexts/socketio";
 import { THEME } from "../constants";
 import { getAvatarUrl } from "@/lib/avatar";
 import { resolveMessageFlag } from "@/lib/message-flag";
+import type { DeviceType } from "@/lib/device-type";
 import { SocketContext, isLocalMsg } from "@/contexts/socketio";
 import { UNREAD_DIVIDER_ATTR } from "../hooks/use-chat-scroll";
 import { useToast } from "@/components/ui/use-toast";
@@ -17,6 +18,7 @@ import { QuotedMessage } from "./quoted-message";
 import { ReactionPicker } from "./reaction-picker";
 import { MessageReactions } from "./message-reactions";
 import { AdminBadge } from "./admin-badge";
+import { DeviceIcon } from "./device-icon";
 
 function isSystemMessage(item: ChatItem): item is import("@/contexts/socketio").SystemMessage {
   return "type" in item && item.type === "system";
@@ -131,6 +133,7 @@ interface MessageRowProps {
   displayAvatar: string;
   displayColor: string;
   displayFlag: string;
+  deviceType?: DeviceType;
   isAdmin: boolean;
   isMe: boolean;
   isOnline: boolean;
@@ -161,6 +164,7 @@ const MessageRow = memo(function MessageRow({
   displayAvatar,
   displayColor,
   displayFlag,
+  deviceType,
   isAdmin,
   isMe,
   isOnline,
@@ -248,6 +252,7 @@ const MessageRow = memo(function MessageRow({
                 </span>
               </div>
               <span>{displayFlag}</span>
+              <DeviceIcon deviceType={deviceType} />
               {isAdmin && <AdminBadge />}
               {isMe && (
                 <span className="bg-[#5865f2] text-white text-[10px] px-1 rounded font-bold">YOU</span>
@@ -556,6 +561,7 @@ export const ChatMessageList = ({
                 displayAvatar={profile?.avatar ?? msg.avatar}
                 displayColor={profile?.color ?? msg.color ?? "#60a5fa"}
                 displayFlag={resolveMessageFlag(msg, profile?.flag)}
+                deviceType={user?.deviceType ?? profile?.deviceType}
                 isAdmin={!!profile?.isAdmin}
                 isMe={isMe}
                 isOnline={!!user?.isOnline}

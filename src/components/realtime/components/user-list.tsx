@@ -10,6 +10,7 @@ import type { Socket } from "socket.io-client";
 import { THEME } from "../constants";
 import { getAvatarUrl } from "@/lib/avatar";
 import { AdminBadge } from "./admin-badge";
+import { DeviceIcon } from "./device-icon";
 
 interface UserListProps {
   users: User[];
@@ -143,9 +144,10 @@ const UserItem = ({
               </motion.div>
             )}
           </div>
-          <div className={cn("text-[10px] truncate space-x-1", THEME.text.secondary)}>
-            <span>{user.location}</span>
+          <div className={cn("flex items-center gap-1 text-[10px]", THEME.text.secondary)}>
+            <span className="truncate">{user.location}</span>
             <span>{user.flag}</span>
+            <DeviceIcon deviceType={user.deviceType} />
           </div>
         </div>
       </div>

@@ -12,6 +12,7 @@ import React, {
 import { io, Socket } from "socket.io-client";
 import { useToast } from "@/components/ui/use-toast";
 import { createCursorStore, CursorStoreContext } from "@/contexts/cursor-positions";
+import { getDeviceType, type DeviceType } from "@/lib/device-type";
 
 export type User = {
   id: string;
@@ -22,6 +23,7 @@ export type User = {
   isOnline: boolean;
   location: string;
   flag: string;
+  deviceType?: DeviceType;
   lastSeen: string;
   createdAt: string;
   isAdmin?: boolean;
@@ -61,7 +63,7 @@ export const isLocalMsg = (m: ChatItem): m is Message => String(m.id).startsWith
 // names aligned w/ sessionIds; optional -> older backend omits it
 export type Reaction = { emoji: string; sessionIds: string[]; names?: string[] };
 
-export type UserProfile = { name: string; avatar: string; color: string; flag?: string; isAdmin?: boolean };
+export type UserProfile = { name: string; avatar: string; color: string; flag?: string; deviceType?: DeviceType; isAdmin?: boolean };
 
 type SocketContextType = {
   socket: Socket | null;
@@ -186,7 +188,8 @@ const SocketContextProvider = ({ children }: { children: ReactNode }) => {
       const next = new Map(prev);
       for (const u of users) {
         const flag = u.flag && u.flag !== "??" ? u.flag : prev.get(u.id)?.flag;
-        next.set(u.id, { name: u.name, avatar: u.avatar, color: u.color, flag, isAdmin: u.isAdmin });
+        const deviceType = u.deviceType ?? prev.get(u.id)?.deviceType;
+        next.set(u.id, { name: u.name, avatar: u.avatar, color: u.color, flag, deviceType, isAdmin: u.isAdmin });
       }
       return next;
     });
@@ -199,6 +202,7 @@ const SocketContextProvider = ({ children }: { children: ReactNode }) => {
     const newSocket = io(process.env.NEXT_PUBLIC_WS_URL!, {
       auth: {
         sessionId: localStorage.getItem(SESSION_ID_KEY),
+        deviceType: getDeviceType(navigator.userAgent, navigator.maxTouchPoints),
       },
       reconnection: true,
       reconnectionAttempts: Infinity,
