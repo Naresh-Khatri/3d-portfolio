@@ -7,9 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit --incremental false"
+    "typecheck": "tsc --noEmit --incremental false",
+    "test": "vitest run"
   },
   "dependencies": {
+    "@chibi3d/runtime": "0.4.0",
     "@gsap/react": "^2.1.1",
     "@next/third-parties": "^16.2.2",
     "@radix-ui/react-dialog": "^1.1.1",
@@ -21,9 +23,8 @@
     "@radix-ui/react-tabs": "^1.1.0",
     "@radix-ui/react-toast": "^1.2.1",
     "@radix-ui/react-tooltip": "^1.1.2",
+    "@react-three/fiber": "^9.8.1",
     "@splidejs/react-splide": "^0.7.12",
-    "@splinetool/react-spline": "^4.0.0",
-    "@splinetool/runtime": "^1.9.3",
     "@types/canvas-confetti": "^1.9.0",
     "canvas-confetti": "^1.9.4",
     "class-variance-authority": "^0.7.0",
@@ -48,6 +49,7 @@
     "socket.io-client": "^4.8.3",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
+    "three": "0.185.1",
     "vaul": "^1.1.2",
     "zod": "^3.23.8"
   },
@@ -55,12 +57,15 @@
     "@types/node": "^20",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "@types/three": "0.185.0",
     "eslint": "^9.39.0",
     "eslint-config-next": "16.2.2",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.11"
   },
+  "packageManager": "pnpm@11.20.0+sha512.9a6f330a95b66446ea088faf1521405a8a01f07fde7124cc9958dfed52d4bb436737e65b08f85f37b46fcba375092558ac51262b816844b22f63406ed166bfee",
   "engines": {
     "node": ">=20.9.0"
   }

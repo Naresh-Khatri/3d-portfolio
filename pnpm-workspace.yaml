@@ -1,0 +1,6 @@
+allowBuilds:
+  sharp: true
+minimumReleaseAgeExclude:
+  - '@chibi3d/runtime@0.4.0'
+patchedDependencies:
+  '@chibi3d/runtime@0.4.0': patches/@chibi3d__runtime@0.4.0.patch

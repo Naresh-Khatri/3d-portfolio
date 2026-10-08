@@ -63,7 +63,7 @@ function getMotionServerSnapshot(): MotionPref {
  * Single source of truth for "how much eye-candy should we run?".
  *
  * Combines the user's reduced-motion preference with cheap device-capability
- * signals so heavy effects (the Spline 3D scene, the particle canvas, the
+ * signals so heavy effects (the Chibi 3D scene, the particle canvas, the
  * elastic cursor, infinite GSAP tweens) can be scaled down or skipped on
  * low-end hardware instead of running full-tilt everywhere.
  */

@@ -6,6 +6,7 @@ import {
   ReactNode,
   useContext,
   useRef,
+  useCallback,
 } from "react";
 import { AnimatePresence } from "motion/react";
 import { usePathname } from "next/navigation";
@@ -48,22 +49,21 @@ function Preloader({ children, disabled = false }: PreloaderProps) {
   const [loadingPercent, setLoadingPercent] = useState(skip ? 100 : 0);
   const loadingTween = useRef<gsap.core.Tween>(null);
 
-  // The splash exists only to mask the Spline 3D scene loading. On low-end /
+  // The splash exists only to mask the Chibi 3D scene loading. On low-end /
   // reduced-motion devices that scene is never loaded, so its onLoad (which
   // normally dismisses the splash) never fires — bypass immediately instead of
   // leaving the page stuck behind the loader.
   const { disable3D, ready: perfReady } = usePerfProfile();
 
-  const bypassLoading = () => {
+  const bypassLoading = useCallback(() => {
     loadingTween.current?.progress(0.99).kill();
     setLoadingPercent(100);
     setIsLoading(false);
-  };
+  }, []);
 
   useEffect(() => {
     if (perfReady && disable3D) bypassLoading();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [perfReady, disable3D]);
+  }, [perfReady, disable3D, bypassLoading]);
   const loadingPercentRef = useRef<{ value: number }>({ value: 0 });
   useEffect(() => {
     if (skip) return;

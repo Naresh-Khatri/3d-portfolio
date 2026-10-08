@@ -1,30 +1,16 @@
-import Spline from "@/components/safe-spline";
 import type { Metadata } from "next";
 import Link from "next/link";
-import React, { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "404 - Page Not Found",
   description: "The page you're looking for doesn't exist or has been moved.",
 };
 
-const NotFoundPage = () => {
-  return (
-    <>
-      <Suspense fallback={<div>Loading...</div>}>
-        <Spline
-          scene="/assets/404.spline"
-          style={{ height: "100vh" }}
-          fallback={
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
-              <h1 className="text-4xl font-bold">404 - Page not found</h1>
-              <Link href="/" className="underline">Back to home</Link>
-            </div>
-          }
-        />
-      </Suspense>
-    </>
-  );
-};
-
-export default NotFoundPage;
+export default function NotFoundPage() {
+  return <main className="flex min-h-screen flex-col items-center justify-center gap-4 px-6 text-center">
+    <p className="text-8xl font-bold tracking-tight" aria-hidden="true">404</p>
+    <h1 className="text-2xl font-semibold">Page not found</h1>
+    <p className="text-muted-foreground">This page doesn&apos;t exist or has moved.</p>
+    <Link href="/" className="underline underline-offset-4">Back to home</Link>
+  </main>;
+}

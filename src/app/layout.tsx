@@ -75,9 +75,6 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        {/* The Spline runtime lazy-loads its wasm from unpkg; warm the
-            connection early so the 3D scene starts faster. */}
-        <link rel="preconnect" href="https://unpkg.com" crossOrigin="anonymous" />
         {process.env.UMAMI_SITE_ID && (
           <Script
             defer

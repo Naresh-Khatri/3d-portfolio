@@ -10,7 +10,7 @@ A jaw-dropping developer portfolio packed with interactive 3D animations, butter
 
 ## ✨ Features
 
-- **Interactive 3D Keyboard** — Custom Spline keyboard where each keycap represents a skill, revealing titles and descriptions on hover/press
+- **Interactive 3D Keyboard** — Programmatically generated Chibi keyboard where each keycap represents a skill, revealing titles and descriptions on hover/press
 - **Buttery Animations** — GSAP + Framer Motion powered scroll, hover, and reveal animations
 - **Space Theme** — Floating particles on a dark canvas for a cosmic vibe
 - **Light & Dark Mode** — Full theme support with cheeky disclaimer toasts
@@ -25,7 +25,7 @@ A jaw-dropping developer portfolio packed with interactive 3D animations, butter
 | **Framework** | Next.js 16.2.2, React 19.2.4, TypeScript |
 | **Styling** | Tailwind CSS, Shadcn UI, Aceternity UI |
 | **Animation** | GSAP, Framer Motion |
-| **3D** | Spline Runtime |
+| **3D** | @chibi3d/runtime, Three.js, React Three Fiber |
 | **Email** | Resend |
 | **Misc** | Lenis (smooth scroll), Zod, next-themes |
 
@@ -137,27 +137,49 @@ Other files you'll want to customize:
 
 ## ⌨️ Updating the 3D Keyboard Skills
 
-The 3D keyboard keycaps are baked into a Spline file. To update the skills displayed on the keyboard:
+The keyboard is generated in `src/components/keyboard/scene.ts` from `SKILLS`
+in `src/data/constants.ts`. Adding, removing, or reordering skills updates the
+layout. The default is six columns, with one key per skill and no filler keys.
+No scene editor or hosted scene is needed.
 
-1. **Import** the `public/assets/skills-keyboard.spline` file into [Spline](https://spline.design/)
-2. **Unhide** the keycap objects you want to edit
-3. **Update** the logo images on each keycap to your new skill icons
-4. **Rename** each keycap object to match the skill's `name` field in `src/data/constants.ts` (e.g. `js`, `react`, `docker`)
-5. **Hide** all keycap objects again
-6. **Export** the scene and overwrite `public/assets/skills-keyboard.spline`
+Each skill supplies `name`, `label`, `shortDescription`, `color`, and `icon`.
+Optional `keyboardColor` sets the keycap plastic independently of the HTML
+accent. Optional `keyboardIcon` selects local monochrome artwork for the keycap, while
+`icon` remains the normal HTML image. Optional `shortcut` uses a browser
+`KeyboardEvent.code`, such as `KeyR` or `Digit1`. Defaults follow QWERTY order;
+skills beyond the 26 letter shortcuts remain available by pointer/touch.
+Names and explicit shortcuts must be unique. Keep the `SkillNames` enum and
+`SKILLS` record consistent, as other sections also reference these skills.
 
-After updating the Spline file, make sure `src/data/constants.ts` has matching entries for every skill on the keyboard:
+Place artwork under `public/assets/keyboard/logos/`. The reusable keycap and
+case mesh lives at `public/assets/keyboard/keycaps.glb`; scene generation sizes
+the case and lays out keys. Projects uses the original two Spline cat frames on
+scene planes at the back rim. The 404 route is plain HTML.
 
-```ts
-// Each keycap object name in Spline must match a key in SKILLS
-export const SKILLS: Record<SkillNames, Skill> = {
-  js: { name: "js", label: "JavaScript", shortDescription: "...", ... },
-  react: { name: "react", label: "React", shortDescription: "...", ... },
-  // ... add/remove entries to match your keyboard
-};
-```
+Portfolio owns scene generation, GSAP section/reveal animations, mesh-based skill
+labels, input, and browser audio. Chibi receives standard JSON plus an asset
+resolver. Sound files stay in `public/assets/keycap-sounds/` and play through
+AudioContext after a browser gesture. No audio engine belongs to Chibi.
 
-The `SkillNames` enum, `SKILLS` record, and the Spline keycap names must all stay in sync for the keyboard interactions to work correctly.
+Portfolio pins `@chibi3d/runtime@0.4.0` from npm. A normal `pnpm install` is
+sufficient; there is no local-source alias, sibling checkout, or vendored runtime.
+A checked-in pnpm patch adds the `orthographic` and live `environment` host props. It applies on install;
+restart the dev server afterward. Update the pinned version deliberately and
+remove the patch once the runtime release includes both APIs. Keyboard effects
+start disabled and enable gradually from sustained frame-time samples during
+motion. Quality changes preserve the scene and key selection; struggling levels
+are disabled for the rest of the visit. The graphics panel offers manual controls.
+
+The runtime chunk loads only when motion settings allow 3D. Reduced motion,
+Data Saver, missing WebGL, failed assets, and context loss retain the HTML skill
+grid. DPR is capped by `usePerfProfile`; GSAP and engine animation pause when
+the tab is hidden. These policies do not establish a low-end-device FPS claim.
+
+Run `pnpm test`, `pnpm typecheck`, and `pnpm lint` after changing the keyboard.
+Browser acceptance: desktop hover/chords, touch drag/cancel, fast section
+changes during reveal, mobile framing, light/dark backgrounds, tab resume,
+reduced-motion toggling, and failed-asset fallback. See
+`src/components/keyboard/README.md` for ownership and release status.
 
 ---
 
