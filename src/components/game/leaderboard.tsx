@@ -5,6 +5,8 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { RefreshCw, Trophy, X } from "lucide-react";
 import type { Socket } from "socket.io-client";
 import { cn } from "@/lib/utils";
+import { PingIndicator } from "./ping-indicator";
+import type { GamePing } from "./engine/ping";
 import type {
   Leaderboard,
   LeaderboardEntry,
@@ -14,9 +16,11 @@ import type {
 
 export function LeaderboardDialog({
   socket,
+  ping,
   onClose,
 }: {
   socket: Socket;
+  ping: GamePing;
   onClose: () => void;
 }) {
   const [period, setPeriod] = useState<LeaderboardPeriod>("all");
@@ -122,6 +126,7 @@ export function LeaderboardDialog({
             <Dialog.Title className="mt-3 font-display text-3xl">
               Leaderboards
             </Dialog.Title>
+            <PingIndicator ping={ping} className="mt-3 rounded-lg border border-white/10 bg-black/30 px-3 py-1.5" />
             <Dialog.Description className="mt-2 text-xs leading-relaxed text-white/60">
               Top 20 team runs, ranked by wave reached, then score. Ties go to
               the earlier run. Solo runs count too.

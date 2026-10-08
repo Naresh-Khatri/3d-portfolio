@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import type { Socket } from "socket.io-client";
+import type { GamePing } from "./ping";
 import {
   BOOM_RADIUS,
   DASH_CD,
@@ -41,6 +42,7 @@ const CAM_OFFSET = new THREE.Vector3(0, 16, 9);
 export type HudPlayer = { id: string; name: string; color: string; hp: number; down: boolean; kills: number; me: boolean };
 
 export type Hud = {
+  ping: GamePing;
   runId: string | null;
   status: "loading" | "connecting" | "joined" | "full" | "failed";
   error: string | null;
@@ -65,6 +67,7 @@ export type Hud = {
 };
 
 const INITIAL_HUD: Hud = {
+  ping: { status: "checking", ms: null },
   runId: null,
   status: "loading",
   error: null,

@@ -8,6 +8,8 @@ import { usePerfProfile } from "@/hooks/use-perf-profile";
 import { cn } from "@/lib/utils";
 import { Game, HudStore, type Hud } from "./engine/game";
 import { LeaderboardDialog } from "./leaderboard";
+import { PingIndicator } from "./ping-indicator";
+import { monitorGamePing } from "./engine/ping";
 import { sfx } from "./engine/sfx";
 import { MAX_PLAYERS, PLAYER_HP, WEAPONS } from "./protocol";
 
@@ -25,6 +27,8 @@ export default function GameOverlay({ socket, room, onClose }: Props) {
   const [leaderboardOpen, setLeaderboardOpen] = useState(false);
   const [failedRunId, setFailedRunId] = useState<string | null>(null);
   const [muted, setMuted] = useState(sfx.muted);
+
+  useEffect(() => monitorGamePing(socket, (ping) => store.patch({ ping })), [socket, store]);
 
   useEffect(() => {
     if (!canvasRef.current) return;
@@ -81,17 +85,20 @@ export default function GameOverlay({ socket, room, onClose }: Props) {
 
       <div className="pointer-events-none absolute inset-0 flex flex-col justify-between p-3 sm:p-5">
         <div className="flex items-start justify-between gap-3">
-          <div className={cn(panel, "px-4 py-2")}>
-            {hud.phase === "lobby" ? (
-              <div className="font-display text-sm tracking-wide">Zombie Survival</div>
-            ) : (
-              <>
-                <div className="font-display text-lg leading-tight">Wave {hud.wave || 1}</div>
-                <div className="text-xs text-white/60">
-                  {hud.next > 0 ? `Next wave in ${hud.next}s` : `${hud.left} zombies left`}
-                </div>
-              </>
-            )}
+          <div className="flex shrink-0 flex-col items-start gap-2">
+            <div className={cn(panel, "px-4 py-2")}>
+              {hud.phase === "lobby" ? (
+                <div className="font-display text-sm tracking-wide">Zombie Survival</div>
+              ) : (
+                <>
+                  <div className="font-display text-lg leading-tight">Wave {hud.wave || 1}</div>
+                  <div className="text-xs text-white/60">
+                    {hud.next > 0 ? `Next wave in ${hud.next}s` : `${hud.left} zombies left`}
+                  </div>
+                </>
+              )}
+            </div>
+            <PingIndicator ping={hud.ping} className={cn(panel, "px-3 py-1.5")} />
           </div>
 
           {hud.boss >= 0 && hud.phase === "playing" && (
@@ -274,7 +281,7 @@ export default function GameOverlay({ socket, room, onClose }: Props) {
           <LeaderboardButton onClick={() => setLeaderboardOpen(true)} />
         </Card>
       )}
-      {leaderboardOpen && <LeaderboardDialog socket={socket} onClose={() => setLeaderboardOpen(false)} />}
+      {leaderboardOpen && <LeaderboardDialog socket={socket} ping={hud.ping} onClose={() => setLeaderboardOpen(false)} />}
     </div>
   );
 }
