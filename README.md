@@ -137,49 +137,15 @@ Other files you'll want to customize:
 
 ## ⌨️ Updating the 3D Keyboard Skills
 
-The keyboard is generated in `src/components/keyboard/scene.ts` from `SKILLS`
-in `src/data/constants.ts`. Adding, removing, or reordering skills updates the
-layout. The default is six columns, with one key per skill and no filler keys.
-No scene editor or hosted scene is needed.
+The keyboard is generated from `SKILLS` in `src/data/constants.ts`.
+Optional `keyboardIcon`, `keyboardColor`, and `shortcut` fields customize each key.
+Local models and artwork live under `public/assets/keyboard/`. The converted
+Archivo Black font at `public/fonts/helvetiker_regular.typeface.json` renders
+the 3D headings; `src/components/keyboard/heading-metrics.json` positions them.
+Keep the font license alongside the converted font.
 
-Each skill supplies `name`, `label`, `shortDescription`, `color`, and `icon`.
-Optional `keyboardColor` sets the keycap plastic independently of the HTML
-accent. Optional `keyboardIcon` selects local monochrome artwork for the keycap, while
-`icon` remains the normal HTML image. Optional `shortcut` uses a browser
-`KeyboardEvent.code`, such as `KeyR` or `Digit1`. Defaults follow QWERTY order;
-skills beyond the 26 letter shortcuts remain available by pointer/touch.
-Names and explicit shortcuts must be unique. Keep the `SkillNames` enum and
-`SKILLS` record consistent, as other sections also reference these skills.
-
-Place artwork under `public/assets/keyboard/logos/`. The reusable keycap and
-case mesh lives at `public/assets/keyboard/keycaps.glb`; scene generation sizes
-the case and lays out keys. Projects uses the original two Spline cat frames on
-scene planes at the back rim. The 404 route is plain HTML.
-
-Portfolio owns scene generation, GSAP section/reveal animations, mesh-based skill
-labels, input, and browser audio. Chibi receives standard JSON plus an asset
-resolver. Sound files stay in `public/assets/keycap-sounds/` and play through
-AudioContext after a browser gesture. No audio engine belongs to Chibi.
-
-Portfolio pins `@chibi3d/runtime@0.4.0` from npm. A normal `pnpm install` is
-sufficient; there is no local-source alias, sibling checkout, or vendored runtime.
-A checked-in pnpm patch adds the `orthographic` and live `environment` host props. It applies on install;
-restart the dev server afterward. Update the pinned version deliberately and
-remove the patch once the runtime release includes both APIs. Keyboard effects
-start disabled and enable gradually from sustained frame-time samples during
-motion. Quality changes preserve the scene and key selection; struggling levels
-are disabled for the rest of the visit.
-
-The runtime chunk loads only when motion settings allow 3D. Reduced motion,
-Data Saver, missing WebGL, failed assets, and context loss retain the HTML skill
-grid. DPR is capped by `usePerfProfile`; GSAP and engine animation pause when
-the tab is hidden. These policies do not establish a low-end-device FPS claim.
-
-Run `pnpm test`, `pnpm typecheck`, and `pnpm lint` after changing the keyboard.
-Browser acceptance: desktop hover/chords, touch drag/cancel, fast section
-changes during reveal, mobile framing, light/dark backgrounds, tab resume,
-reduced-motion toggling, and failed-asset fallback. See
-`src/components/keyboard/README.md` for ownership and release status.
+Chibi renders the scene, while Portfolio handles GSAP motion, input, and audio.
+Reduced motion, Data Saver, and scene failures keep the HTML skills grid visible.
 
 ---
 

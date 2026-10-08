@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "typecheck": "tsc --noEmit --incremental false",
-    "test": "vitest run"
+    "typecheck": "tsc --noEmit --incremental false"
   },
   "dependencies": {
     "@chibi3d/runtime": "0.4.0",
@@ -58,8 +57,7 @@
     "eslint-config-next": "16.2.2",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5",
-    "vitest": "^4.1.11"
+    "typescript": "^5"
   },
   "packageManager": "pnpm@11.20.0+sha512.9a6f330a95b66446ea088faf1521405a8a01f07fde7124cc9958dfed52d4bb436737e65b08f85f37b46fcba375092558ac51262b816844b22f63406ed166bfee",
   "engines": {
