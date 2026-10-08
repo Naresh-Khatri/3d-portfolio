@@ -9,7 +9,6 @@ import { createKeyboardScene, resolveKeyboardAsset, type KeyboardSkill } from ".
 import { createKeyInput, isTypingTarget } from "./input";
 import { createKeyboardMotion, type KeyboardSection } from "./motion";
 import { useKeyboardSounds } from "./use-keyboard-sounds";
-import { GraphicsDebug } from "./graphics-debug";
 import { useAdaptiveGraphics } from "./use-adaptive-graphics";
 
 const SceneCanvas = memo(ChibiScene);
@@ -157,7 +156,6 @@ export default function KeyboardScene({ maxDpr }: { maxDpr: number }) {
         onError={onError}
         onEvent={onEvent}
       />
-      <GraphicsDebug settings={graphics} automatic={quality.automatic} level={quality.level} onChange={quality.setManual} onReset={quality.reset} maxDpr={maxDpr} loadVersion={loadVersion} />
       {section === "skills" && ready && (
         <div className="pointer-events-none fixed inset-x-4 bottom-8 text-center text-foreground">
           <div aria-live="polite" className="sr-only">

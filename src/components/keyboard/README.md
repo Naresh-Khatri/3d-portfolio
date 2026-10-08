@@ -167,25 +167,6 @@ and clears visibility overrides. Real-GSAP tests step through all 24 reveals,
 including a resize midway through, and verify every cap settles. All 37 tests,
 typecheck, and keyboard ESLint pass.
 
-## Graphics debug panel
-
-The small `3D graphics` button at the bottom right opens temporary rendering
-controls: automatic quality, DPR (device maximum or 0.5–2×), shadows, soft
-shadows, ambient occlusion, bloom, and environment lighting. Editing a setting
-switches to manual mode. Restart automatic quality returns to effects off and
-clears the session's quality ceiling. Settings are not persisted. Rendering
-changes use Chibi's live `environment` prop and leave the scene document stable.
-
-The meter measures page `requestAnimationFrame` intervals in two-second windows
-following a 1.5-second settling period, with average FPS, average interval, and
-95th percentile interval. Save baseline captures a reading for comparison.
-Use the same section and interactions for each comparison. These are page frame
-intervals, not GPU timings or counts of Chibi renders; browser refresh rate,
-other page effects, and development overhead affect them. Sampling stops when
-the panel closes and discards hidden-tab intervals. No React updates run per
-frame. Changing graphics restarts the meter without reloading the scene or
-replaying its reveal.
-
 ## Automatic quality
 
 Every mount starts at DPR 1 with environment lighting, shadows, soft shadows,

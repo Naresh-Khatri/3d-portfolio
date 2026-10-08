@@ -168,7 +168,7 @@ restart the dev server afterward. Update the pinned version deliberately and
 remove the patch once the runtime release includes both APIs. Keyboard effects
 start disabled and enable gradually from sustained frame-time samples during
 motion. Quality changes preserve the scene and key selection; struggling levels
-are disabled for the rest of the visit. The graphics panel offers manual controls.
+are disabled for the rest of the visit.
 
 The runtime chunk loads only when motion settings allow 3D. Reduced motion,
 Data Saver, missing WebGL, failed assets, and context loss retain the HTML skill
