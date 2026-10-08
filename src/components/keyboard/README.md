@@ -180,12 +180,15 @@ Three consecutive windows with a mean interval below 17.5 ms and p95 below
 soft shadows, AO, bloom. Each change gets three seconds to settle. Two windows
 above 22 ms mean or 35 ms p95 drop one level; a mean above 32 ms drops one level
 immediately. Below the starting level, DPR falls to 0.75. Automatic DPR never
-exceeds the device's ratio or the parent cap; higher resolutions remain manual.
+exceeds the device's ratio or the parent cap.
 
 A downgrade caps further upgrades for that mount, preventing repeated attempts
-at a level that already struggled. Restart automatic quality clears the cap.
-Idle periods, hidden tabs, manual mode, and startup do not count as healthy
+at a level that already struggled. A new mount starts with a fresh cap.
+Idle periods, hidden tabs, and startup do not count as healthy
 samples. Page frame intervals are a proxy for responsiveness, not GPU timings.
+
+The temporary graphics panel and its manual overrides have been removed.
+The browser measurements below were recorded before that removal.
 
 Browser verification at 1280×800/device scale 2: without CPU throttling, all
 five effects enabled in order and the page held 60 FPS. At 4× CPU slowdown,

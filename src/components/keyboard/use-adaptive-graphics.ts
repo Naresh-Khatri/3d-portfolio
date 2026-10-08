@@ -1,12 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { createAdaptiveQuality, GRAPHICS_LEVELS, INITIAL_GRAPHICS_LEVEL, type GraphicsSettings } from "./adaptive-graphics";
+import { createAdaptiveQuality, GRAPHICS_LEVELS, INITIAL_GRAPHICS_LEVEL } from "./adaptive-graphics";
 
 export function useAdaptiveGraphics(ready: boolean) {
   const [level, setLevel] = useState(INITIAL_GRAPHICS_LEVEL);
-  const [manual, setManual] = useState<GraphicsSettings | null>(null);
-  const [resetVersion, setResetVersion] = useState(0);
   const activeUntil = useRef(0);
   const wake = useRef<(() => void) | null>(null);
   const controller = useRef(createAdaptiveQuality());
@@ -16,7 +14,7 @@ export function useAdaptiveGraphics(ready: boolean) {
   }, []);
 
   useEffect(() => {
-    if (!ready || manual) return;
+    if (!ready) return;
     let frame = 0;
     let previous = 0;
     let elapsed = 0;
@@ -73,20 +71,10 @@ export function useAdaptiveGraphics(ready: boolean) {
       document.removeEventListener("visibilitychange", visibility);
       quality.resetSamples();
     };
-  }, [ready, manual, resetVersion]);
+  }, [ready]);
 
-  const reset = useCallback(() => {
-    controller.current = createAdaptiveQuality();
-    setLevel(INITIAL_GRAPHICS_LEVEL);
-    setManual(null);
-    setResetVersion((version) => version + 1);
-  }, []);
   return {
-    settings: manual ?? GRAPHICS_LEVELS[level],
-    automatic: manual === null,
-    level,
-    setManual,
-    reset,
+    settings: GRAPHICS_LEVELS[level],
     markActive,
   };
 }

@@ -32,8 +32,7 @@ export default function KeyboardScene({ maxDpr }: { maxDpr: number }) {
   const scene = useMemo(() => createKeyboardScene(Object.values(SKILLS).map((skill) => ({
     ...skill, icon: skill.keyboardIcon ?? skill.icon,
   }))), []);
-  const quality = useAdaptiveGraphics(ready && !isLoading);
-  const { settings: graphics, markActive } = quality;
+  const { settings: graphics, markActive } = useAdaptiveGraphics(ready && !isLoading);
   const { shadows, softShadows, ao, bloom, lighting } = graphics;
   const environment = useMemo(() => ({
     ...scene.document.environment,
@@ -42,9 +41,8 @@ export default function KeyboardScene({ maxDpr }: { maxDpr: number }) {
     vignette: false,
     preset: lighting ? scene.document.environment.preset : null,
   }), [scene, shadows, softShadows, ao, bloom, lighting]);
-  const dpr = useMemo<number | [number, number]>(() => quality.automatic
-    ? [0.5, Math.min(graphics.dpr, maxDpr)]
-    : graphics.dpr || [0.5, maxDpr], [maxDpr, graphics.dpr, quality.automatic]);
+  const dpr = useMemo<[number, number]>(() =>
+    [0.5, Math.min(graphics.dpr, maxDpr)], [maxDpr, graphics.dpr]);
   const visibleLabel = useRef<string | null>(null);
   const input = useMemo(() => createKeyInput(scene.keys), [scene]);
   useEffect(() => input.subscribe((key, pressed) => {
