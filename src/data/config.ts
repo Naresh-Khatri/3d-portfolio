@@ -20,7 +20,6 @@ const config = {
     "GSAP",
     "React",
     "Next.js",
-    "Spline",
     "Framer Motion",
   ],
   author: "Naresh Khatri",

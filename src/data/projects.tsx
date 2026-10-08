@@ -6,8 +6,6 @@ import { ArrowUpRight, ExternalLink, Link2, MoveUpRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { ReactNode } from "react";
-// Spline has no thesvg entry — keep the Three.js mark as its stand-in.
-import { SiThreedotjs } from "react-icons/si";
 const BASE_PATH = "/assets/projects-screenshots";
 
 // Renders a brand SVG from /public as a monochrome glyph that inherits the
@@ -118,13 +116,6 @@ const PROJECT_SKILLS = {
   vue: brand("Vue.js", "vuedotjs-mono.svg"),
   react: brand("React.js", "react-mono.svg"),
   sanity: brand("Sanity", "sanity-mono.svg"),
-  // Not in the thesvg registry — keep the Three.js stand-in.
-  spline: {
-    title: "Spline",
-    bg: "black",
-    fg: "white",
-    icon: <SiThreedotjs />,
-  },
   gsap: brand("GSAP", "gsap-mono.svg"),
   motion: brand("Motion", "motion.svg"),
   supabase: brand("Supabase", "supabase-mono.svg"),
@@ -786,7 +777,6 @@ const projects: Project[] = [
         PROJECT_SKILLS.next,
         PROJECT_SKILLS.tailwind,
         PROJECT_SKILLS.motion,
-        PROJECT_SKILLS.spline,
       ],
       backend: [],
     },
