@@ -10,7 +10,7 @@
     "typecheck": "tsc --noEmit --incremental false"
   },
   "dependencies": {
-    "@chibi3d/runtime": "0.4.0",
+    "@chibi3d/runtime": "0.5.0",
     "@gsap/react": "^2.1.1",
     "@next/third-parties": "^16.2.2",
     "@radix-ui/react-dialog": "^1.1.1",
