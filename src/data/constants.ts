@@ -24,7 +24,6 @@ export enum SkillNames {
   AWS = "aws",
   GCP = "gcp",
   VIM = "vim",
-  // VERCEL = "vercel",
 }
 export type Skill = {
   id: number;
@@ -288,17 +287,6 @@ using use = useUsing("use")`,
     keyboardIcon: "/assets/keyboard/logos/vim.svg",
     keyboardColor: "#009f18",
   },
-  // [SkillNames.VERCEL]: {
-  //   id: 24,
-  //   name: "vercel",
-  //   label: "Vercel",
-  //   shortDescription:
-  //     "The triangle compony, helps you deploy and go touch grass! 🚀🌿",
-  //   color: "#6cc24a",
-  //   icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vercel/vercel-original.svg",
-  //   keyboardIcon: "/assets/keyboard/logos/vercel.svg",
-  //   keyboardColor: "#303234",
-  // },
 };
 
 export type Experience = {
@@ -376,4 +364,3 @@ export const themeDisclaimers = {
     "Dark mode on! Finally, someone who understands true sophistication.",
   ],
 };
-
