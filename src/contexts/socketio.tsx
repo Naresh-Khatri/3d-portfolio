@@ -200,6 +200,9 @@ const SocketContextProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (!process.env.NEXT_PUBLIC_WS_URL) return;
     const newSocket = io(process.env.NEXT_PUBLIC_WS_URL!, {
+      // Prefer WebSocket; fall back to polling if the network blocks it.
+      transports: ["websocket", "polling"],
+      tryAllTransports: true,
       auth: {
         sessionId: localStorage.getItem(SESSION_ID_KEY),
         deviceType: getDeviceType(navigator.userAgent, navigator.maxTouchPoints),
