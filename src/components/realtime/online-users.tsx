@@ -15,8 +15,9 @@ import {
 import { motion, AnimatePresence } from "motion/react";
 
 import { SocketContext, Message, ChatItem } from "@/contexts/socketio";
+import { GameContext } from "@/contexts/game-context";
 import { useToast } from "@/components/ui/use-toast";
-import { Users, Users2, Hash, Settings } from "lucide-react";
+import { Users, Users2, Hash, Settings, Gamepad2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 import { useChatScroll } from "./hooks/use-chat-scroll";
@@ -34,6 +35,7 @@ import { getAvatarUrl } from "@/lib/avatar";
 
 const OnlineUsers = () => {
   const { socket, users: _users, msgs, hasMoreMessages, loadingHistory, fetchOlderMessages, initStatus, fetchInitialMessages, sendMessage, resendMessage, discardMessage } = useContext(SocketContext);
+  const { open: openGame } = useContext(GameContext);
   const users = Array.from(_users.values());
   const [showUserList, setShowUserList] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -310,6 +312,25 @@ const OnlineUsers = () => {
                   </div>
                 </Button>
               )}
+
+              <Button
+                variant="ghost"
+                size="sm"
+                className={cn(
+                  "h-9 w-9 p-0 gap-2 transition-colors rounded-full",
+                  THEME.bg.hover,
+                  THEME.text.secondary,
+                  "hover:text-red-500 dark:hover:text-red-400"
+                )}
+                onClick={() => {
+                  setIsOpen(false);
+                  openGame();
+                }}
+                title="Play Zombie Survival"
+                aria-label="Play Zombie Survival"
+              >
+                <Gamepad2 className="w-4 h-4 text-red-500" />
+              </Button>
 
               <div className="w-[1px] h-4 bg-black/10 dark:bg-white/10 mx-0.5" />
 

@@ -4,6 +4,8 @@ import { ThemeProvider } from "./theme-provider";
 import { Toaster } from "./ui/toaster";
 
 import { TooltipProvider } from "./ui/tooltip";
+
+import { GameContextProvider } from "@/contexts/game-context";
 import MotionPreferences from "./motion-preferences";
 
 export const Providers = ({ children }: { children: React.ReactNode }) => {
@@ -15,9 +17,11 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
     <MotionPreferences>
       <Preloader>
         <SocketContextProvider>
-          <TooltipProvider>
-            {children}
-          </TooltipProvider>
+          <GameContextProvider>
+            <TooltipProvider>
+              {children}
+            </TooltipProvider>
+          </GameContextProvider>
           <Toaster />
         </SocketContextProvider>
       </Preloader>

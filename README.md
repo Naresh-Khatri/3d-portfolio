@@ -156,6 +156,7 @@ The portfolio supports optional realtime features powered by a **separate backen
 - 🖱️ **Live cursors** — See other visitors' cursors in realtime
 - 👥 **Online presence** — Shows who's currently on the site
 - 💬 **Chat** — Live chat between visitors
+- **Zombie Survival** with multiplayer and leaderboards on the live site.
 
 These features activate automatically when the `NEXT_PUBLIC_WS_URL` environment variable is set. Without it, the portfolio works perfectly fine as a static site — no realtime features, no backend dependency.
 

@@ -11,6 +11,7 @@ import FunnyThemeToggle from "../theme/funny-theme-toggle";
 import { Button } from "../ui/button";
 import { config } from "@/data/config";
 import OnlineUsers from "../realtime/online-users";
+import { GameTrigger } from "../game/game-trigger";
 
 interface HeaderProps {
   loader?: boolean;
@@ -58,7 +59,12 @@ const Header = ({ loader, githubStars }: HeaderProps) => {
         </Link>
 
         <FunnyThemeToggle className="w-6 h-6 mr-4 hidden md:flex" />
-        {isHome && process.env.NEXT_PUBLIC_WS_URL && <OnlineUsers />}
+        {isHome && process.env.NEXT_PUBLIC_WS_URL && (
+          <div className="flex items-center">
+            <GameTrigger className="mr-3" />
+            <OnlineUsers />
+          </div>
+        )}
         {githubStars}
         <Button
           variant={"ghost"}
