@@ -281,7 +281,7 @@ export default function GameOverlay({ socket, room, onClose }: Props) {
           <LeaderboardButton onClick={() => setLeaderboardOpen(true)} />
         </Card>
       )}
-      {leaderboardOpen && <LeaderboardDialog socket={socket} ping={hud.ping} onClose={() => setLeaderboardOpen(false)} />}
+      {leaderboardOpen && <LeaderboardDialog socket={socket} onClose={() => setLeaderboardOpen(false)} />}
     </div>
   );
 }
