@@ -1,4 +1,6 @@
 allowBuilds:
+  '@parcel/watcher': true
   sharp: true
+  unrs-resolver: true
 minimumReleaseAgeExclude:
   - '@chibi3d/runtime@0.5.0'
