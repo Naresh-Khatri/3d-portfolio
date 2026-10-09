@@ -12,7 +12,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { motion, AnimatePresence } from "motion/react";
+import { motion } from "motion/react";
 
 import { SocketContext, Message, ChatItem } from "@/contexts/socketio";
 import { GameContext } from "@/contexts/game-context";
@@ -191,20 +191,6 @@ const OnlineUsers = () => {
         }}
       >
         <div className="flex items-center gap-2" data-no-custom-cursor="true">
-          {/* Feature 4: "N people here" label */}
-          <AnimatePresence>
-            {users.length >= 2 && !isOpen && (
-              <motion.span
-                initial={{ opacity: 0, x: 5 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 5 }}
-                className={cn("text-xs hidden md:block font-medium whitespace-nowrap select-none", THEME.text.secondary)}
-              >
-                {users.length} people here
-              </motion.span>
-            )}
-          </AnimatePresence>
-
           <TooltipProvider delayDuration={300}>
             <Tooltip>
               <TooltipTrigger asChild>
