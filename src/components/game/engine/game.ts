@@ -1,4 +1,8 @@
 import * as THREE from "three";
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
+import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
+import { OutputPass } from "three/examples/jsm/postprocessing/OutputPass.js";
 import type { Socket } from "socket.io-client";
 import type { GamePing } from "./ping";
 import {
@@ -8,6 +12,7 @@ import {
   DASH_TIME,
   D_NUKE,
   D_STRIDE,
+  DROP_TTL,
   E_BOOM,
   E_NUKE,
   E_PICKUP,
@@ -118,7 +123,7 @@ export class HudStore {
 
 type Zed = { id: number; type: number; x: number; z: number; r: number; tx: number; tz: number; a: number; hp: number; flash: number; spawn: number };
 type PlayerEnt = { model: PlayerModel; profile: PlayerProfile; snap: PlayerSnap; x: number; z: number; a: number; px: number; pz: number };
-type DropEnt = { group: THREE.Group; core: THREE.Mesh };
+type DropEnt = ReturnType<typeof makeDrop> & { ttl: number };
 
 const smooth = (rate: number, dt: number) => 1 - Math.exp(-rate * dt);
 const lerpAngle = (a: number, b: number, k: number) => {
@@ -137,6 +142,7 @@ export type GameOptions = {
 
 export class Game {
   private renderer: THREE.WebGLRenderer;
+  private composer: EffectComposer;
   private scene = new THREE.Scene();
   private camera = new THREE.PerspectiveCamera(50, 1, 0.5, 120);
   private camTarget = new THREE.Vector3();
@@ -191,6 +197,17 @@ export class Game {
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, opts.maxDpr));
     this.renderer.shadowMap.enabled = opts.shadows;
     this.renderer.shadowMap.type = THREE.PCFShadowMap;
+    this.renderer.toneMapping = THREE.LinearToneMapping;
+
+    const size = this.renderer.getSize(new THREE.Vector2());
+    const target = new THREE.WebGLRenderTarget(size.x, size.y, {
+      type: THREE.HalfFloatType,
+      samples: Math.min(this.renderer.capabilities.maxSamples, opts.shadows ? 4 : 2),
+    });
+    this.composer = new EffectComposer(this.renderer, target);
+    this.composer.addPass(new RenderPass(this.scene, this.camera));
+    this.composer.addPass(new UnrealBloomPass(size, 0.1, 0.1, 1.1));
+    this.composer.addPass(new OutputPass());
 
     this.sun = buildWorld(this.scene, opts.shadows).sun;
     this.fx = new Fx(this.scene);
@@ -239,6 +256,12 @@ export class Game {
     this.socket.emit("game:leave");
     this.resizer.disconnect();
     this.input.dispose();
+    this.fx.dispose();
+    for (const drop of this.drops.values()) {
+      this.scene.remove(drop.group);
+      drop.dispose();
+    }
+    this.drops.clear();
     for (const player of this.players.values()) {
       this.scene.remove(player.model.group);
       player.model.dispose();
@@ -253,6 +276,8 @@ export class Game {
         m.dispose();
       }
     });
+    for (const pass of this.composer.passes) pass.dispose();
+    this.composer.dispose();
     this.renderer.dispose();
   }
 
@@ -369,6 +394,7 @@ export class Game {
     const w = el.clientWidth || 1;
     const h = el.clientHeight || 1;
     this.renderer.setSize(w, h, false);
+    this.composer.setSize(w, h);
     this.camera.aspect = w / h;
     this.camera.updateProjectionMatrix();
   };
@@ -480,16 +506,28 @@ export class Game {
     for (let i = 0; i < s.d.length; i += D_STRIDE) {
       const id = s.d[i];
       seenD.add(id);
-      if (this.drops.has(id)) continue;
+      const existing = this.drops.get(id);
+      if (existing) {
+        existing.ttl = s.dropTtl?.[id] ?? existing.ttl;
+        continue;
+      }
       const drop = makeDrop(s.d[i + 1]);
+      const ttl = s.dropTtl?.[id] ?? DROP_TTL;
+      drop.setProgress(ttl / DROP_TTL);
       drop.group.position.set(s.d[i + 2], 0, s.d[i + 3]);
       this.scene.add(drop.group);
-      this.drops.set(id, drop);
+      this.drops.set(id, { ...drop, ttl });
     }
     for (const [id, drop] of this.drops) {
       if (seenD.has(id)) continue;
       this.scene.remove(drop.group);
+      drop.dispose();
       this.drops.delete(id);
+    }
+
+    for (const hit of s.hits ?? []) {
+      const scale = ZOMBIES[hit.type]?.scale ?? 1;
+      this.fx.damage(hit.x, 2.3 * scale + 0.3, hit.z, hit.damage);
     }
 
     // own shots are predicted locally
@@ -570,7 +608,7 @@ export class Game {
     this.updateEntities(dt);
     this.fx.update(dt);
     this.updateCamera(dt);
-    this.renderer.render(this.scene, this.camera);
+    this.composer.render(dt);
   };
 
   private updateMe(dt: number) {
@@ -708,6 +746,8 @@ export class Game {
     this.horde?.end();
 
     for (const drop of this.drops.values()) {
+      if (this.phase === "playing") drop.ttl = Math.max(0, drop.ttl - dt);
+      drop.setProgress(drop.ttl / DROP_TTL);
       drop.core.rotation.y += dt * 2.2;
       drop.core.position.y = 0.85 + Math.sin(this.time * 3 + drop.group.position.x) * 0.15;
     }

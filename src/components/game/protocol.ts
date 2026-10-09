@@ -66,6 +66,7 @@ export const D_HEALTH = 0;
 export const D_SHOTGUN = 1;
 export const D_SMG = 2;
 export const D_NUKE = 3;
+export const DROP_TTL = 14;
 
 export const E_BOOM = 0;
 export const E_PICKUP = 1;
@@ -103,6 +104,8 @@ export type Snapshot = {
   d: number[]; // flat [id, type, x, z]
   s: number[]; // shots this tick, flat [playerIndex, x, z, angle, length]
   e: number[]; // events this tick, flat [kind, x, z, arg]
+  hits?: { x: number; z: number; type: number; damage: number }[];
+  dropTtl?: Record<number, number>; // remaining seconds, keyed by drop ID
 };
 
 export const Z_STRIDE = 5;

@@ -4,6 +4,8 @@ import { GUN_HEIGHT } from "./characters";
 const MAX_TRACERS = 96;
 const MAX_PARTICLES = 700;
 const MAX_RINGS = 8;
+const MAX_DAMAGE_NUMBERS = 96;
+const DAMAGE_LIFE = 0.5;
 const TRACER_LIFE = 0.07;
 const GRAVITY = 20;
 
@@ -23,10 +25,20 @@ export class Fx {
   private rings: { mesh: THREE.Mesh; mat: THREE.MeshBasicMaterial; life: number; size: number }[] = [];
   private ringHead = 0;
 
+  private damageNumbers: { sprite: THREE.Sprite; life: number; y: number; drift: number }[] = [];
+  private damageTextures = new Map<number, THREE.CanvasTexture>();
+  private damageHead = 0;
+  private motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+  private reducedMotion = this.motionPreference.matches;
+  private onMotionChange = (event: MediaQueryListEvent) => {
+    this.reducedMotion = event.matches;
+  };
+
   private dummy = new THREE.Object3D();
   private color = new THREE.Color();
 
   constructor(scene: THREE.Scene) {
+    this.motionPreference.addEventListener("change", this.onMotionChange);
     this.tracers = new THREE.InstancedMesh(
       new THREE.BoxGeometry(1, 0.06, 0.06).translate(0.5, 0, 0),
       new THREE.MeshBasicMaterial({ color: 0xffe2a0, toneMapped: false }),
@@ -56,6 +68,64 @@ export class Fx {
       scene.add(mesh);
       this.rings.push({ mesh, mat, life: 0, size: 1 });
     }
+
+    for (let i = 0; i < MAX_DAMAGE_NUMBERS; i++) {
+      const sprite = new THREE.Sprite(new THREE.SpriteMaterial({
+        transparent: true,
+        depthTest: false,
+        depthWrite: false,
+        toneMapped: false,
+        fog: false,
+      }));
+      sprite.scale.set(0.92, 0.46, 1);
+      sprite.renderOrder = 11;
+      sprite.visible = false;
+      scene.add(sprite);
+      this.damageNumbers.push({ sprite, life: 0, y: 0, drift: 0 });
+    }
+  }
+
+  damage(x: number, y: number, z: number, amount: number) {
+    let texture = this.damageTextures.get(amount);
+    if (!texture) {
+      const canvas = document.createElement("canvas");
+      canvas.width = 128;
+      canvas.height = 64;
+      const context = canvas.getContext("2d")!;
+      context.font = "700 48px sans-serif";
+      context.textAlign = "center";
+      context.textBaseline = "middle";
+      context.lineJoin = "round";
+      context.lineWidth = 4;
+      context.strokeStyle = "rgba(7,8,13,0.85)";
+      context.strokeText(String(amount), 64, 32);
+      context.fillStyle = "#eeeeeb";
+      context.fillText(String(amount), 64, 32);
+      texture = new THREE.CanvasTexture(canvas);
+      texture.colorSpace = THREE.SRGBColorSpace;
+      this.damageTextures.set(amount, texture);
+    }
+
+    const number = this.damageNumbers[this.damageHead];
+    this.damageHead = (this.damageHead + 1) % MAX_DAMAGE_NUMBERS;
+    number.y = y + (this.damageHead % 3) * 0.12;
+    number.drift = this.reducedMotion ? 0 : (Math.random() - 0.5) * 0.6;
+    number.life = DAMAGE_LIFE;
+    number.sprite.position.set(x + (Math.random() - 0.5) * 0.6, number.y, z);
+    number.sprite.material.map = texture;
+    number.sprite.material.needsUpdate = true;
+    number.sprite.material.opacity = 1;
+    number.sprite.visible = true;
+  }
+
+  dispose() {
+    this.motionPreference.removeEventListener("change", this.onMotionChange);
+    for (const number of this.damageNumbers) {
+      number.sprite.removeFromParent();
+      number.sprite.material.dispose();
+    }
+    for (const texture of this.damageTextures.values()) texture.dispose();
+    this.damageTextures.clear();
   }
 
   tracer(x: number, z: number, angle: number, len: number) {
@@ -100,6 +170,21 @@ export class Fx {
   }
 
   update(dt: number) {
+    for (const number of this.damageNumbers) {
+      if (number.life <= 0) continue;
+      number.life = Math.max(0, number.life - dt);
+      if (number.life === 0) {
+        number.sprite.visible = false;
+        continue;
+      }
+      const progress = 1 - number.life / DAMAGE_LIFE;
+      if (!this.reducedMotion) {
+        number.sprite.position.y = number.y + 0.55 * (1 - Math.pow(1 - progress, 3));
+        number.sprite.position.x += number.drift * dt;
+      }
+      number.sprite.material.opacity = 1 - THREE.MathUtils.smoothstep(progress, 0.3, 1);
+    }
+
     let n = 0;
     for (let k = 0; k < MAX_TRACERS; k++) {
       const i = k * 5;
