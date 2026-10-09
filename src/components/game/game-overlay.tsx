@@ -368,6 +368,15 @@ export default function GameOverlay({ socket, room, onClose }: Props) {
           <PrimaryButton onClick={() => gameRef.current?.start()}>
             Play again
           </PrimaryButton>
+          <button
+            type="button"
+            onClick={() => setLeaderboardOpen(true)}
+            aria-haspopup="dialog"
+            className={cn(secondaryButtonClass, "mt-2 w-full gap-2")}
+          >
+            <Trophy size={16} aria-hidden="true" />
+            View leaderboard
+          </button>
         </Card>
       )}
       {leaderboardOpen && (
