@@ -1,6 +1,5 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { getAvatarUrl } from "@/lib/avatar";
 import type { PlayerProfile } from "../player-profile";
 
 // kenney "blocky characters" (cc0): 6 rigid parts, rotation-only clips, faces +z
@@ -174,10 +173,10 @@ const PITCH = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0)
 const HOLD_R = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), 0.3).multiply(PITCH);
 const HOLD_L = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), -0.3).multiply(PITCH);
 
-const nameSprite = (isMe: boolean) => {
+const nameSprite = () => {
   const canvas = document.createElement("canvas");
   canvas.width = 512;
-  canvas.height = 128;
+  canvas.height = 64;
   const c = canvas.getContext("2d")!;
   const map = new THREE.CanvasTexture(canvas);
   map.colorSpace = THREE.SRGBColorSpace;
@@ -188,74 +187,32 @@ const nameSprite = (isMe: boolean) => {
     transparent: true,
   });
   const sprite = new THREE.Sprite(material);
-  sprite.scale.set(4, 1, 1);
-  sprite.position.y = 3.15;
+  sprite.scale.set(3, 0.375, 1);
+  sprite.position.y = 2.9;
   sprite.renderOrder = 10;
-  let version = 0;
-  let loadedAvatar: { seed: string; image: HTMLImageElement } | undefined;
 
-  const setIdentity = ({ name, color, avatar }: PlayerProfile) => {
-    const current = ++version;
-    const draw = (image?: HTMLImageElement) => {
-      if (current !== version) return;
-      c.clearRect(0, 0, 512, 128);
-      c.fillStyle = "rgba(15,19,17,0.94)";
-      c.beginPath();
-      c.roundRect(8, 12, 496, 104, 14);
-      c.fill();
-      c.fillStyle = color;
-      c.fillRect(8, 28, 5, 72);
-      c.save();
-      c.beginPath();
-      c.arc(66, 64, 36, 0, Math.PI * 2);
-      c.clip();
-      c.fillRect(30, 28, 72, 72);
-      if (image) c.drawImage(image, 30, 28, 72, 72);
-      else {
-        c.fillStyle = "#111713";
-        c.font = "bold 32px sans-serif";
-        c.textAlign = "center";
-        c.fillText(name.slice(0, 1).toUpperCase(), 66, 76);
-      }
-      c.restore();
-      c.textAlign = "left";
-      c.textBaseline = "middle";
-      c.font = "600 32px sans-serif";
-      c.fillStyle = "#f3f4ec";
-      const text = Array.from(name);
-      const originalLength = text.length;
-      while (
-        text.length > 1 &&
-        c.measureText(text.join("") + "…").width > (isMe ? 292 : 366)
-      )
-        text.pop();
-      c.fillText(
-        text.join("") + (text.length < originalLength ? "…" : ""),
-        120,
-        64,
-      );
-      if (isMe) {
-        c.font = "bold 20px monospace";
-        c.fillStyle = "#d9ee83";
-        c.fillText("YOU", 435, 64);
-      }
-      map.needsUpdate = true;
-    };
-    draw(loadedAvatar?.seed === avatar ? loadedAvatar?.image : undefined);
-    if (avatar && loadedAvatar?.seed !== avatar) {
-      const image = new Image();
-      image.crossOrigin = "anonymous";
-      image.onload = () => {
-        if (current !== version) return;
-        loadedAvatar = { seed: avatar, image };
-        draw(image);
-      };
-      image.src = getAvatarUrl(encodeURIComponent(avatar));
-    }
+  const setIdentity = ({ name, color }: PlayerProfile) => {
+    c.clearRect(0, 0, canvas.width, canvas.height);
+    c.font = "500 32px sans-serif";
+    c.textAlign = "center";
+    c.textBaseline = "middle";
+    const text = Array.from(name);
+    const originalLength = text.length;
+    while (
+      text.length > 1 &&
+      c.measureText(text.join("") + "…").width > canvas.width - 24
+    )
+      text.pop();
+    const label = text.join("") + (text.length < originalLength ? "…" : "");
+    c.lineJoin = "round";
+    c.lineWidth = 2;
+    c.strokeStyle = "rgba(0,0,0,0.75)";
+    c.strokeText(label, canvas.width / 2, canvas.height / 2);
+    c.fillStyle = color;
+    c.fillText(label, canvas.width / 2, canvas.height / 2);
+    map.needsUpdate = true;
   };
   const dispose = () => {
-    version++;
-    loadedAvatar = undefined;
     map.dispose();
     material.dispose();
   };
@@ -312,7 +269,7 @@ export const makePlayerModel = (
       )
     : null;
   if (laser) rig.add(laser);
-  const label = nameSprite(isMe);
+  const label = nameSprite();
   label.setIdentity(profile);
   group.add(label.sprite);
 

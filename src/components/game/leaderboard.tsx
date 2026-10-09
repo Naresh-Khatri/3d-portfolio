@@ -106,7 +106,7 @@ export function LeaderboardDialog({
         <Dialog.Content
           className={cn(
             gameTheme,
-            "fixed left-1/2 top-1/2 z-[10001] flex max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-md -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-[4px] border border-[color:var(--game-line)] border-t-[3px] border-t-[color:var(--game-accent)] bg-[color:var(--game-surface)] font-sans text-[color:var(--game-text)] focus:outline-none",
+            "fixed left-1/2 top-1/2 z-[10001] flex max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-sm -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-md bg-[color:var(--game-surface)] font-sans text-[color:var(--game-text)] focus:outline-none",
           )}
           data-lenis-prevent
           data-no-custom-cursor="true"

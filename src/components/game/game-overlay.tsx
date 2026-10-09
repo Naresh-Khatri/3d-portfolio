@@ -11,19 +11,7 @@ import {
 import type { Socket } from "socket.io-client";
 import Image from "next/image";
 import { motion, useReducedMotion } from "motion/react";
-import {
-  ArrowRight,
-  Check,
-  Crosshair,
-  Link2,
-  Loader2,
-  Skull,
-  Volume2,
-  VolumeX,
-  Trophy,
-  X,
-  Zap,
-} from "lucide-react";
+import { Loader2, Skull, Volume2, VolumeX, Trophy, X, Zap } from "lucide-react";
 import { SocketContext } from "@/contexts/socketio";
 import { usePerfProfile } from "@/hooks/use-perf-profile";
 import { getAvatarUrl } from "@/lib/avatar";
@@ -37,20 +25,12 @@ import { sfx } from "./engine/sfx";
 import { collectPlayerProfiles } from "./player-profile";
 import { MAX_PLAYERS, PLAYER_HP, WEAPONS } from "./protocol";
 
-const eyebrowClass =
-  "block [font-family:'Courier_New',monospace] text-[11px] font-bold uppercase leading-[1.4] tracking-[0.12em] text-[color:var(--game-muted)] [@media(max-width:600px)]:text-[10px]";
 const iconButtonClass =
-  "grid size-11 place-items-center rounded-[4px] bg-transparent text-[color:var(--game-muted)] transition-colors duration-200 hover:bg-[color:var(--game-line)] hover:text-[color:var(--game-text)]";
-const mateStatusClass =
-  "shrink-0 whitespace-nowrap [font-family:'Courier_New',monospace] text-[11px] text-[color:var(--game-muted)]";
-const rosterRowClass =
-  "flex min-h-14 items-center justify-between gap-3 border-b border-[color:var(--game-line)] py-2 [@media(max-height:560px)_and_(min-width:601px)]:min-h-11 [@media(max-height:560px)_and_(min-width:601px)]:py-1";
+  "grid size-[44px] place-items-center rounded text-[color:var(--game-muted)] transition-colors hover:bg-white/10 hover:text-[color:var(--game-text)]";
 const secondaryButtonClass =
-  "mt-2 flex min-h-12 w-full items-center justify-center gap-2 rounded-[3px] border border-[color:var(--game-line)] bg-transparent p-3 text-sm font-semibold text-[color:var(--game-muted)] transition-colors duration-200 hover:bg-[color:var(--game-line)] hover:text-[color:var(--game-text)]";
-const headingClass =
-  "mb-3 mt-4 font-display text-[25px] leading-[1.35] tracking-[-0.03em] [@media(max-height:560px)_and_(min-width:601px)]:my-2 [@media(max-height:560px)_and_(min-width:601px)]:text-[20px]";
-const descriptionClass =
-  "text-sm leading-[1.65] text-[color:var(--game-muted)]";
+  "flex min-h-11 items-center justify-center rounded px-3 text-sm text-[color:var(--game-muted)] transition-colors hover:bg-white/5 hover:text-[color:var(--game-text)]";
+const rosterRowClass = "flex min-h-11 items-center justify-between gap-3 py-1";
+const mutedClass = "text-sm leading-relaxed text-[color:var(--game-muted)]";
 
 type Props = { socket: Socket; room: string | null; onClose: () => void };
 
@@ -145,32 +125,35 @@ export default function GameOverlay({ socket, room, onClose }: Props) {
         />
       )}
 
-      <header className="absolute inset-x-0 top-0 flex items-center justify-between gap-4 border-b border-[color:var(--game-line)] bg-[color:var(--game-panel)] pb-3 pt-[max(12px,env(safe-area-inset-top))] pl-[max(20px,env(safe-area-inset-left))] pr-[max(20px,env(safe-area-inset-right))] [@media(max-width:600px)]:gap-2 [@media(max-width:600px)]:pl-[max(12px,env(safe-area-inset-left))] [@media(max-width:600px)]:pr-[max(12px,env(safe-area-inset-right))]">
-        <div className="flex min-w-0 items-center gap-3 [@media(max-width:600px)]:gap-2 [&>svg]:shrink-0 [&>svg]:text-[color:var(--game-accent)] [@media(max-width:600px)]:[&>svg]:hidden">
-          <Skull size={20} aria-hidden="true" />
-          <div>
-            <span className={eyebrowClass}>
-              {playing ? "Survival in progress" : "Co-op survival"}
-            </span>
-            <div className="text-sm font-semibold leading-[1.6] [@media(max-width:600px)]:text-xs [@media(max-width:600px)]:leading-[1.6]">
-              {playing
-                ? `Wave ${String(hud.wave || 1).padStart(2, "0")}`
-                : "Zombie Survival"}
-            </div>
-          </div>
-          {playing && (
-            <span className="border-l border-[color:var(--game-line)] pl-4 text-xs text-[color:var(--game-muted)] [@media(max-width:600px)]:hidden">
-              {hud.next > 0
-                ? `Next wave in ${hud.next}s`
-                : `${hud.left} remaining`}
+      <header className="pointer-events-none absolute inset-x-0 top-0 flex items-start justify-between gap-3 p-3 pt-[max(12px,env(safe-area-inset-top))] pl-[max(12px,env(safe-area-inset-left))] pr-[max(12px,env(safe-area-inset-right))] sm:p-5 sm:pt-[max(20px,env(safe-area-inset-top))] sm:pl-[max(20px,env(safe-area-inset-left))] sm:pr-[max(20px,env(safe-area-inset-right))]">
+        <div className="min-w-0 rounded bg-[color:var(--game-panel)] px-3 py-2">
+          {playing ? (
+            <>
+              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 text-sm tabular-nums">
+                <strong className="font-semibold">Wave {hud.wave || 1}</strong>
+                <span className="text-[color:var(--game-muted)]">
+                  {hud.score.toLocaleString()} pts
+                </span>
+              </div>
+              <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-[color:var(--game-muted)]">
+                <span>
+                  {hud.next > 0
+                    ? `Next wave in ${hud.next}s`
+                    : `${hud.left} zombies left`}
+                </span>
+                <PingIndicator
+                  ping={hud.ping}
+                  className="[&>span:nth-child(2)]:hidden"
+                />
+              </div>
+            </>
+          ) : (
+            <span className="break-all text-xs text-[color:var(--game-muted)]">
+              {hud.room ? `Room ${hud.room}` : "Zombie Survival"}
             </span>
           )}
         </div>
-        <div className="flex shrink-0 items-center gap-2">
-          <PingIndicator
-            ping={hud.ping}
-            className="mr-3 [@media(max-width:600px)]:hidden"
-          />
+        <div className="pointer-events-auto flex shrink-0 items-center gap-2 rounded bg-[color:var(--game-panel)]">
           {!playing && (
             <button
               className={iconButtonClass}
@@ -196,7 +179,7 @@ export default function GameOverlay({ socket, room, onClose }: Props) {
             aria-label="Close game"
             title="Close game"
           >
-            <X size={20} />
+            <X size={18} />
           </button>
         </div>
       </header>
@@ -204,22 +187,18 @@ export default function GameOverlay({ socket, room, onClose }: Props) {
       {playing && (
         <>
           {hud.boss >= 0 && (
-            <div className="pointer-events-none absolute left-1/2 top-[94px] w-[min(280px,45vw)] -translate-x-1/2 [@media(max-width:600px)]:left-4 [@media(max-width:600px)]:top-[90px] [@media(max-width:600px)]:w-[45%] [@media(max-width:600px)]:translate-x-0 [&>span]:mb-2 [&>span]:flex [&>span]:items-center [&>span]:justify-center [&>span]:gap-2 [&>span]:text-[11px] [&>span]:uppercase [&>span]:tracking-[0.12em] [&>span]:text-[color:var(--game-danger)]">
-              <span>
+            <div className="pointer-events-none absolute left-1/2 top-[92px] w-[min(200px,50vw)] -translate-x-1/2 rounded bg-[color:var(--game-panel)] px-3 py-2">
+              <span className="mb-2 flex items-center gap-2 text-xs text-[color:var(--game-danger)]">
                 <Skull size={14} /> Boss
               </span>
               <HealthBar value={hud.boss * 100} label="Boss health" danger />
             </div>
           )}
-          <div className="pointer-events-none absolute right-6 top-[100px] text-right [@media(max-width:600px)]:right-4 [@media(max-width:600px)]:top-[86px] [&>strong]:[font-family:'Courier_New',monospace] [&>strong]:text-[28px] [&>strong]:font-normal [&>strong]:tabular-nums [@media(max-width:600px)]:[&>strong]:text-[22px]">
-            <span className={eyebrowClass}>Squad score</span>
-            <strong>{hud.score.toLocaleString()}</strong>
-          </div>
-          <div className="pointer-events-none absolute inset-x-5 bottom-[max(20px,env(safe-area-inset-bottom))] flex items-end justify-between gap-4 [@media(max-width:600px)]:inset-x-3 [@media(max-width:600px)]:bottom-[max(12px,env(safe-area-inset-bottom))] [@media(max-width:600px)]:gap-2">
-            <div className="w-[248px] max-w-full rounded-[4px] border border-[color:var(--game-line)] bg-[color:var(--game-panel)] p-4 [@media(max-width:600px)]:w-[188px] [@media(max-width:600px)]:p-3 [@media(max-height:560px)_and_(min-width:601px)]:p-3">
-              {me && <PlayerIdentity player={me} />}
-              <div className="mb-1.5 mt-3.5 flex justify-between text-[11px] tabular-nums text-[color:var(--game-muted)]">
-                <span>{hud.down ? "Down · awaiting revive" : "Health"}</span>
+          <div className="pointer-events-none absolute left-[max(12px,env(safe-area-inset-left))] right-[max(12px,env(safe-area-inset-right))] bottom-[max(12px,env(safe-area-inset-bottom))] flex items-end justify-between gap-2 sm:left-[max(20px,env(safe-area-inset-left))] sm:right-[max(20px,env(safe-area-inset-right))] sm:bottom-[max(20px,env(safe-area-inset-bottom))]">
+            <div className="w-[168px] rounded bg-[color:var(--game-panel)] p-[12px] sm:w-[208px]">
+              {me && <PlayerIdentity player={me} compact />}
+              <div className="mb-1.5 mt-3 flex items-center justify-between text-xs tabular-nums text-[color:var(--game-muted)]">
+                <span>{hud.down ? "Down" : "HP"}</span>
                 <span>
                   {Math.max(0, hud.hp)} / {PLAYER_HP}
                 </span>
@@ -229,47 +208,37 @@ export default function GameOverlay({ socket, room, onClose }: Props) {
                 label="Your health"
                 danger={hud.hp <= 35}
               />
-              <div className="mt-3 flex items-center justify-between gap-2 text-[13px] tabular-nums [&>span:first-child]:flex [&>span:first-child]:items-center [&>span:first-child]:gap-2 [&_small]:text-[11px] [&_small]:text-[color:var(--game-muted)]">
-                <span>
-                  <Crosshair size={15} />
-                  {weapon.name}
-                </span>
-                <span>
-                  {hud.ammo < 0 ? "∞" : hud.ammo} <small>ammo</small>
+              <div className="mt-2 flex justify-between gap-2 text-xs tabular-nums">
+                <span>{weapon.name}</span>
+                <span className="text-[color:var(--game-muted)]">
+                  {hud.ammo < 0 ? "∞" : hud.ammo} ammo
                 </span>
               </div>
               {!touch && (
-                <div
-                  className={cn(
-                    "mt-3 flex items-center gap-1.5 text-[11px] [&_kbd]:[font-family:'Courier_New',monospace] [&_kbd]:text-[10px] [&_kbd]:text-[color:var(--game-text)]",
-                    hud.dash
-                      ? "text-[color:var(--game-accent)]"
-                      : "text-[color:var(--game-muted)]",
-                  )}
-                >
-                  <Zap size={13} />
-                  <kbd>Space</kbd>
-                  <span>{hud.dash ? "Dash ready" : "Recharging"}</span>
-                </div>
+                <p className="mt-2 text-xs text-[color:var(--game-muted)]">
+                  {hud.dash ? "Space to dash" : "Dash recharging"}
+                </p>
               )}
             </div>
             <div className="flex min-w-0 flex-col items-end gap-3">
               {mates.length > 0 && (
-                <div className="max-w-[240px] rounded-[4px] border border-[color:var(--game-line)] bg-[color:var(--game-panel)] px-3 py-1 [@media(max-width:600px)]:w-[140px] [@media(max-width:600px)]:max-w-full [@media(max-width:600px)]:px-2">
+                <div className="w-[144px] rounded bg-[color:var(--game-panel)] px-[8px] py-1 sm:w-[200px] sm:px-[12px]">
                   {mates.map((p) => (
                     <div
                       key={p.id}
-                      className="flex items-center justify-between gap-4 py-2 [&+div]:border-t [&+div]:border-[color:var(--game-line)] [@media(max-width:600px)]:flex-wrap [@media(max-width:600px)]:gap-2"
+                      className="flex min-h-[40px] items-center justify-between gap-2"
                     >
                       <PlayerIdentity player={p} compact />
                       <span
                         className={cn(
-                          mateStatusClass,
-                          "[@media(max-width:600px)]:ml-[38px]",
-                          p.down && "text-[color:var(--game-danger)]",
+                          "shrink-0 text-xs tabular-nums",
+                          p.down
+                            ? "text-[color:var(--game-danger)]"
+                            : "text-[color:var(--game-muted)]",
                         )}
                       >
-                        {p.down ? "Down" : `${p.hp} HP`}
+                        {p.down ? "Down" : `${p.hp}`}
+                        {!p.down && <span className="sr-only"> HP</span>}
                       </span>
                     </div>
                   ))}
@@ -280,9 +249,9 @@ export default function GameOverlay({ socket, room, onClose }: Props) {
                   onClick={() => gameRef.current?.dash()}
                   disabled={!hud.dash || hud.down}
                   aria-label={hud.dash ? "Dash" : "Dash recharging"}
-                  className="pointer-events-auto flex size-16 flex-col items-center justify-center gap-1 rounded-full border border-[color:var(--game-accent)] bg-[color:var(--game-panel)] text-[11px] text-[color:var(--game-accent)]"
+                  className="pointer-events-auto flex size-14 flex-col items-center justify-center gap-1 rounded-full bg-[color:var(--game-panel)] text-xs"
                 >
-                  <Zap size={22} />
+                  <Zap size={18} />
                   <span>Dash</span>
                 </button>
               )}
@@ -297,11 +266,9 @@ export default function GameOverlay({ socket, room, onClose }: Props) {
           initial={{ opacity: 0, y: reducedMotion ? 0 : 8 }}
           animate={{ opacity: [0, 1, 1, 0], y: 0 }}
           transition={{ duration: 2.2, times: [0, 0.15, 0.7, 1] }}
-          className="pointer-events-none absolute inset-x-0 top-[23%] text-center font-display text-[clamp(24px,4vw,48px)] [text-shadow:0_3px_16px_#000]"
+          className="pointer-events-none absolute inset-x-0 top-[23%] text-center text-2xl font-semibold [text-shadow:0_3px_16px_#000]"
         >
-          {hud.wave % 5 === 0
-            ? "Boss wave"
-            : `Wave ${String(hud.wave).padStart(2, "0")}`}
+          {hud.wave % 5 === 0 ? "Boss wave" : `Wave ${hud.wave}`}
         </motion.div>
       )}
       {hud.toastN > 0 && (
@@ -318,12 +285,12 @@ export default function GameOverlay({ socket, room, onClose }: Props) {
       )}
       {playing && (hud.down || mateDown) && (
         <div
-          className="pointer-events-none absolute left-1/2 top-[38%] w-max max-w-[calc(100%-32px)] -translate-x-1/2 border-l-[3px] border-[color:var(--game-danger)] bg-[color:var(--game-panel)] px-4 py-3 text-[13px] leading-normal text-[color:var(--game-text)]"
+          className="pointer-events-none absolute left-1/2 top-[38%] w-max max-w-[calc(100%-32px)] -translate-x-1/2 rounded bg-[color:var(--game-panel)] px-4 py-3 text-[13px] leading-normal text-[color:var(--game-text)]"
           role="status"
         >
           {hud.down
             ? mates.length > 0
-              ? "You're down. Stay alive as a squad to recover, or wait for a revive."
+              ? "You're down. Wait for a revive or the next wave."
               : "You're down."
             : "Teammate down. Stand beside them to revive."}
         </div>
@@ -331,40 +298,36 @@ export default function GameOverlay({ socket, room, onClose }: Props) {
 
       {hud.status !== "joined" && (
         <Card>
-          <span className={eyebrowClass}>Zombie Survival</span>
           {hud.status === "full" ? (
             <>
-              <h2 className={headingClass}>Squad is full.</h2>
-              <p className={descriptionClass}>
-                This room already has {MAX_PLAYERS} survivors. Head back and
-                join another squad.
+              <h2 className="text-lg font-semibold">Room full</h2>
+              <p className={cn(mutedClass, "mt-2")}>
+                All {MAX_PLAYERS} spots are taken.
               </p>
-              <PrimaryButton onClick={onClose}>Back to portfolio</PrimaryButton>
+              <PrimaryButton onClick={onClose}>Back</PrimaryButton>
             </>
           ) : hud.status === "failed" ? (
             <>
-              <h2 className={headingClass}>Couldn&apos;t load game.</h2>
-              <p role="alert" className={descriptionClass}>
+              <h2 className="text-lg font-semibold">Couldn&apos;t load game</h2>
+              <p role="alert" className={cn(mutedClass, "mt-2")}>
                 {hud.error}
               </p>
-              <PrimaryButton onClick={onClose}>Back to portfolio</PrimaryButton>
+              <PrimaryButton onClick={onClose}>Back</PrimaryButton>
             </>
           ) : (
-            <div
-              className="mt-5 flex items-center gap-3 text-sm text-[color:var(--game-muted)] [&>svg]:animate-spin motion-reduce:[&>svg]:animate-none"
+            <p
+              className="flex items-center gap-3 text-sm text-[color:var(--game-muted)]"
               role="status"
             >
-              <Loader2 size={20} />
-              <span>
-                {hud.status === "loading"
-                  ? "Preparing the arena…"
-                  : "Finding your squad…"}
-              </span>
-            </div>
+              <Loader2
+                size={18}
+                className="animate-spin motion-reduce:animate-none"
+              />
+              {hud.status === "loading" ? "Loading game..." : "Connecting..."}
+            </p>
           )}
         </Card>
       )}
-
       {hud.status === "joined" && hud.phase === "lobby" && (
         <Lobby
           hud={{ ...hud, touch }}
@@ -373,56 +336,38 @@ export default function GameOverlay({ socket, room, onClose }: Props) {
       )}
       {hud.status === "joined" && hud.phase === "over" && (
         <Card>
-          <span className={eyebrowClass}>Run complete</span>
-          <h2 className={headingClass}>Overrun.</h2>
-          <p className={descriptionClass}>
-            The horde wins this one. Take a breath. Try again.
+          <h2 className="text-lg font-semibold">Game over</h2>
+          <p className={cn(mutedClass, "mt-1 tabular-nums")}>
+            Wave {hud.wave} · {hud.score.toLocaleString()} points
           </p>
-          <div className="my-6 grid grid-cols-2 gap-4 [&_strong]:block [&_strong]:[font-family:'Courier_New',monospace] [&_strong]:text-[32px] [&_strong]:font-normal [&_strong]:tabular-nums">
-            <div>
-              <span className={eyebrowClass}>Wave reached</span>
-              <strong>{String(hud.wave).padStart(2, "0")}</strong>
-            </div>
-            <div>
-              <span className={eyebrowClass}>Squad score</span>
-              <strong>{hud.score.toLocaleString()}</strong>
-            </div>
-          </div>
-          <div className="border-t border-[color:var(--game-line)]">
+          <div className="mt-4">
             {[...hud.players]
               .sort((a, b) => b.kills - a.kills)
               .map((p) => (
                 <div key={p.id} className={rosterRowClass}>
                   <PlayerIdentity player={p} />
-                  <span className={mateStatusClass}>{p.kills} kills</span>
+                  <span className="shrink-0 text-xs tabular-nums text-[color:var(--game-muted)]">
+                    {p.kills} kills
+                  </span>
                 </div>
               ))}
           </div>
           {hud.best > 0 && (
-            <p className="mt-4 text-xs leading-[1.65] text-[color:var(--game-muted)]">
-              Server record · wave {hud.best}
+            <p className="mt-3 text-xs text-[color:var(--game-muted)]">
+              Server best: wave {hud.best}
             </p>
           )}
           {failedRunId !== null && failedRunId === hud.runId && (
             <p
               role="alert"
-              className={cn(
-                descriptionClass,
-                "text-[color:var(--game-danger)]",
-              )}
+              className="mt-3 text-sm text-[color:var(--game-danger)]"
             >
-              Your run couldn&apos;t be saved to the leaderboard.
+              Your run couldn&apos;t be saved.
             </p>
           )}
           <PrimaryButton onClick={() => gameRef.current?.start()}>
-            Play again <ArrowRight size={18} />
+            Play again
           </PrimaryButton>
-          <button
-            className={secondaryButtonClass}
-            onClick={() => setLeaderboardOpen(true)}
-          >
-            <Trophy size={16} /> View leaderboards
-          </button>
         </Card>
       )}
       {leaderboardOpen && (
@@ -444,11 +389,11 @@ function PlayerIdentity({
 }) {
   const [failedAvatar, setFailedAvatar] = useState<string | null>(null);
   return (
-    <div className="flex min-w-0 items-center gap-2.5">
+    <div className="flex min-w-0 items-center gap-[8px]">
       <span
         className={cn(
           "grid shrink-0 place-items-center overflow-hidden rounded-full border-2 font-bold text-[color:var(--game-avatar-ink)] [&_img]:block [&_img]:size-full [&_img]:object-cover",
-          compact ? "size-7 basis-7" : "size-9 basis-9",
+          compact ? "size-[24px] basis-[24px]" : "size-8 basis-8",
         )}
         style={{ backgroundColor: player.color, borderColor: player.color }}
       >
@@ -468,15 +413,15 @@ function PlayerIdentity({
       </span>
       <span
         className={cn(
-          "min-w-0 font-semibold leading-[1.3] [overflow-wrap:anywhere]",
-          compact ? "text-xs" : "text-sm",
+          "min-w-0 leading-normal",
+          compact ? "truncate text-xs" : "text-sm [overflow-wrap:anywhere]",
         )}
         title={player.name}
       >
         {player.name}
       </span>
-      {player.me && (
-        <span className="shrink-0 [font-family:'Courier_New',monospace] text-[10px] uppercase text-[color:var(--game-accent)]">
+      {player.me && !compact && (
+        <span className="shrink-0 text-xs text-[color:var(--game-muted)]">
           You
         </span>
       )}
@@ -518,20 +463,28 @@ function HealthBar({
 
 function Card({
   children,
-  lobby = false,
+  edge = false,
 }: {
   children: React.ReactNode;
-  lobby?: boolean;
+  edge?: boolean;
 }) {
   return (
     <div
       className={cn(
-        "pointer-events-none absolute inset-x-0 bottom-4 top-[84px] flex items-center justify-center p-4 [@media(max-width:600px)]:bottom-[max(12px,env(safe-area-inset-bottom))] [@media(max-width:600px)]:top-[76px] [@media(max-height:560px)_and_(min-width:601px)]:bottom-2 [@media(max-height:560px)_and_(min-width:601px)]:top-[76px] [@media(max-height:560px)_and_(min-width:601px)]:py-2",
-        lobby &&
-          "justify-start pl-[clamp(20px,4vw,64px)] [@media(max-width:600px)]:justify-center [@media(max-width:600px)]:p-3 [@media(max-height:560px)_and_(min-width:601px)]:[&_h2_br]:hidden",
+        "pointer-events-none absolute inset-x-0 bottom-[max(12px,env(safe-area-inset-bottom))] top-[max(76px,calc(env(safe-area-inset-top)+4rem))] flex justify-center pl-[max(12px,env(safe-area-inset-left))] pr-[max(12px,env(safe-area-inset-right))]",
+        edge
+          ? "items-end sm:items-center sm:justify-end sm:pr-[max(20px,env(safe-area-inset-right))]"
+          : "items-center py-3",
       )}
     >
-      <section className="pointer-events-auto max-h-full w-[360px] max-w-full overflow-y-auto overscroll-contain rounded-[4px] border border-[color:var(--game-line)] border-t-[3px] border-t-[color:var(--game-accent)] bg-[color:var(--game-panel)] p-6 shadow-[0_16px_48px_#0004] [@media(max-width:600px)]:w-[340px] [@media(max-width:600px)]:p-5 [@media(max-height:560px)_and_(min-width:601px)]:w-[420px] [@media(max-height:560px)_and_(min-width:601px)]:px-5 [@media(max-height:560px)_and_(min-width:601px)]:py-4">
+      <section
+        className={cn(
+          "pointer-events-auto max-h-full w-full max-w-[304px] overflow-y-auto overscroll-contain rounded-md bg-[color:var(--game-surface)]",
+          edge
+            ? "p-4 sm:max-w-[280px] sm:p-5 [@media(max-height:560px)]:p-4"
+            : "p-5",
+        )}
+      >
         {children}
       </section>
     </div>
@@ -548,7 +501,7 @@ function PrimaryButton({
   return (
     <button
       onClick={onClick}
-      className="mt-5 flex min-h-12 w-full items-center justify-between gap-2 rounded-[3px] bg-[color:var(--game-accent)] p-3 text-sm font-semibold text-[color:var(--game-on-accent)] transition-colors duration-200 hover:bg-[color:var(--game-accent-hover)] [@media(max-height:560px)_and_(min-width:601px)]:mt-3"
+      className="mt-4 flex min-h-11 w-full items-center justify-center gap-3 rounded bg-[color:var(--game-accent)] px-3 py-2 text-sm font-semibold text-[color:var(--game-on-accent)] transition-colors hover:bg-[color:var(--game-accent-hover)]"
     >
       {children}
     </button>
@@ -556,7 +509,6 @@ function PrimaryButton({
 }
 
 function Lobby({ hud, onStart }: { hud: Hud; onStart: () => void }) {
-  const openSpots = Math.max(0, MAX_PLAYERS - hud.players.length);
   const [inviteStatus, setInviteStatus] = useState<
     "idle" | "copied" | "failed"
   >("idle");
@@ -579,90 +531,56 @@ function Lobby({ hud, onStart }: { hud: Hud; onStart: () => void }) {
   };
 
   return (
-    <Card lobby>
+    <Card edge>
       <div className="flex items-baseline justify-between gap-3">
-        <span className={eyebrowClass}>The graveyard</span>
-        <span className="[font-family:'Courier_New',monospace] text-[11px] text-[color:var(--game-muted)]">
-          Room {hud.room}
+        <h2 className="text-lg font-semibold">Zombie Survival</h2>
+        <span className="shrink-0 text-xs tabular-nums text-[color:var(--game-muted)]">
+          {hud.players.length}/{MAX_PLAYERS}
+          <span className="sr-only"> players</span>
         </span>
       </div>
-      <h2 className={headingClass}>
-        Stay together.
-        <br />
-        Stay alive.
-      </h2>
-      <p className={descriptionClass}>
-        Hold off the horde with your squad. Each wave hits harder. Every fifth
-        brings a boss.
-      </p>
-      <div className="mb-2 mt-6 flex items-baseline justify-between [@media(max-height:560px)_and_(min-width:601px)]:mt-3 [&>span:last-child]:[font-family:'Courier_New',monospace] [&>span:last-child]:text-xs [&>span:last-child]:text-[color:var(--game-muted)]">
-        <span className={eyebrowClass}>Your squad</span>
-        <span>
-          {hud.players.length} / {MAX_PLAYERS}
-        </span>
-      </div>
-      <div className="border-t border-[color:var(--game-line)]">
+      <div className="mt-3 max-h-24 overflow-y-auto overscroll-contain sm:max-h-none [@media(max-height:560px)]:max-h-20">
         {hud.players.map((p) => (
           <div key={p.id} className={rosterRowClass}>
             <PlayerIdentity player={p} />
-            <span className={mateStatusClass}>Ready</span>
           </div>
         ))}
-        {openSpots > 0 && (
-          <div className="flex items-center gap-2.5 py-3 text-xs text-[color:var(--game-muted)] [@media(max-height:560px)_and_(min-width:601px)]:py-1.5">
-            <span className="grid size-9 shrink-0 place-items-center rounded-full border border-dashed border-[color:var(--game-line)] text-xl">
-              +
-            </span>
-            <span>
-              {openSpots} open {openSpots === 1 ? "spot" : "spots"} · invite a
-              friend
-            </span>
-          </div>
-        )}
       </div>
-      <PrimaryButton onClick={onStart}>
-        Start surviving{" "}
-        <span className="text-[11px] font-normal">
-          {hud.touch ? <ArrowRight size={18} /> : <kbd>Enter ↵</kbd>}
-        </span>
-      </PrimaryButton>
-      <button
-        onClick={copyInvite}
-        disabled={!hud.room}
-        className={secondaryButtonClass}
-      >
-        {inviteStatus === "copied" ? <Check size={16} /> : <Link2 size={16} />}
-        <span aria-live="polite">
-          {inviteStatus === "copied"
-            ? "Invite link copied"
-            : inviteStatus === "failed"
-              ? "Copy failed · try again"
-              : "Copy invite link"}
-        </span>
-      </button>
-      <div
-        className="mt-5 grid grid-cols-2 gap-3 border-t border-[color:var(--game-line)] pt-4 text-[11px] text-[color:var(--game-muted)] [@media(max-height:560px)_and_(min-width:601px)]:mt-3 [@media(max-height:560px)_and_(min-width:601px)]:grid-cols-3 [@media(max-height:560px)_and_(min-width:601px)]:pt-3 [&>span]:flex [&>span]:items-center [&>span]:gap-2 [&_kbd]:[font-family:'Courier_New',monospace] [&_kbd]:text-[10px] [&_kbd]:text-[color:var(--game-text)] [&>p]:col-span-full [&>p]:text-xs [&>p]:leading-[1.65]"
+      <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-1 [@media(max-height:560px)]:grid-cols-2 [&>button]:mt-0">
+        <PrimaryButton onClick={onStart}>
+          Start game
+          {!hud.touch && (
+            <kbd className="text-xs font-normal opacity-60 [@media(max-height:560px)]:hidden">
+              Enter
+            </kbd>
+          )}
+        </PrimaryButton>
+        <button
+          onClick={copyInvite}
+          disabled={!hud.room}
+          className={cn(secondaryButtonClass, "w-full")}
+        >
+          <span aria-live="polite">
+            {inviteStatus === "copied"
+              ? "Link copied"
+              : inviteStatus === "failed"
+                ? "Copy failed. Try again"
+                : "Copy invite link"}
+          </span>
+        </button>
+      </div>
+      <p
+        className="mt-3 text-xs leading-relaxed text-[color:var(--game-muted)]"
         aria-label="Game controls"
       >
-        {hud.touch ? (
-          <p className={descriptionClass}>
-            Drag the arena to move. Aim and fire are automatic. Tap Dash to
-            escape.
-          </p>
-        ) : (
-          <>
-            <span>
-              <kbd>W A S D</kbd> Move
-            </span>
-            <span>
-              <kbd>Mouse</kbd> Aim + fire
-            </span>
-            <span>
-              <kbd>Space</kbd> Dash
-            </span>
-          </>
-        )}
-      </div>
+        {hud.touch
+          ? "Drag to move. Shooting is automatic. Tap Dash to dodge."
+          : "WASD move · Mouse aim & fire · Space dash"}
+      </p>
+      <PingIndicator
+        ping={hud.ping}
+        className="mt-3 [&>span:nth-child(2)]:hidden"
+      />
     </Card>
   );
 }
