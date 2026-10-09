@@ -13,7 +13,6 @@ import {
   E_PICKUP,
   E_REVIVE,
   E_STRIDE,
-  PLAYER_R,
   PLAYER_SPEED,
   S_STRIDE,
   TICK_HZ,
@@ -23,13 +22,13 @@ import {
   Z_BOSS,
   Z_STRIDE,
   castRay,
-  collide,
   type GamePhase,
   type PlayerSnap,
   type Snapshot,
 } from "../protocol";
 import { Fx } from "./fx";
 import { Input } from "./input";
+import { MovementPrediction } from "./movement";
 import { sfx } from "./sfx";
 import { buildArena, loadArena } from "./arena";
 import { GUN_HEIGHT, Horde, MUZZLE, loadCharacters, makePlayerModel, pickSkin, type Characters, type PlayerModel } from "./characters";
@@ -125,7 +124,6 @@ const lerpAngle = (a: number, b: number, k: number) => {
   const d = Math.atan2(Math.sin(b - a), Math.cos(b - a));
   return a + d * k;
 };
-const r2 = (n: number) => Math.round(n * 100) / 100;
 
 export type GameOptions = {
   room: string | null;
@@ -156,6 +154,8 @@ export class Game {
   private drops = new Map<number, DropEnt>();
 
   private phase: GamePhase = "lobby";
+  private runId: string | null = null;
+  private movement = new MovementPrediction();
   private wave = 0;
   private joined = false;
   private raf = 0;
@@ -300,6 +300,7 @@ export class Game {
 
   private onDisconnect = () => {
     this.joined = false;
+    this.movement.reset();
     this.join();
   };
 
@@ -325,7 +326,9 @@ export class Game {
     const myId = this.socket.id;
     const prevPhase = this.phase;
     const started = s.phase === "playing" && prevPhase !== "playing";
+    const newRun = s.runId !== this.runId;
     this.phase = s.phase;
+    this.runId = s.runId;
 
     let myIndex = -1;
     const seenPlayers = new Set<string>();
@@ -334,6 +337,7 @@ export class Game {
       const isMe = p.id === myId;
       if (isMe) myIndex = i;
       let ent = this.players.get(p.id);
+      const firstSnapshot = !ent;
       if (!ent) {
         const taken = new Set([...this.players.values()].map((e) => e.model.skin));
         const model = makePlayerModel(chars, pickSkin(p.id, taken), p.color, p.name, isMe);
@@ -347,8 +351,16 @@ export class Game {
           this.shake = Math.max(this.shake, 0.5);
           sfx.hurt();
         }
-        // server placed us (start) or rejected a move
-        if (started || Math.hypot(p.x - ent.x, p.z - ent.z) > SNAP_DIST) {
+        if (firstSnapshot || started || newRun || p.down || p.down !== ent.snap.down || s.phase === "over") {
+          this.movement.reset();
+          ent.x = p.x;
+          ent.z = p.z;
+          this.dashT = 0;
+        } else if (p.inputSeq !== undefined) {
+          this.movement.reconcile(ent, p, p.inputSeq);
+        } else if (Math.hypot(p.x - ent.x, p.z - ent.z) > SNAP_DIST) {
+          // Keep the legacy correction until the backend supports acknowledgements.
+          this.movement.reset();
           ent.x = p.x;
           ent.z = p.z;
         }
@@ -500,7 +512,7 @@ export class Game {
 
     this.dashCd -= dt;
     this.fireCd -= dt * 1000;
-    const active = !this.input.suspended && !me.snap.down && this.phase !== "over";
+    const active = this.joined && this.socket.connected && !this.input.suspended && !me.snap.down && this.phase !== "over";
 
     if (active) {
       const mv = this.input.move();
@@ -515,18 +527,12 @@ export class Game {
       }
       if (this.dashT > 0) {
         this.dashT -= dt;
-        me.x += this.dashX * DASH_SPEED * dt;
-        me.z += this.dashZ * DASH_SPEED * dt;
+        this.movement.advance(me, this.dashX * DASH_SPEED * dt, this.dashZ * DASH_SPEED * dt);
       } else {
-        me.x += mv.x * PLAYER_SPEED * dt;
-        me.z += mv.z * PLAYER_SPEED * dt;
+        this.movement.advance(me, mv.x * PLAYER_SPEED * dt, mv.z * PLAYER_SPEED * dt);
       }
-      collide(me, PLAYER_R);
       this.aim(me, mv);
     } else {
-      const k = smooth(12, dt);
-      me.x += (me.snap.x - me.x) * k;
-      me.z += (me.snap.z - me.z) * k;
       this.autoFire = false;
     }
 
@@ -542,9 +548,9 @@ export class Game {
     } else if (this.fireCd < 0) this.fireCd = 0;
 
     this.sendT += dt;
-    if (this.joined && this.sendT >= 1 / TICK_HZ) {
+    if (this.joined && this.socket.connected && this.sendT >= 1 / TICK_HZ && this.socket.io.engine.transport.writable) {
       this.sendT = 0;
-      this.socket.volatile.emit("game:in", [r2(me.x), r2(me.z), r2(me.a), firing ? 1 : 0]);
+      this.socket.volatile.emit("game:in", this.movement.input(me, me.a, firing, this.runId));
       this.fireTap = false;
     }
 

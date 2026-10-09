@@ -87,6 +87,7 @@ export type PlayerSnap = {
   down: boolean;
   rev: number; // revive progress 0..1
   kills: number;
+  inputSeq?: number;
 };
 
 export type Snapshot = {
@@ -109,8 +110,8 @@ export const D_STRIDE = 4;
 export const S_STRIDE = 5;
 export const E_STRIDE = 4;
 
-// [x, z, aim, firing]
-export type GameInput = [number, number, number, number];
+// Sequence and run ID are optional for clients predating movement acknowledgements.
+export type GameInput = [number, number, number, number, number?, (string | null)?];
 
 export type Circle = { x: number; z: number; r: number };
 
