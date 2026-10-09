@@ -70,7 +70,7 @@ function isDifferentDay(a: Date, b: Date): boolean {
 }
 
 type RowLayout =
-  | { kind: "system"; key: string; lastId: string; users: { username: string; flag: string }[] }
+  | { kind: "system"; key: string; lastId: string; users: { username: string; flag: string }[]; content?: string }
   | { kind: "msg"; msg: Message; showHeader: boolean; isFirstMsg: boolean; dayLabel: string | null };
 
 function layoutRows(grouped: GroupedItem[]): RowLayout[] {
@@ -87,7 +87,7 @@ function layoutRows(grouped: GroupedItem[]): RowLayout[] {
     }
     if (isSystemMessage(item)) {
       hadNonMessageSincePrev = true;
-      rows.push({ kind: "system", key: item.id, lastId: item.id, users: [{ username: item.username, flag: item.flag }] });
+      rows.push({ kind: "system", key: item.id, lastId: item.id, users: [{ username: item.username, flag: item.flag }], content: item.subtype === "game-result" ? item.content : undefined });
       continue;
     }
     const msgDate = new Date(item.createdAt);
@@ -543,7 +543,7 @@ export const ChatMessageList = ({
             if (row.kind === "system") {
               return (
                 <React.Fragment key={row.key}>
-                  <SystemMessageRow users={row.users} />
+                  <SystemMessageRow users={row.users} content={row.content} />
                   {row.lastId === unreadAfterId && <UnreadDivider />}
                 </React.Fragment>
               );

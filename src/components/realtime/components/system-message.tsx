@@ -5,11 +5,12 @@ import { THEME } from "../constants";
 
 interface SystemMessageProps {
   users: { username: string; flag: string }[];
+  content?: string;
 }
 
 const FLAG_CAP = 5;
 
-export const SystemMessageRow = ({ users }: SystemMessageProps) => {
+export const SystemMessageRow = ({ users, content }: SystemMessageProps) => {
   const [expanded, setExpanded] = useState(false);
 
   const flagGroups = useMemo(() => {
@@ -23,12 +24,12 @@ export const SystemMessageRow = ({ users }: SystemMessageProps) => {
   const hiddenCount = Math.max(0, flagGroups.length - FLAG_CAP);
   const visibleGroups = expanded ? flagGroups : flagGroups.slice(0, FLAG_CAP);
 
-  if (users.length <= 3) {
+  if (content || users.length <= 3) {
     return (
       <div className={cn("flex items-center gap-3 py-2 select-none", THEME.text.secondary)}>
         <div className={cn("flex-1 h-px", "bg-black/10 dark:bg-white/10")} />
-        <span className="text-xs shrink-0">
-          {users.map(u => `${u.username} ${u.flag}`).join(", ")} joined
+        <span className={cn("text-xs", content ? "min-w-0 text-center [overflow-wrap:anywhere]" : "shrink-0")}>
+          {content ?? `${users.map(u => `${u.username} ${u.flag}`).join(", ")} joined`}
         </span>
         <div className={cn("flex-1 h-px", "bg-black/10 dark:bg-white/10")} />
       </div>

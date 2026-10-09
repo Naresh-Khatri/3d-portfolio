@@ -47,11 +47,12 @@ export type Message = {
 export type SystemMessage = {
   id: string;
   type: "system";
-  subtype: "join";
+  subtype: "join" | "game-result";
   sessionId: string;
   username: string;
   flag: string;
   createdAt: string | Date;
+  content?: string;
 };
 
 export type ChatItem = Message | SystemMessage;
@@ -278,6 +279,7 @@ const SocketContextProvider = ({ children }: { children: ReactNode }) => {
         const incoming = msgs as ChatItem;
         // own echo confirms a pending send: same content first (server may rewrite it), else oldest
         const mine = (m: ChatItem) =>
+          !("type" in incoming && incoming.type === "system") &&
           isLocalMsg(m) && m.status === "pending" && m.sessionId === incoming.sessionId;
         let i = p.findIndex(m => mine(m) && (m as Message).content === (incoming as Message).content);
         if (i < 0) i = p.findIndex(mine);
