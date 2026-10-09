@@ -33,12 +33,13 @@ import { sfx } from "./sfx";
 import { buildArena, loadArena } from "./arena";
 import { GUN_HEIGHT, Horde, MUZZLE, loadCharacters, makePlayerModel, pickSkin, type Characters, type PlayerModel } from "./characters";
 import { DROP_LABEL, buildWorld, dropColor, makeDrop } from "./world";
+import { resolvePlayerProfile, type PlayerProfile, type PlayerProfiles } from "../player-profile";
 
 const MAX_ZOMBIES = 160;
 const SNAP_DIST = 2.5;
 const CAM_OFFSET = new THREE.Vector3(0, 16, 9);
 
-export type HudPlayer = { id: string; name: string; color: string; hp: number; down: boolean; kills: number; me: boolean };
+export type HudPlayer = PlayerProfile & { id: string; hp: number; down: boolean; kills: number; me: boolean };
 
 export type Hud = {
   ping: GamePing;
@@ -116,7 +117,7 @@ export class HudStore {
 }
 
 type Zed = { id: number; type: number; x: number; z: number; r: number; tx: number; tz: number; a: number; hp: number; flash: number; spawn: number };
-type PlayerEnt = { model: PlayerModel; snap: PlayerSnap; x: number; z: number; a: number; px: number; pz: number };
+type PlayerEnt = { model: PlayerModel; profile: PlayerProfile; snap: PlayerSnap; x: number; z: number; a: number; px: number; pz: number };
 type DropEnt = { group: THREE.Group; core: THREE.Mesh };
 
 const smooth = (rate: number, dt: number) => 1 - Math.exp(-rate * dt);
@@ -131,6 +132,7 @@ export type GameOptions = {
   shadows: boolean;
   hud: HudStore;
   onExit: () => void;
+  profiles: PlayerProfiles;
 };
 
 export class Game {
@@ -237,6 +239,11 @@ export class Game {
     this.socket.emit("game:leave");
     this.resizer.disconnect();
     this.input.dispose();
+    for (const player of this.players.values()) {
+      this.scene.remove(player.model.group);
+      player.model.dispose();
+    }
+    this.players.clear();
     this.scene.traverse((o) => {
       const mesh = o as THREE.Mesh;
       mesh.geometry?.dispose();
@@ -260,6 +267,52 @@ export class Game {
 
   dash() {
     this.input.queueDash();
+  }
+
+  updateProfiles(profiles: PlayerProfiles) {
+    // Keep known profiles while the presence list resyncs after a disconnect.
+    const next = new Map(profiles);
+    for (const [id, player] of this.players) {
+      if (!next.has(id)) next.set(id, player.profile);
+    }
+    this.opts.profiles = next;
+    for (const player of this.players.values()) this.syncPlayerProfile(player);
+    this.opts.hud.patch({ players: this.hudPlayers() });
+  }
+
+  private syncPlayerProfile(player: PlayerEnt) {
+    const profile = resolvePlayerProfile(player.snap, this.opts.profiles);
+    if (
+      profile.name === player.profile.name &&
+      profile.color === player.profile.color &&
+      profile.avatar === player.profile.avatar
+    )
+      return;
+    const skin = pickSkin(profile.avatar ?? player.snap.id);
+    if (skin !== player.model.skin && this.chars) {
+      this.scene.remove(player.model.group);
+      player.model.dispose();
+      player.model = makePlayerModel(
+        this.chars,
+        skin,
+        profile,
+        player.snap.id === this.socket.id,
+      );
+      player.model.group.position.set(player.x, 0, player.z);
+      this.scene.add(player.model.group);
+    } else player.model.setIdentity(profile);
+    player.profile = profile;
+  }
+
+  private hudPlayers(): HudPlayer[] {
+    return [...this.players.values()].map(({ snap: p, profile }) => ({
+      id: p.id,
+      ...profile,
+      hp: p.hp,
+      down: p.down,
+      kills: p.kills,
+      me: p.id === this.socket.id,
+    }));
   }
 
   private get me() {
@@ -339,9 +392,23 @@ export class Game {
       let ent = this.players.get(p.id);
       const firstSnapshot = !ent;
       if (!ent) {
-        const taken = new Set([...this.players.values()].map((e) => e.model.skin));
-        const model = makePlayerModel(chars, pickSkin(p.id, taken), p.color, p.name, isMe);
-        ent = { model, snap: p, x: p.x, z: p.z, a: p.a, px: p.x, pz: p.z };
+        const profile = resolvePlayerProfile(p, this.opts.profiles);
+        const model = makePlayerModel(
+          chars,
+          pickSkin(profile.avatar ?? p.id),
+          profile,
+          isMe,
+        );
+        ent = {
+          model,
+          profile,
+          snap: p,
+          x: p.x,
+          z: p.z,
+          a: p.a,
+          px: p.x,
+          pz: p.z,
+        };
         this.scene.add(ent.model.group);
         this.players.set(p.id, ent);
       }
@@ -366,10 +433,12 @@ export class Game {
         }
       }
       ent.snap = p;
+      this.syncPlayerProfile(ent);
     });
     for (const [id, ent] of this.players) {
       if (seenPlayers.has(id)) continue;
       this.scene.remove(ent.model.group);
+      ent.model.dispose();
       this.players.delete(id);
     }
 
@@ -488,7 +557,7 @@ export class Game {
       down: mine?.down ?? false,
       hurt: this.hurt,
       ...(toast && { toast, toastN: this.toastN }),
-      players: s.p.map((p) => ({ id: p.id, name: p.name, color: p.color, hp: p.hp, down: p.down, kills: p.kills, me: p.id === myId })),
+      players: this.hudPlayers(),
     });
   };
 

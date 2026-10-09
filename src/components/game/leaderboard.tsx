@@ -5,6 +5,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { RefreshCw, X } from "lucide-react";
 import type { Socket } from "socket.io-client";
 import { cn } from "@/lib/utils";
+import { gameTheme } from "./game-theme";
 import type {
   Leaderboard,
   LeaderboardEntry,
@@ -103,13 +104,16 @@ export function LeaderboardDialog({
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-[10000] bg-black/70" />
         <Dialog.Content
-          className="fixed left-1/2 top-1/2 z-[10001] flex max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-md -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-lg border border-white/15 bg-zinc-950 font-sans text-zinc-100 focus:outline-none"
+          className={cn(
+            gameTheme,
+            "fixed left-1/2 top-1/2 z-[10001] flex max-h-[calc(100dvh-2rem)] w-[calc(100%-2rem)] max-w-md -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-[4px] border border-[color:var(--game-line)] border-t-[3px] border-t-[color:var(--game-accent)] bg-[color:var(--game-surface)] font-sans text-[color:var(--game-text)] focus:outline-none",
+          )}
           data-lenis-prevent
           data-no-custom-cursor="true"
         >
           <div className="shrink-0 px-4 pt-3">
             <div className="flex items-center justify-between">
-              <Dialog.Title className="text-lg font-semibold">
+              <Dialog.Title className="text-base font-semibold">
                 Leaderboards
               </Dialog.Title>
               <Dialog.Close

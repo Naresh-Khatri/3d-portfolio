@@ -1,5 +1,7 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { getAvatarUrl } from "@/lib/avatar";
+import type { PlayerProfile } from "../player-profile";
 
 // kenney "blocky characters" (cc0): 6 rigid parts, rotation-only clips, faces +z
 const BASE = "/assets/game/characters/";
@@ -55,14 +57,10 @@ export const loadCharacters = () =>
     throw e;
   }));
 
-// stable per id, next free one on a clash
-export const pickSkin = (id: string, taken: Set<string>) => {
+// The profile seed keeps the same survivor across reconnects and rooms.
+export const pickSkin = (id: string) => {
   let h = 0;
   for (let i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) >>> 0;
-  for (let i = 0; i < PLAYER_SKINS.length; i++) {
-    const skin = PLAYER_SKINS[(h + i) % PLAYER_SKINS.length];
-    if (!taken.has(skin)) return skin;
-  }
   return PLAYER_SKINS[h % PLAYER_SKINS.length];
 };
 
@@ -176,27 +174,92 @@ const PITCH = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0)
 const HOLD_R = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), 0.3).multiply(PITCH);
 const HOLD_L = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), -0.3).multiply(PITCH);
 
-const nameSprite = (name: string) => {
+const nameSprite = (isMe: boolean) => {
   const canvas = document.createElement("canvas");
-  canvas.width = 256;
-  canvas.height = 64;
+  canvas.width = 512;
+  canvas.height = 128;
   const c = canvas.getContext("2d")!;
-  c.font = "600 30px system-ui, sans-serif";
-  c.textAlign = "center";
-  c.textBaseline = "middle";
-  c.lineWidth = 6;
-  c.strokeStyle = "rgba(0,0,0,0.75)";
-  const text = name.length > 14 ? `${name.slice(0, 13)}…` : name;
-  c.strokeText(text, 128, 32);
-  c.fillStyle = "#fff";
-  c.fillText(text, 128, 32);
   const map = new THREE.CanvasTexture(canvas);
   map.colorSpace = THREE.SRGBColorSpace;
-  const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map, depthTest: false, transparent: true }));
-  sprite.scale.set(3.2, 0.8, 1);
-  sprite.position.y = 3.1;
+  const material = new THREE.SpriteMaterial({
+    map,
+    depthTest: false,
+    depthWrite: false,
+    transparent: true,
+  });
+  const sprite = new THREE.Sprite(material);
+  sprite.scale.set(4, 1, 1);
+  sprite.position.y = 3.15;
   sprite.renderOrder = 10;
-  return sprite;
+  let version = 0;
+  let loadedAvatar: { seed: string; image: HTMLImageElement } | undefined;
+
+  const setIdentity = ({ name, color, avatar }: PlayerProfile) => {
+    const current = ++version;
+    const draw = (image?: HTMLImageElement) => {
+      if (current !== version) return;
+      c.clearRect(0, 0, 512, 128);
+      c.fillStyle = "rgba(15,19,17,0.94)";
+      c.beginPath();
+      c.roundRect(8, 12, 496, 104, 14);
+      c.fill();
+      c.fillStyle = color;
+      c.fillRect(8, 28, 5, 72);
+      c.save();
+      c.beginPath();
+      c.arc(66, 64, 36, 0, Math.PI * 2);
+      c.clip();
+      c.fillRect(30, 28, 72, 72);
+      if (image) c.drawImage(image, 30, 28, 72, 72);
+      else {
+        c.fillStyle = "#111713";
+        c.font = "bold 32px sans-serif";
+        c.textAlign = "center";
+        c.fillText(name.slice(0, 1).toUpperCase(), 66, 76);
+      }
+      c.restore();
+      c.textAlign = "left";
+      c.textBaseline = "middle";
+      c.font = "600 32px sans-serif";
+      c.fillStyle = "#f3f4ec";
+      const text = Array.from(name);
+      const originalLength = text.length;
+      while (
+        text.length > 1 &&
+        c.measureText(text.join("") + "…").width > (isMe ? 292 : 366)
+      )
+        text.pop();
+      c.fillText(
+        text.join("") + (text.length < originalLength ? "…" : ""),
+        120,
+        64,
+      );
+      if (isMe) {
+        c.font = "bold 20px monospace";
+        c.fillStyle = "#d9ee83";
+        c.fillText("YOU", 435, 64);
+      }
+      map.needsUpdate = true;
+    };
+    draw(loadedAvatar?.seed === avatar ? loadedAvatar?.image : undefined);
+    if (avatar && loadedAvatar?.seed !== avatar) {
+      const image = new Image();
+      image.crossOrigin = "anonymous";
+      image.onload = () => {
+        if (current !== version) return;
+        loadedAvatar = { seed: avatar, image };
+        draw(image);
+      };
+      image.src = getAvatarUrl(encodeURIComponent(avatar));
+    }
+  };
+  const dispose = () => {
+    version++;
+    loadedAvatar = undefined;
+    map.dispose();
+    material.dispose();
+  };
+  return { sprite, setIdentity, dispose };
 };
 
 export type PlayerModel = {
@@ -205,9 +268,17 @@ export type PlayerModel = {
   skin: string;
   update: (dt: number, angle: number, moving: boolean, down: boolean) => void;
   kick: () => void;
+  setIdentity: (profile: PlayerProfile) => void;
+  dispose: () => void;
 };
 
-export const makePlayerModel = (chars: Characters, skin: string, color: string, name: string, isMe: boolean): PlayerModel => {
+export const makePlayerModel = (
+  chars: Characters,
+  skin: string,
+  profile: PlayerProfile,
+  isMe: boolean,
+): PlayerModel => {
+  const { color } = profile;
   const tint = new THREE.Color(color);
   const group = new THREE.Group();
   const rig = new THREE.Group(); // faces +x like the rest of the game
@@ -230,9 +301,20 @@ export const makePlayerModel = (chars: Characters, skin: string, color: string, 
   revive.visible = false;
   group.add(rig, ring, revive);
 
-  const laser = isMe ? new THREE.Mesh(laserGeo, new THREE.MeshBasicMaterial({ color: 0xff4d4d, transparent: true, opacity: 0.35 })) : null;
+  const laser = isMe
+    ? new THREE.Mesh(
+        laserGeo,
+        new THREE.MeshBasicMaterial({
+          color: tint,
+          transparent: true,
+          opacity: 0.35,
+        }),
+      )
+    : null;
   if (laser) rig.add(laser);
-  else group.add(nameSprite(name));
+  const label = nameSprite(isMe);
+  label.setIdentity(profile);
+  group.add(label.sprite);
 
   const mixer = new THREE.AnimationMixer(body);
   const idle = mixer.clipAction(chars.clips.get("idle")!);
@@ -270,5 +352,24 @@ export const makePlayerModel = (chars: Characters, skin: string, color: string, 
     gun.position.z = GUN_Z - recoil * 0.25;
   };
 
-  return { group, revive, skin, update, kick: () => (recoil = 1) };
+  return {
+    group,
+    revive,
+    skin,
+    update,
+    kick: () => (recoil = 1),
+    setIdentity: (next) => {
+      ring.material.color.set(next.color);
+      laser?.material.color.set(next.color);
+      label.setIdentity(next);
+    },
+    dispose: () => {
+      mixer.stopAllAction();
+      mixer.uncacheRoot(body);
+      ring.material.dispose();
+      revive.material.dispose();
+      laser?.material.dispose();
+      label.dispose();
+    },
+  };
 };
