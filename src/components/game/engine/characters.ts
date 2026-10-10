@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import type { PlayerProfile } from "../player-profile";
+import { makeProgressRing } from "./progress-ring";
 
 // kenney "blocky characters" (cc0): 6 rigid parts, rotation-only clips, faces +z
 const BASE = "/assets/game/characters/";
@@ -165,7 +166,6 @@ const GUN_Z = 1.25;
 const gunGeo = new THREE.BoxGeometry(0.2, 0.28, 1);
 const gunMat = new THREE.MeshStandardMaterial({ color: 0x1a1c22, roughness: 0.5 });
 const ringGeo = new THREE.RingGeometry(0.62, 0.76, 32).rotateX(-Math.PI / 2);
-const reviveGeo = new THREE.RingGeometry(0.95, 1.1, 32).rotateX(-Math.PI / 2);
 const laserGeo = new THREE.BoxGeometry(5, 0.02, 0.02).translate(MUZZLE + 2.5, GUN_HEIGHT, 0);
 
 // two-hand grip: arms out front, toed in so the hands meet on the aim line
@@ -221,7 +221,7 @@ const nameSprite = () => {
 
 export type PlayerModel = {
   group: THREE.Group;
-  revive: THREE.Mesh; // fills as a teammate revives
+  revive: ReturnType<typeof makeProgressRing>;
   skin: string;
   update: (dt: number, angle: number, moving: boolean, down: boolean) => void;
   kick: () => void;
@@ -253,10 +253,10 @@ export const makePlayerModel = (
 
   const ring = new THREE.Mesh(ringGeo, new THREE.MeshBasicMaterial({ color: tint }));
   ring.position.y = 0.03;
-  const revive = new THREE.Mesh(reviveGeo, new THREE.MeshBasicMaterial({ color: 0x5dff9b, transparent: true, opacity: 0.9 }));
-  revive.position.y = 0.04;
-  revive.visible = false;
-  group.add(rig, ring, revive);
+  const revive = makeProgressRing(0.95, 1.1, 0x5dff9b);
+  revive.group.position.y = 0.04;
+  revive.group.visible = false;
+  group.add(rig, ring, revive.group);
 
   const laser = isMe
     ? new THREE.Mesh(
@@ -324,7 +324,7 @@ export const makePlayerModel = (
       mixer.stopAllAction();
       mixer.uncacheRoot(body);
       ring.material.dispose();
-      revive.material.dispose();
+      revive.dispose();
       laser?.material.dispose();
       label.dispose();
     },

@@ -635,9 +635,9 @@ export class Game {
     this.last = t;
     this.time += dt;
     this.updateMe(dt);
+    this.updateCamera(dt);
     this.updateEntities(dt);
     this.fx.update(dt);
-    this.updateCamera(dt);
     this.composer.render(dt);
   };
 
@@ -754,8 +754,11 @@ export class Game {
       p.pz = p.z;
       group.position.set(p.x, 0, p.z);
       p.model.update(dt, p.a, moving, down);
-      revive.visible = down;
-      if (down) revive.scale.setScalar(p.snap.rev > 0 ? 0.3 + p.snap.rev * 0.7 : 1 + Math.sin(this.time * 5) * 0.08);
+      revive.group.visible = down && this.phase === "playing";
+      if (revive.group.visible) {
+        revive.setProgress(p.snap.rev);
+        revive.faceCamera(this.camera.position, group.position);
+      }
     }
 
     this.horde?.begin();
@@ -778,6 +781,7 @@ export class Game {
     for (const drop of this.drops.values()) {
       if (this.phase === "playing") drop.ttl = Math.max(0, drop.ttl - dt);
       drop.setProgress(drop.ttl / DROP_TTL);
+      drop.faceCamera(this.camera.position, drop.group.position);
       drop.core.rotation.y += dt * 2.2;
       drop.core.position.y = 0.85 + Math.sin(this.time * 3 + drop.group.position.x) * 0.15;
     }
