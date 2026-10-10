@@ -1,8 +1,14 @@
-// shared with backend src/lib/game/protocol.ts -> keep both copies identical
+// Shared game protocol. Keep frontend and backend copies identical.
 
 export const ARENA = 22; // half-extent, world is [-ARENA, ARENA] on x/z
 export const TICK_HZ = 20;
 export const MAX_PLAYERS = 4;
+export const ROOM_RE = /^[a-z0-9]{4,8}$/;
+export const RECONNECT_GRACE_MS = 30_000;
+
+export type GameJoinRequest = { mode: "create" } | { mode: "join"; room: string };
+export type GameJoinError = "invalid-room" | "not-found" | "full" | "locked" | "already-joined";
+export type GameJoined = { room: string; error?: never } | { room: null; error: GameJoinError };
 
 export const PLAYER_R = 0.5;
 export const PLAYER_HP = 100;
@@ -89,9 +95,13 @@ export type PlayerSnap = {
   rev: number; // revive progress 0..1
   kills: number;
   inputSeq?: number;
+  ready: boolean;
+  connected: boolean;
 };
 
 export type Snapshot = {
+  room: string;
+  hostId: string | null;
   runId: string | null;
   phase: GamePhase;
   wave: number;

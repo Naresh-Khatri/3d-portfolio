@@ -23,7 +23,8 @@ import { PingIndicator } from "./ping-indicator";
 import { monitorGamePing } from "./engine/ping";
 import { sfx } from "./engine/sfx";
 import { collectPlayerProfiles } from "./player-profile";
-import { MAX_PLAYERS, PLAYER_HP, WEAPONS } from "./protocol";
+import { MAX_PLAYERS, PLAYER_HP, ROOM_RE, WEAPONS, type GameJoinRequest } from "./protocol";
+import { roomUrl } from "./room-url";
 
 const iconButtonClass =
   "grid size-[44px] place-items-center rounded text-[color:var(--game-muted)] transition-colors hover:bg-white/10 hover:text-[color:var(--game-text)]";
@@ -32,9 +33,9 @@ const secondaryButtonClass =
 const rosterRowClass = "flex min-h-11 items-center justify-between gap-3 py-1";
 const mutedClass = "text-sm leading-relaxed text-[color:var(--game-muted)]";
 
-type Props = { socket: Socket; room: string | null; onClose: () => void };
+type Props = { socket: Socket; room: string | null; onRoomJoined: (room: string) => void; onClose: () => void };
 
-export default function GameOverlay({ socket, room, onClose }: Props) {
+export default function GameOverlay({ socket, room, onRoomJoined, onClose }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const gameRef = useRef<Game | null>(null);
   const [store] = useState(() => new HudStore());
@@ -42,6 +43,8 @@ export default function GameOverlay({ socket, room, onClose }: Props) {
   const { users } = useContext(SocketContext);
   const profiles = useMemo(() => collectPlayerProfiles(users), [users]);
   const { isMobile, maxDpr } = usePerfProfile();
+  const [renderProfile] = useState(() => ({ maxDpr, shadows: !isMobile }));
+  const [request, setRequest] = useState<GameJoinRequest | null>(() => room !== null ? { mode: "join", room } : null);
   const reducedMotion = useReducedMotion();
   const [leaderboardOpen, setLeaderboardOpen] = useState(false);
   const [failedRunId, setFailedRunId] = useState<string | null>(null);
@@ -53,11 +56,11 @@ export default function GameOverlay({ socket, room, onClose }: Props) {
   );
 
   useEffect(() => {
-    if (!canvasRef.current) return;
+    if (!canvasRef.current || !request) return;
     const game = new Game(canvasRef.current, socket, {
-      room,
-      maxDpr,
-      shadows: !isMobile,
+      request,
+      onRoomJoined,
+      ...renderProfile,
       hud: store,
       onExit: onClose,
       profiles: new Map(),
@@ -67,11 +70,11 @@ export default function GameOverlay({ socket, room, onClose }: Props) {
       game.dispose();
       gameRef.current = null;
     };
-  }, [socket, room, maxDpr, isMobile, store, onClose]);
+  }, [socket, request, renderProfile, store, onClose, onRoomJoined]);
 
   useEffect(() => {
     gameRef.current?.updateProfiles(profiles);
-  }, [profiles, socket, room, maxDpr, isMobile, store, onClose]);
+  }, [profiles, socket, request, renderProfile, store, onClose, onRoomJoined]);
 
   useEffect(() => {
     const prev = document.body.style.overflow;
@@ -99,6 +102,14 @@ export default function GameOverlay({ socket, room, onClose }: Props) {
   const weapon = WEAPONS[hud.weapon] ?? WEAPONS[0];
   const playing = hud.status === "joined" && hud.phase === "playing";
   const touch = hud.touch || isMobile;
+  const isHost = hud.hostId === socket.id;
+
+  const chooseRoom = () => {
+    setRequest(null);
+    store.patch({ status: "idle", error: null, room: null, hostId: null, players: [] });
+    const url = roomUrl(window.location.href, null);
+    window.history.replaceState(window.history.state, "", url);
+  };
 
   return (
     <div
@@ -237,8 +248,8 @@ export default function GameOverlay({ socket, room, onClose }: Props) {
                             : "text-[color:var(--game-muted)]",
                         )}
                       >
-                        {p.down ? "Down" : `${p.hp}`}
-                        {!p.down && <span className="sr-only"> HP</span>}
+                        {!p.connected ? "Reconnecting" : p.down ? "Down" : `${p.hp}`}
+                        {p.connected && !p.down && <span className="sr-only"> HP</span>}
                       </span>
                     </div>
                   ))}
@@ -296,7 +307,10 @@ export default function GameOverlay({ socket, room, onClose }: Props) {
         </div>
       )}
 
-      {hud.status !== "joined" && (
+      {!request && (
+        <RoomPicker onCreate={() => setRequest({ mode: "create" })} onJoin={(code) => setRequest({ mode: "join", room: code })} />
+      )}
+      {request && hud.status !== "joined" && (
         <Card>
           {hud.status === "full" ? (
             <>
@@ -304,15 +318,15 @@ export default function GameOverlay({ socket, room, onClose }: Props) {
               <p className={cn(mutedClass, "mt-2")}>
                 All {MAX_PLAYERS} spots are taken.
               </p>
-              <PrimaryButton onClick={onClose}>Back</PrimaryButton>
+              <PrimaryButton onClick={chooseRoom}>Choose another room</PrimaryButton>
             </>
           ) : hud.status === "failed" ? (
             <>
-              <h2 className="text-lg font-semibold">Couldn&apos;t load game</h2>
+              <h2 className="text-lg font-semibold">Couldn&apos;t join game</h2>
               <p role="alert" className={cn(mutedClass, "mt-2")}>
                 {hud.error}
               </p>
-              <PrimaryButton onClick={onClose}>Back</PrimaryButton>
+              <PrimaryButton onClick={chooseRoom}>Choose another room</PrimaryButton>
             </>
           ) : (
             <p
@@ -332,6 +346,8 @@ export default function GameOverlay({ socket, room, onClose }: Props) {
         <Lobby
           hud={{ ...hud, touch }}
           onStart={() => gameRef.current?.start()}
+          onReady={(ready) => gameRef.current?.ready(ready)}
+          isHost={isHost}
         />
       )}
       {hud.status === "joined" && hud.phase === "over" && (
@@ -365,9 +381,11 @@ export default function GameOverlay({ socket, room, onClose }: Props) {
               Your run couldn&apos;t be saved.
             </p>
           )}
-          <PrimaryButton onClick={() => gameRef.current?.start()}>
-            Play again
-          </PrimaryButton>
+          {isHost ? (
+            <PrimaryButton onClick={() => gameRef.current?.lobby()}>Return to lobby</PrimaryButton>
+          ) : (
+            <p role="status" className={cn(mutedClass, "mt-4")}>Waiting for the host to return to the lobby.</p>
+          )}
           <button
             type="button"
             onClick={() => setLeaderboardOpen(true)}
@@ -503,13 +521,17 @@ function Card({
 function PrimaryButton({
   children,
   onClick,
+  disabled = false,
 }: {
   children: React.ReactNode;
   onClick: () => void;
+  disabled?: boolean;
 }) {
   return (
     <button
+      type="button"
       onClick={onClick}
+      disabled={disabled}
       className="mt-4 flex min-h-11 w-full items-center justify-center gap-3 rounded bg-[color:var(--game-accent)] px-3 py-2 text-sm font-semibold text-[color:var(--game-on-accent)] transition-colors hover:bg-[color:var(--game-accent-hover)]"
     >
       {children}
@@ -517,7 +539,29 @@ function PrimaryButton({
   );
 }
 
-function Lobby({ hud, onStart }: { hud: Hud; onStart: () => void }) {
+function RoomPicker({ onCreate, onJoin }: { onCreate: () => void; onJoin: (code: string) => void }) {
+  const [code, setCode] = useState("");
+  const normalized = code.trim().toLowerCase();
+  const valid = ROOM_RE.test(normalized);
+  return (
+    <Card>
+      <p className="text-xs uppercase tracking-widest text-[color:var(--game-accent)]">Private rooms</p>
+      <h2 className="mt-2 text-xl font-semibold">Zombie Survival</h2>
+      <p className={cn(mutedClass, "mt-2")}>Play solo or invite up to three friends. Only players with your room code can join the lobby.</p>
+      <PrimaryButton onClick={onCreate}>Create room</PrimaryButton>
+      <form className="mt-5 border-t border-[color:var(--game-line)] pt-4" onSubmit={(event) => { event.preventDefault(); if (valid) onJoin(normalized); }}>
+        <label htmlFor="game-room-code" className="text-sm">Have an invite?</label>
+        <input id="game-room-code" value={code} onChange={(event) => setCode(event.target.value)} autoCapitalize="none" autoCorrect="off" spellCheck={false} maxLength={8} placeholder="Room code" aria-describedby="game-room-help" className="mt-2 min-h-11 w-full rounded border border-[color:var(--game-line)] bg-[color:var(--game-background)] px-3 text-base font-mono text-[color:var(--game-text)] outline-none focus:border-[color:var(--game-accent)]" />
+        <p id="game-room-help" className="mt-2 text-xs text-[color:var(--game-muted)]">Enter the 4–8 character code from your invite.</p>
+        <button type="submit" disabled={!valid} className={cn(secondaryButtonClass, "mt-2 w-full border border-[color:var(--game-line)]")}>Join room</button>
+      </form>
+    </Card>
+  );
+}
+
+function Lobby({ hud, onStart, onReady, isHost }: { hud: Hud; onStart: () => void; onReady: (ready: boolean) => void; isHost: boolean }) {
+  const me = hud.players.find((p) => p.me);
+  const canStart = hud.players.length > 0 && hud.players.every((p) => p.connected && (p.id === hud.hostId || p.ready));
   const [inviteStatus, setInviteStatus] = useState<
     "idle" | "copied" | "failed"
   >("idle");
@@ -530,8 +574,7 @@ function Lobby({ hud, onStart }: { hud: Hud; onStart: () => void }) {
   const copyInvite = async () => {
     if (!hud.room) return;
     try {
-      const url = new URL("/", window.location.origin);
-      url.searchParams.set("game", hud.room);
+      const url = roomUrl(window.location.href, hud.room);
       await navigator.clipboard.writeText(url.href);
       setInviteStatus("copied");
     } catch {
@@ -542,28 +585,35 @@ function Lobby({ hud, onStart }: { hud: Hud; onStart: () => void }) {
   return (
     <Card edge>
       <div className="flex items-baseline justify-between gap-3">
-        <h2 className="text-lg font-semibold">Zombie Survival</h2>
+        <h2 className="text-lg font-semibold">Room lobby</h2>
         <span className="shrink-0 text-xs tabular-nums text-[color:var(--game-muted)]">
           {hud.players.length}/{MAX_PLAYERS}
           <span className="sr-only"> players</span>
         </span>
       </div>
+      <p className="mt-2 font-mono text-sm tracking-widest text-[color:var(--game-accent)]">{hud.room}</p>
+      <p className="mt-2 text-xs leading-relaxed text-[color:var(--game-muted)]">Invite your friends before starting. The room locks when the match begins.</p>
       <div className="mt-3 max-h-24 overflow-y-auto overscroll-contain sm:max-h-none [@media(max-height:560px)]:max-h-20">
         {hud.players.map((p) => (
           <div key={p.id} className={rosterRowClass}>
             <PlayerIdentity player={p} />
+            <span className={cn("shrink-0 text-xs", p.connected && (p.ready || p.id === hud.hostId) ? "text-[color:var(--game-accent)]" : "text-[color:var(--game-muted)]")}>
+              {!p.connected ? "Reconnecting" : p.id === hud.hostId ? "Host" : p.ready ? "Ready" : "Not ready"}
+            </span>
           </div>
         ))}
       </div>
       <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-1 [@media(max-height:560px)]:grid-cols-2 [&>button]:mt-0">
-        <PrimaryButton onClick={onStart}>
-          Start game
-          {!hud.touch && (
+        {isHost ? <PrimaryButton onClick={onStart} disabled={!canStart}>
+          {hud.players.length === 1 ? "Start solo" : "Start game"}
+          {!hud.touch && canStart && (
             <kbd className="text-xs font-normal opacity-60 [@media(max-height:560px)]:hidden">
               Enter
             </kbd>
           )}
-        </PrimaryButton>
+        </PrimaryButton> : <PrimaryButton onClick={() => onReady(!me?.ready)} disabled={!me?.connected}>
+          {me?.ready ? "Cancel ready" : "Ready up"}
+        </PrimaryButton>}
         <button
           onClick={copyInvite}
           disabled={!hud.room}
@@ -578,6 +628,9 @@ function Lobby({ hud, onStart }: { hud: Hud; onStart: () => void }) {
           </span>
         </button>
       </div>
+      <p role="status" className="mt-3 text-xs text-[color:var(--game-muted)]">
+        {isHost ? canStart ? "Your room is ready to start." : "Waiting for every player to connect and ready up." : me?.ready ? "Waiting for the host to start." : "Ready up when you want to play."}
+      </p>
       <p
         className="mt-3 text-xs leading-relaxed text-[color:var(--game-muted)]"
         aria-label="Game controls"

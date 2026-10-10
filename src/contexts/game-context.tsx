@@ -3,11 +3,11 @@
 import dynamic from "next/dynamic";
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import { SocketContext } from "./socketio";
+import { ROOM_RE } from "@/components/game/protocol";
+import { readRoomCode, roomUrl } from "@/components/game/room-url";
 
 // three.js stays out of the main bundle until the game opens
 const GameOverlay = dynamic(() => import("@/components/game/game-overlay"), { ssr: false });
-
-const ROOM_RE = /^[a-z0-9]{4,8}$/;
 
 type GameContextType = {
   isOpen: boolean;
@@ -29,12 +29,21 @@ export const GameContextProvider = ({ children }: { children: ReactNode }) => {
   const [room, setRoom] = useState<string | null>(null);
   const [playing, setPlaying] = useState(0);
 
-  // invite link: /?game=<room>
   useEffect(() => {
-    const code = new URLSearchParams(window.location.search).get("game")?.toLowerCase();
-    if (!code || !ROOM_RE.test(code)) return;
-    setRoom(code);
-    setIsOpen(true);
+    const syncInvite = () => {
+      const code = readRoomCode(window.location.href);
+      setRoom(code);
+      setIsOpen(code !== null);
+    };
+    syncInvite();
+    window.addEventListener("popstate", syncInvite);
+    return () => window.removeEventListener("popstate", syncInvite);
+  }, []);
+
+  const onRoomJoined = useCallback((code: string) => {
+    if (!ROOM_RE.test(code)) return;
+    const url = roomUrl(window.location.href, code);
+    window.history.replaceState(window.history.state, "", url);
   }, []);
 
   useEffect(() => {
@@ -49,10 +58,8 @@ export const GameContextProvider = ({ children }: { children: ReactNode }) => {
   const close = useCallback(() => {
     setIsOpen(false);
     setRoom(null);
-    const url = new URL(window.location.href);
-    if (!url.searchParams.has("game")) return;
-    url.searchParams.delete("game");
-    window.history.replaceState(null, "", url);
+    const url = roomUrl(window.location.href, null);
+    window.history.replaceState(window.history.state, "", url);
   }, []);
 
   const value = useMemo(() => ({ isOpen, open, close, playing }), [isOpen, open, close, playing]);
@@ -60,7 +67,7 @@ export const GameContextProvider = ({ children }: { children: ReactNode }) => {
   return (
     <GameContext.Provider value={value}>
       {children}
-      {isOpen && socket && <GameOverlay socket={socket} room={room} onClose={close} />}
+      {isOpen && socket && <GameOverlay key={room ?? "new"} socket={socket} room={room} onRoomJoined={onRoomJoined} onClose={close} />}
     </GameContext.Provider>
   );
 };

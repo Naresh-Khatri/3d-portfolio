@@ -30,6 +30,8 @@ import {
   type GamePhase,
   type PlayerSnap,
   type Snapshot,
+  type GameJoinRequest,
+  type GameJoined,
 } from "../protocol";
 import { Fx } from "./fx";
 import { Input } from "./input";
@@ -44,14 +46,15 @@ const MAX_ZOMBIES = 160;
 const SNAP_DIST = 2.5;
 const CAM_OFFSET = new THREE.Vector3(0, 16, 9);
 
-export type HudPlayer = PlayerProfile & { id: string; hp: number; down: boolean; kills: number; me: boolean };
+export type HudPlayer = PlayerProfile & { id: string; hp: number; down: boolean; kills: number; me: boolean; ready: boolean; connected: boolean };
 
 export type Hud = {
   ping: GamePing;
   runId: string | null;
-  status: "loading" | "connecting" | "joined" | "full" | "failed";
+  status: "idle" | "loading" | "connecting" | "joined" | "full" | "failed";
   error: string | null;
   room: string | null;
+  hostId: string | null;
   phase: GamePhase;
   wave: number;
   left: number;
@@ -74,9 +77,10 @@ export type Hud = {
 const INITIAL_HUD: Hud = {
   ping: { status: "checking", ms: null },
   runId: null,
-  status: "loading",
+  status: "idle",
   error: null,
   room: null,
+  hostId: null,
   phase: "lobby",
   wave: 0,
   left: 0,
@@ -132,7 +136,8 @@ const lerpAngle = (a: number, b: number, k: number) => {
 };
 
 export type GameOptions = {
-  room: string | null;
+  request: GameJoinRequest;
+  onRoomJoined: (room: string) => void;
   maxDpr: number;
   shadows: boolean;
   hud: HudStore;
@@ -282,7 +287,16 @@ export class Game {
   }
 
   start() {
-    if (this.joined && this.phase !== "playing") this.socket.emit("game:start");
+    const hud = this.opts.hud.get();
+    if (this.joined && this.socket.connected && this.phase === "lobby" && hud.hostId === this.socket.id && hud.players.every((p) => p.connected && (p.me || p.ready))) this.socket.emit("game:start");
+  }
+
+  ready(ready: boolean) {
+    if (this.joined && this.socket.connected && this.phase === "lobby") this.socket.emit("game:ready", { ready });
+  }
+
+  lobby() {
+    if (this.joined && this.socket.connected && this.phase === "over" && this.opts.hud.get().hostId === this.socket.id) this.socket.emit("game:lobby");
   }
 
   suspendControls(value: boolean) {
@@ -337,6 +351,8 @@ export class Game {
       down: p.down,
       kills: p.kills,
       me: p.id === this.socket.id,
+      ready: p.ready,
+      connected: p.connected,
     }));
   }
 
@@ -358,7 +374,7 @@ export class Game {
 
   private requestJoin = () => {
     if (this.socket.connected) {
-      this.socket.emit("game:join", this.opts.room ? { room: this.opts.room } : undefined);
+      this.socket.emit("game:join", this.opts.request);
     }
   };
 
@@ -382,11 +398,24 @@ export class Game {
     this.join();
   };
 
-  private onJoined = (data: { room: string | null }) => {
+  private onJoined = (data: GameJoined) => {
     if (this.disposed) return;
     this.clearJoinTimers();
     this.joined = !!data.room;
-    this.opts.hud.patch({ status: data.room ? "joined" : "full", error: null, room: data.room });
+    if (data.room !== null) {
+      this.opts.request = { mode: "join", room: data.room };
+      this.opts.onRoomJoined(data.room);
+      this.opts.hud.patch({ status: "joined", error: null, room: data.room });
+    } else {
+      const errors = {
+        "invalid-room": "Enter a valid room code from an invite link.",
+        "not-found": "This room has closed or the invite has expired. Create a new room to play.",
+        full: "All four spots in this room are taken.",
+        locked: "This match has already started. Ask the host to return to the lobby after the game.",
+        "already-joined": "You already have a seat in another room or browser tab. Leave it before joining here.",
+      };
+      this.opts.hud.patch({ status: data.error === "full" ? "full" : "failed", error: errors[data.error], room: null });
+    }
   };
 
   private resize = () => {
@@ -401,7 +430,7 @@ export class Game {
 
   private onSnap = (s: Snapshot) => {
     const chars = this.chars;
-    if (!chars) return;
+    if (!chars || !this.joined || s.room !== this.opts.hud.get().room) return;
     const myId = this.socket.id;
     const prevPhase = this.phase;
     const started = s.phase === "playing" && prevPhase !== "playing";
@@ -582,6 +611,7 @@ export class Game {
     const mine = me?.snap;
     this.opts.hud.patch({
       runId: s.runId,
+      hostId: s.hostId,
       phase: s.phase,
       wave: s.wave,
       left: s.left,
@@ -619,7 +649,7 @@ export class Game {
 
     this.dashCd -= dt;
     this.fireCd -= dt * 1000;
-    const active = this.joined && this.socket.connected && !this.input.suspended && !me.snap.down && this.phase !== "over";
+    const active = this.joined && this.socket.connected && !this.input.suspended && !me.snap.down && this.phase === "playing";
 
     if (active) {
       const mv = this.input.move();

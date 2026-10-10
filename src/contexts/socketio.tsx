@@ -269,6 +269,7 @@ const SocketContextProvider = ({ children }: { children: ReactNode }) => {
     });
     newSocket.on("session", ({ sessionId }) => {
       localStorage.setItem(SESSION_ID_KEY, (sessionId));
+      newSocket.auth = { ...newSocket.auth, sessionId };
     });
 
     newSocket.on("msg-receive", (msgs) => {
